@@ -8,3 +8,16 @@ export const setLoginState = (state: '1' | '0') => localStorage.setItem('login_s
 
 export const getAppName = () =>
   document.querySelector("meta[name='app_name']")?.getAttribute('content') ?? '94list-laravel'
+
+export const loadAria2Config = () => {
+  const config = localStorage.getItem('aria2_config')
+  return config
+    ? JSON.parse(config)
+    : {
+        host: 'http://localhost',
+        port: '6800',
+        secret: ''
+      }
+}
+
+export const setAria2Config = config => localStorage.setItem('aria2_config', JSON.stringify(config))

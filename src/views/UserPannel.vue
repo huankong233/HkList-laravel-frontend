@@ -1,8 +1,6 @@
 <template>
-  <el-dialog v-model="Announce.switch" title="公告" width="90%">
-    <span v-html="Announce.message"></span>
-  </el-dialog>
-
+  <SelectLink />
+  <!--
   <el-dialog v-model="configAria2FormVisible" title="Aria2配置" width="90%">
     <el-form
       ref="configAria2FormRef"
@@ -68,105 +66,17 @@
       </el-table-column>
     </el-table>
   </el-dialog>
-
-  <el-card v-loading="getFileListForm.pending">
-    <h2>前台解析中心 | {{ getAppName() }}</h2>
-    <!-- @if(\App\Http\Controllers\UserController::getRandomCookie() === null)
-    <el-alert title="当前中转账号不足" type="error"></el-alert>
-    @else
-    <el-alert title="当前中转账号充足" type="success"></el-alert>
-    @endif @if(config("app.debug") === true)
-    <el-alert
-      class="alert"
-      title="当前网站开启了DEBUG模式,非调试请关闭!!!!"
-      type="error"
-    ></el-alert>
-    @endif @if(!Request::secure() && !config("94list.ssl"))
-    <el-alert
-      class="alert"
-      title="当前网站未开启SSL,可能出现无法请求Aria2服务器的问题"
-      type="error"
-    ></el-alert>
-    @endif -->
-    <el-form
-      ref="getFileListFormRef"
-      v-bind:model="getFileListForm"
-      v-bind:rules="getFileListFormRule"
-      label-width="100"
-      class="form"
-    >
-      <el-form-item label="链接" prop="url">
-        <el-input v-model="getFileListForm.url" @blur="checkLink"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="getFileListForm.password"></el-input>
-      </el-form-item>
-      @if(Auth::check())
-      <el-form-item label="指定用户解析" prop="bd_user_id">
-        <el-input v-model="getFileListForm.bd_user_id"></el-input>
-      </el-form-item>
-      @endif
-      <el-form-item label="当前路径" prop="dir">
-        <el-input v-model="dir" disabled></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" v-on:click="getFileListClickEvent(getFileListFormRef)">
-          解析链接
-        </el-button>
-        <el-button type="primary" v-on:click="freshFileList(getFileListFormRef)">
-          刷新列表
-        </el-button>
-        <el-button
-          type="primary"
-          v-bind:disabled="selectedRows.length <= 0"
-          v-on:click="downloadFiles"
-        >
-          批量解析
-        </el-button>
-        <el-button type="primary" v-on:click="copyLink(getFileListFormRef)">
-          复制当前地址
-        </el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
-
-  <!-- <el-card class="card" v-loading="getFileListForm.pending">
-    <el-table
-      border
-      stripe
-      ref="fileListTableRef"
-      v-bind:data="list"
-      @row-click="clickRow"
-      @row-dblclick="dblclickRow"
-      @selection-change="clickSelection"
-    >
-      <el-table-column type="selection" width="40"></el-table-column>
-      <el-table-column label="文件名">
-        <template #default="scope">
-          <el-space wrap>
-            <img
-              :src="scope.row.isdir == '1' ? foler : unknownfile"
-              style="width: 20px; height: 20px"
-            />
-            @{{ scope.row.server_filename }}
-          </el-space>
-        </template>
-      </el-table-column>
-      <el-table-column label="修改时间">
-        <template #default="scope"> {{ formatTimestamp(scope.row.server_mtime) }} </template>
-      </el-table-column>
-      <el-table-column label="大小">
-        <template #default="scope"> {{ formatBytes(scope.row.size) }} </template>
-      </el-table-column>
-    </el-table>
-  </el-card> -->
+  -->
 </template>
 
 <script lang="ts" setup>
-import { getAppName } from '@/utils/env.js'
-import { formatBytes, formatTimestamp } from '@/utils/format.js'
-import foler from '@/assets/img/folder.png'
-import unknownfile from '@/assets/img/unknownfile.png'
+import { defineAsyncComponent } from 'vue'
+
+const SelectLink = defineAsyncComponent(() => import('@/components/UserPannel/SelectLink.vue'))
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.card {
+  margin-top: 15px;
+}
+</style>
