@@ -20,4 +20,5 @@ export const loadAria2Config = () => {
       }
 }
 
-export const setAria2Config = config => localStorage.setItem('aria2_config', JSON.stringify(config))
+export const setAria2Config = (config: { host: string; port: string; secret: string }) =>
+  localStorage.setItem('aria2_config', JSON.stringify(config))

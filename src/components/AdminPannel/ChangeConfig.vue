@@ -79,12 +79,14 @@ const getConfig = async () => {
   changeConfigForm.value.getPending = true
   const response = (await doGetConfig()) ?? 'failed'
   changeConfigForm.value.getPending = false
-  if (response !== 'failed') {
-    changeConfigForm.value = { ...changeConfigForm.value, ...response.data }
-  }
+
+  // @ts-ignore
+  if (response === 'failed') return
+
+  changeConfigForm.value = { ...changeConfigForm.value, ...response.data }
 }
 
-const changeConfig = async (formEl: FormInstance) => {
+const changeConfig = async (formEl: FormInstance | null) => {
   if (!formEl) return
   if (await formEl.validate(() => {})) {
     changeConfigForm.value.changePending = true
@@ -96,14 +98,15 @@ const changeConfig = async (formEl: FormInstance) => {
         check: true
       })) ?? 'failed'
 
-    if (accountInfo !== 'failed') {
-      changeConfigForm.value.changePending = false
-      if (accountInfo.message !== 'cookie校验成功') {
-        ElMessage.error('请不要使用包含账户的cookie,直接退出登陆获取一个新cookie')
-        return
-      }
-      ElMessage.success('cookie校验成功,不包含账户')
+    // @ts-ignore
+    if (accountInfo === 'failed') return
+
+    changeConfigForm.value.changePending = false
+    if (accountInfo.message !== 'cookie校验成功') {
+      ElMessage.error('请不要使用包含账户的cookie,直接退出登陆获取一个新cookie')
+      return
     }
+    ElMessage.success('cookie校验成功,不包含账户')
 
     const response =
       (await doChangeConfig({
@@ -112,12 +115,13 @@ const changeConfig = async (formEl: FormInstance) => {
 
     changeConfigForm.value.changePending = false
 
-    if (response !== 'failed') {
-      ElMessage.success('修改成功')
-      // 修改后台接口前缀
-      setPrefix(changeConfigForm.value.prefix)
-      await getConfig()
-    }
+    // @ts-ignore
+    if (response === 'failed') return
+
+    ElMessage.success('修改成功')
+    // 修改后台接口前缀
+    setPrefix(changeConfigForm.value.prefix)
+    await getConfig()
   }
 }
 </script>

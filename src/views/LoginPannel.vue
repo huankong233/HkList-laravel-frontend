@@ -2,7 +2,7 @@
   <div class="container">
     <el-card>
       <h1>
-        <img src="favicon.ico" alt="logo" />
+        <img :src="favicon" alt="logo" />
       </h1>
       <h2>{{ getAppName() }}</h2>
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRule" label-width="100px">
@@ -39,6 +39,7 @@ import { ElMessage } from 'element-plus'
 import { doLogin } from '@/apis/admin.js'
 import { getAppName, setPrefix } from '@/utils/env.js'
 import { getLoginState, setLoginState } from '@/utils/env.js'
+import favicon from '@/assets/image/favicon.ico'
 
 const router = useRouter()
 
@@ -53,7 +54,7 @@ const loginFormRule: FormRules = {
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 }
 
-const login = async (formEl: FormInstance) => {
+const login = async (formEl: FormInstance | null) => {
   if (!formEl) return
   if (!(await formEl.validate(() => {}))) return
 
@@ -69,13 +70,13 @@ const login = async (formEl: FormInstance) => {
 
   loginForm.value.pending = false
 
-  if (response !== 'failed') {
-    loginForm.value.username = ''
-    loginForm.value.password = ''
-    ElMessage.success('登陆成功')
-    setLoginState('1')
-    router.push('/admin')
-  }
+  if (response.toString() === 'failed') return
+
+  loginForm.value.username = ''
+  loginForm.value.password = ''
+  ElMessage.success('登陆成功')
+  setLoginState('1')
+  router.push('/admin')
 }
 </script>
 

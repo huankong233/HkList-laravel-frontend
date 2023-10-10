@@ -51,7 +51,7 @@ export const useAccountManagementStore = defineStore('AccountManagement', () => 
   })
   const accountLoading = ref(false)
 
-  const selectAccounts = ref([])
+  const selectAccounts = ref<Account[]>([])
 
   const getAccounts = async () => {
     accountLoading.value = true
@@ -64,10 +64,10 @@ export const useAccountManagementStore = defineStore('AccountManagement', () => 
 
     accountLoading.value = false
 
-    if (response !== 'failed') {
-      const { data } = response
-      accountList.value = data
-    }
+    if (response.toString() === 'failed') return
+
+    const { data } = response
+    accountList.value = data
   }
 
   return {

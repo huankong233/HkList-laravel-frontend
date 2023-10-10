@@ -70,10 +70,9 @@ const switchAccount = async (userId: number, state: number) => {
       account_id: userId
     })) ?? 'failed'
 
-  if (response !== 'failed') {
-    ElMessage.success(`成功${state === 0 ? '启用' : '禁用'}`)
-    await accountManagement.getAccounts()
-  }
+  if (response.toString() === 'failed') return
+  ElMessage.success(`成功${state === 0 ? '启用' : '禁用'}`)
+  await accountManagement.getAccounts()
 }
 
 const deleteAccount = async (userId: number) => {
@@ -82,10 +81,10 @@ const deleteAccount = async (userId: number) => {
       account_id: userId
     })) ?? 'failed'
 
-  if (response !== 'failed') {
-    ElMessage.success(`删除账户成功`)
-    await accountManagement.getAccounts()
-  }
+  if (response.toString() === 'failed') return
+
+  ElMessage.success(`删除账户成功`)
+  await accountManagement.getAccounts()
 }
 
 const selectAccountsChange = (row: Account[]) => (selectAccounts.value = row)

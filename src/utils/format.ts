@@ -1,4 +1,4 @@
-export const formatTimestamp = timestamp => {
+export const formatTimestamp = (timestamp: number) => {
   const date = new Date(timestamp * 1000)
   return date.toLocaleDateString(undefined, {
     year: 'numeric',
@@ -7,8 +7,8 @@ export const formatTimestamp = timestamp => {
   })
 }
 
-export const formatBytes = (bytes, decimals = 2) => {
-  bytes = parseFloat(bytes)
+export const formatBytes = (bytes: number | string, decimals = 2) => {
+  if (typeof bytes === 'string') bytes = parseFloat(bytes)
   if (bytes === 0) return '0 Bytes'
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']

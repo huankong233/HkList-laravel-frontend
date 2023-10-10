@@ -2,7 +2,7 @@
   <div class="container">
     <el-card>
       <h1>
-        <img src="favicon.ico" alt="logo" />
+        <img :src="favicon" alt="logo" />
       </h1>
       <h2>就是加速</h2>
       <h3 v-if="installForm.installed">
@@ -70,6 +70,7 @@ import { doInstall } from '@/apis/user.js'
 import { useInstallPannelStore } from '@/store/InstallPannel.js'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import favicon from '@/assets/image/favicon.ico'
 const router = useRouter()
 
 const installPannel = useInstallPannelStore()
@@ -106,10 +107,10 @@ const install = async (formEl: FormInstance | null) => {
     })) ?? 'failed'
   installForm.value.pending = false
 
-  if (response !== 'failed') {
-    ElMessage.success('安装成功!')
-    installForm.value.installed = true
-  }
+  if (response.toString() === 'failed') return
+
+  ElMessage.success('安装成功!')
+  installForm.value.installed = true
 }
 
 const goHome = () => router.push('/')

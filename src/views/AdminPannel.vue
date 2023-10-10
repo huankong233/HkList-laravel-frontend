@@ -42,14 +42,16 @@ if (getLoginState() === '0') {
   router.push('/login')
 }
 
-const ChangeConfig = defineAsyncComponent(() => import('@/components/ChangeConfig.vue'))
-const ChangeUserInfo = defineAsyncComponent(() => import('@/components/ChangeUserInfo.vue'))
+const ChangeConfig = defineAsyncComponent(() => import('@/components/AdminPannel/ChangeConfig.vue'))
+const ChangeUserInfo = defineAsyncComponent(
+  () => import('@/components/AdminPannel/ChangeUserInfo.vue')
+)
 
 const AddAccount = defineAsyncComponent(
-  () => import('@/components/AccountManagement/AddAccount.vue')
+  () => import('@/components/AdminPannel/AccountManagement/AddAccount.vue')
 )
 const AccountList = defineAsyncComponent(
-  () => import('@/components/AccountManagement/AccountList.vue')
+  () => import('@/components/AdminPannel/AccountManagement/AccountList.vue')
 )
 
 const logout = async () => {

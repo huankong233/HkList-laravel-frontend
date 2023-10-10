@@ -7,12 +7,10 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AccountList: typeof import('./src/components/AccountManagement/AccountList.vue')['default']
-    AccountList2: typeof import('./src/components/AccountManagement/AccountList2.vue')['default']
-    AccountManagement: typeof import('./src/components/AccountManagement.vue')['default']
-    AddAccount: typeof import('./src/components/AccountManagement/AddAccount.vue')['default']
-    ChangeConfig: typeof import('./src/components/ChangeConfig.vue')['default']
-    ChangeUserInfo: typeof import('./src/components/ChangeUserInfo.vue')['default']
+    AccountList: typeof import('./src/components/AdminPannel/AccountManagement/AccountList.vue')['default']
+    AddAccount: typeof import('./src/components/AdminPannel/AccountManagement/AddAccount.vue')['default']
+    ChangeConfig: typeof import('./src/components/AdminPannel/ChangeConfig.vue')['default']
+    ChangeUserInfo: typeof import('./src/components/AdminPannel/ChangeUserInfo.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -33,10 +31,8 @@ declare module 'vue' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElText: typeof import('element-plus/es')['ElText']
-    FileList: typeof import('./src/components/UserPannel/FileList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SelectLink: typeof import('./src/components/UserPannel/SelectLink.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

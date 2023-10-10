@@ -51,7 +51,7 @@ const changeUserInfoFormRule = {
   confirmPassword: [{ required: true, message: '请确认新密码', trigger: 'blur' }]
 }
 
-const changeUserInfo = async (formEl: FormInstance) => {
+const changeUserInfo = async (formEl: FormInstance | null) => {
   if (!formEl) return
   if (await formEl.validate(() => {})) {
     if (changeUserInfoForm.value.newPassword !== changeUserInfoForm.value.confirmPassword) {
@@ -67,18 +67,18 @@ const changeUserInfo = async (formEl: FormInstance) => {
       })) ?? 'failed'
     changeUserInfoForm.value.pending = false
 
-    if (response !== 'failed') {
-      changeUserInfoForm.value = {
-        newUsername: '',
-        nowPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-        pending: false
-      }
-      ElMessage.success('修改成功')
-      setLoginState('0')
-      router.push('/login')
+    if (response.toString() === 'failed') return
+
+    changeUserInfoForm.value = {
+      newUsername: '',
+      nowPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      pending: false
     }
+    ElMessage.success('修改成功')
+    setLoginState('0')
+    router.push('/login')
   }
 }
 </script>

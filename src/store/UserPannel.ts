@@ -16,8 +16,8 @@ export const useUserPannelStore = defineStore('UserPannel', () => {
   const ishttps = ref('https:' === document.location.protocol)
 
   const getFileListForm = ref({
-    url: 'https://pan.baidu.com/s/1AJmJCw7VSm2qqRYrW-RFEw',
-    password: 'jcb9',
+    url: '',
+    password: '',
     dir: '/',
     uk: 0,
     shareid: 0,
@@ -30,9 +30,22 @@ export const useUserPannelStore = defineStore('UserPannel', () => {
 
   const getFileListFormRef = ref<FormInstance | null>(null)
 
-  const list = ref([])
+  interface file {
+    category: string
+    fs_id: string
+    isdir: string
+    local_ctime: string
+    local_mtime: string
+    md5: string
+    path: string
+    server_ctime: string
+    server_mtime: string
+    size: string
+  }
 
-  const selectedRows = ref([])
+  const list = ref<file[]>([])
+
+  const selectedRows = ref<file[]>([])
 
   const fileListTableRef = ref<TableInstance | null>(null)
 
@@ -40,7 +53,7 @@ export const useUserPannelStore = defineStore('UserPannel', () => {
 
   const downloadDialogVisible = ref(false)
 
-  const selectDownloadFiles = ref([])
+  const selectDownloadFiles = ref<{ dlink: string; server_filename: string }[]>([])
 
   const aria2ConfigDialogVisible = ref(false)
 

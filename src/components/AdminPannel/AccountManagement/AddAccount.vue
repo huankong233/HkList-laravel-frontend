@@ -51,7 +51,7 @@ import { ElMessage } from 'element-plus'
 const accountManagement = useAccountManagementStore()
 const { addAccountForm, addAccountFormRef, addAccountFormVisible } = storeToRefs(accountManagement)
 
-const addAccount = async (formEl: FormInstance) => {
+const addAccount = async (formEl: FormInstance | null) => {
   if (!formEl) return
   if (await formEl.validate(() => {})) {
     addAccountForm.value.addPending = true
@@ -87,22 +87,23 @@ const vipTypeMap = new Map([
 
 const getAccountInfo = async () => {
   if (!addAccountFormRef.value) return
-  if (await addAccountFormRef.value.validate(() => {})) {
-    addAccountForm.value.checkPending = true
-    const response =
-      (await doGetAccountInfo({
-        cookie: addAccountForm.value.cookie.trim()
-      })) ?? 'failed'
+  if (!(await addAccountFormRef.value.validate(() => {}))) return
+  addAccountForm.value.checkPending = true
 
-    addAccountForm.value.checkPending = false
+  const response =
+    (await doGetAccountInfo({
+      cookie: addAccountForm.value.cookie.trim()
+    })) ?? 'failed'
 
-    if (response !== 'failed') {
-      const { data } = response
-      addAccountForm.value.checkedInfo = true
-      addAccountForm.value.username = data.baidu_name
-      addAccountForm.value.vipType = vipTypeMap.get(data.vip_type)
-    }
-  }
+  addAccountForm.value.checkPending = false
+
+  // @ts-ignore
+  if (response === 'failed') return
+
+  const { data } = response
+  addAccountForm.value.checkedInfo = true
+  addAccountForm.value.username = data.baidu_name
+  addAccountForm.value.vipType = vipTypeMap.get(data.vip_type) ?? '普通用户'
 }
 </script>
 
