@@ -1,6 +1,6 @@
 {
   "name": "94list-frontend",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -16,6 +16,7 @@
     "@vueuse/core": "^10.5.0",
     "axios": "^1.5.1",
     "element-plus": "^2.3.14",
+    "pinia": "^2.1.6",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },

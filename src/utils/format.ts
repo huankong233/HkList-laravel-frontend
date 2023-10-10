@@ -1,0 +1,17 @@
+export const formatTimestamp = timestamp => {
+  const date = new Date(timestamp * 1000)
+  return date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+export const formatBytes = (bytes, decimals = 2) => {
+  bytes = parseFloat(bytes)
+  if (bytes === 0) return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i]
+}

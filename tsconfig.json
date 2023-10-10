@@ -20,5 +20,5 @@
     "moduleResolution": "Node",
     "types": ["element-plus/global"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.js", "src/**/*.vue"]
+  "include": ["src/**/*.ts", "*.d.ts", "src/**/*.js", "src/**/*.vue"]
 }

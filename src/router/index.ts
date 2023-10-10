@@ -30,8 +30,11 @@ const router = createRouter({
   ]
 })
 
+import { getAppName } from '@/utils/env.js'
+
 router.beforeEach((to, from, next) => {
-  if (to.meta.title) document.title = to.meta.title
+  // 需要在 index.html 里定义好
+  document.title = `${to.meta.title} | ${getAppName()}`
   next()
 })
 

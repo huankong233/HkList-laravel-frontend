@@ -12,19 +12,19 @@
       </h3>
       <el-form
         ref="installFormRef"
-        v-bind:model="installForm"
-        v-bind:rules="installFormRule"
-        v-bind:disabled="installForm.installed"
+        :model="installForm"
+        :rules="installFormRule"
+        :disabled="installForm.installed"
         label-width="150px"
       >
-        <el-form-item label="数据库驱动" prop="db_type">
-          <el-select v-model="installForm.db_type" placeholder="请选择数据库驱动">
+        <el-form-item label="数据库驱动" prop="db_connection">
+          <el-select v-model="installForm.db_connection" placeholder="请选择数据库驱动">
             <el-option label="MySQL" value="mysql"></el-option>
             <el-option label="SQLite" value="sqlite"></el-option>
           </el-select>
         </el-form-item>
 
-        <template v-if="installForm.db_type === 'mysql'">
+        <template v-if="installForm.db_connection === 'mysql'">
           <el-form-item label="MySQL 数据库地址" prop="db_host">
             <el-input v-model="installForm.db_host"></el-input>
           </el-form-item>
@@ -50,15 +50,11 @@
         <el-form-item label="网站url" prop="app_url">
           <el-input v-model="installForm.app_url"></el-input>
         </el-form-item>
-        <el-form-item label="后台登录路径" prop="admin_path">
-          <el-input v-model="installForm.admin_path"></el-input>
+        <el-form-item label="后台登录路径" prop="admin_route_prefix">
+          <el-input v-model="installForm.admin_route_prefix"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            v-on:click="install(installFormRef)"
-            v-bind:loading="installForm.pending"
-          >
+        <el-form-item class="center">
+          <el-button type="primary" @click="install(installFormRef)" :loading="installForm.pending">
             安装
           </el-button>
         </el-form-item>
@@ -69,28 +65,18 @@
 
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from 'element-plus'
-import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { doInstall } from '@/apis'
+import { doInstall } from '@/apis/user.js'
+import { useInstallPannelStore } from '@/store/InstallPannel.js'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
-const installForm = ref({
-  db_type: '',
-  db_host: 'localhost',
-  db_port: '3306',
-  db_database: '94list',
-  db_username: '94list',
-  db_password: '',
-  app_name: '94list-laravel',
-  app_url: '',
-  admin_path: '/admin',
-  pending: false,
-  installed: false
-})
-
-const installFormRef = ref<FormInstance | null>(null)
+const installPannel = useInstallPannelStore()
+const { installForm, installFormRef } = storeToRefs(installPannel)
 
 const installFormRule: FormRules = {
-  db_type: [{ required: true, message: '请选择安装方式', trigger: 'change' }],
+  db_connection: [{ required: true, message: '请选择安装方式', trigger: 'change' }],
   db_host: [{ required: true, message: '请输入MySQL 数据库地址', trigger: 'blur' }],
   db_port: [{ required: true, message: '请输入MySQL 端口', trigger: 'blur' }],
   db_database: [{ required: true, message: '请输入MySQL 数据库名', trigger: 'blur' }],
@@ -98,34 +84,36 @@ const installFormRule: FormRules = {
   db_password: [{ required: true, message: '请输入MySQL 密码', trigger: 'blur' }],
   app_name: [{ required: true, message: '请输入网站名称', trigger: 'blur' }],
   app_url: [{ required: true, message: '请输入网站url', trigger: 'blur' }],
-  admin_path: [{ required: true, message: '请输入后台登录路径', trigger: 'blur' }]
+  admin_route_prefix: [{ required: true, message: '请输入后台登录路径', trigger: 'blur' }]
 }
 
 const install = async (formEl: FormInstance | null) => {
   if (!formEl) return
   if (!(await formEl.validate(() => {}))) return
-  installForm.value.pending = true
 
-  doInstall({
-    db_type: installForm.value.db_type,
-    db_host: installForm.value.db_host,
-    db_port: installForm.value.db_port,
-    db_database: installForm.value.db_database,
-    db_username: installForm.value.db_username,
-    db_password: installForm.value.db_password,
-    app_name: installForm.value.app_name,
-    app_url: installForm.value.app_url,
-    admin_path: installForm.value.admin_path
-  }).then(() => {
+  installForm.value.pending = true
+  const response =
+    (await doInstall({
+      db_connection: installForm.value.db_connection,
+      db_host: installForm.value.db_host,
+      db_port: installForm.value.db_port,
+      db_database: installForm.value.db_database,
+      db_username: installForm.value.db_username,
+      db_password: installForm.value.db_password,
+      app_name: installForm.value.app_name,
+      app_url: installForm.value.app_url,
+      admin_route_prefix: installForm.value.admin_route_prefix
+    })) ?? 'failed'
+  installForm.value.pending = false
+
+  if (response !== 'failed') {
     ElMessage.success('安装成功!')
     installForm.value.installed = true
-  })
-
-  installForm.value.pending = false
+  }
 }
 
-const goHome = () => (location.href = '/')
-const goAdmin = () => (location.href = installForm.value.admin_path)
+const goHome = () => router.push('/')
+const goAdmin = () => router.push('/login')
 </script>
 
 <style lang="scss" scoped>
