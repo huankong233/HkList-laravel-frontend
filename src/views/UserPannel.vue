@@ -494,7 +494,7 @@ const aria2ConfigFormRule = {
 const saveAria2Config = async (formEl: FormInstance | null) => {
   if (!formEl) return
   if (!(await formEl.validate(() => {}))) return
-  localStorage.setItem('configAria2', JSON.stringify(aria2ConfigForm.value))
+  localStorage.setItem('aria2_config', JSON.stringify(aria2ConfigForm.value))
   ElMessage.success('保存成功')
   aria2ConfigDialogVisible.value = false
 }
