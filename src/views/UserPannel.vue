@@ -286,7 +286,7 @@ const getFileList = async (server_mtime = '0', refresh = false) => {
   let { message, data } = fileList
   ElMessage.success(message)
 
-  Object.assign(getFileListForm.value, { uk: data.uk, shareid: data.shareid })
+  Object.assign(getFileListForm.value, { randsk: data.randsk, uk: data.uk, shareid: data.shareid })
   list.value = data.list
 
   if (

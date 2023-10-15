@@ -21,7 +21,7 @@ export const useUserPannelStore = defineStore('UserPannel', () => {
     dir: '/',
     uk: 0,
     shareid: 0,
-    randsk: 0,
+    randsk: '',
     sign: '',
     timestamp: 0,
     bd_user_id: null,

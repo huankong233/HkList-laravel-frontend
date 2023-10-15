@@ -25,6 +25,6 @@ export const doDownloadFiles = (params: {
   timestamp: number
   uk: number
   sign: string
-  randsk: number
+  randsk: string
   shareid: number
 }): response => axios.post('/user/downloadFiles', params)
