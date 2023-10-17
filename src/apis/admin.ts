@@ -20,6 +20,9 @@ export const doSwitchAccount = (params: { account_id: number }): response =>
 export const doDeleteAccount = (params: { account_id: number }): response =>
   axios.post(`${getPrefix()}/deleteAccount`, params)
 
+export const doUpdateAccount = (params: { account_id: number }): response =>
+  axios.post(`${getPrefix()}/updateAccount`, params)
+
 export const doGetConfig = (): response => axios.post(`${getPrefix()}/getConfig`)
 export const doChangeConfig = (params: {
   sleep: number

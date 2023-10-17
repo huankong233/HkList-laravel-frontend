@@ -101,13 +101,13 @@
       class="form"
     >
       <el-form-item label="链接" prop="url">
-        <el-input v-model="getFileListForm.url" @blur="checkLink"></el-input>
+        <el-input v-model.trim="getFileListForm.url" @blur="checkLink"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="getFileListForm.password"></el-input>
+        <el-input v-model.trim="getFileListForm.password"></el-input>
       </el-form-item>
       <el-form-item label="指定用户解析" prop="bd_user_id" v-if="getLoginState() === '1'">
-        <el-input v-model="getFileListForm.bd_user_id"></el-input>
+        <el-input v-model.trim="getFileListForm.bd_user_id"></el-input>
       </el-form-item>
       <el-form-item label="当前路径" prop="dir">
         <el-input v-model="getFileListForm.dir" disabled></el-input>

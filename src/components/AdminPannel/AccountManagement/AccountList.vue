@@ -27,8 +27,11 @@
     <el-table-column prop="switch" label="是否启用">
       <template #default="scope"> {{ scope.row.switch === 0 ? '禁用' : '启用' }} </template>
     </el-table-column>
-    <el-table-column label="操作" width="160">
+    <el-table-column label="操作" width="220">
       <template #default="scope">
+        <el-button size="small" type="primary" @click="updateAccount(scope.row.id)">
+          更新信息
+        </el-button>
         <el-button
           size="small"
           v-bind:type="scope.row.switch === 0 ? 'success' : 'info'"
@@ -57,7 +60,7 @@ import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { Account } from '@/store/AccountManagement.js'
 import { useAccountManagementStore } from '@/store/AccountManagement.js'
-import { doSwitchAccount, doDeleteAccount } from '@/apis/admin.js'
+import { doSwitchAccount, doDeleteAccount, doUpdateAccount } from '@/apis/admin.js'
 import { ElMessage } from 'element-plus'
 
 const accountManagement = useAccountManagementStore()
@@ -72,6 +75,18 @@ const switchAccount = async (userId: number, state: number) => {
 
   if (response.toString() === 'failed') return
   ElMessage.success(`成功${state === 0 ? '启用' : '禁用'}`)
+  await accountManagement.getAccounts()
+}
+
+const updateAccount = async (userId: number) => {
+  const response =
+    (await doUpdateAccount({
+      account_id: userId
+    })) ?? 'failed'
+
+  if (response.toString() === 'failed') return
+
+  ElMessage.success(`更新账户信息成功`)
   await accountManagement.getAccounts()
 }
 
