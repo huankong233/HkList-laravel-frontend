@@ -3,7 +3,7 @@
     ref="changeUserInfoFormRef"
     v-bind:model="changeUserInfoForm"
     v-bind:rules="changeUserInfoFormRule"
-    label-width="200px"
+    label-width="auto"
   >
     <el-form-item label="新的用户名(为空就是不改)" prop="newUsername">
       <el-input v-model="changeUserInfoForm.newUsername"></el-input>
@@ -17,7 +17,7 @@
     <el-form-item label="确认新密码" prop="confirmPassword">
       <el-input v-model="changeUserInfoForm.confirmPassword"></el-input>
     </el-form-item>
-    <el-form-item>
+    <el-form-item label=" ">
       <el-button
         type="primary"
         v-on:click="changeUserInfo(changeUserInfoFormRef)"

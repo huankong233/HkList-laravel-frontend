@@ -4,7 +4,7 @@
       ref="addAccountFormRef"
       v-bind:model="addAccountForm"
       v-bind:rules="addAccountFormRule"
-      label-width="200px"
+      label-width="auto"
     >
       <el-form-item label="账户Cookie" prop="cookie">
         <el-input type="textarea" v-model="addAccountForm.cookie" rows="5"></el-input>
@@ -17,25 +17,23 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="accountManagement.closeAddDialog()">取消</el-button>
-        <el-button
-          type="primary"
-          @click="getAccountInfo"
-          :disabled="addAccountForm.checkedInfo"
-          :loading="addAccountForm.checkPending"
-        >
-          获取账户信息
-        </el-button>
-        <el-button
-          type="primary"
-          @click="addAccount(addAccountFormRef)"
-          :disabled="!addAccountForm.checkedInfo"
-          :loading="addAccountForm.addPending"
-        >
-          添加
-        </el-button>
-      </span>
+      <el-button type="info" @click="accountManagement.closeAddDialog()">取消</el-button>
+      <el-button
+        type="primary"
+        @click="getAccountInfo"
+        :disabled="addAccountForm.checkedInfo"
+        :loading="addAccountForm.checkPending"
+      >
+        获取账户信息
+      </el-button>
+      <el-button
+        type="primary"
+        @click="addAccount(addAccountFormRef)"
+        :disabled="!addAccountForm.checkedInfo"
+        :loading="addAccountForm.addPending"
+      >
+        添加
+      </el-button>
     </template>
   </el-dialog>
 </template>

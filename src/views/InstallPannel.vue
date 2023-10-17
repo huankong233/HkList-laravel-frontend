@@ -15,7 +15,7 @@
         :model="installForm"
         :rules="installFormRule"
         :disabled="installForm.installed"
-        label-width="150px"
+        label-width="auto"
       >
         <el-form-item label="数据库驱动" prop="db_connection">
           <el-select v-model="installForm.db_connection" placeholder="请选择数据库驱动">

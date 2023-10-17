@@ -5,7 +5,7 @@
         <img :src="favicon" alt="logo" />
       </h1>
       <h2>{{ getAppName() }}</h2>
-      <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRule" label-width="100px">
+      <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRule" label-width="auto">
         <el-form-item label="路由前缀" prop="prefix">
           <el-input v-model="loginForm.prefix"></el-input>
         </el-form-item>

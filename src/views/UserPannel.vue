@@ -8,7 +8,7 @@
       ref="aria2ConfigFormRef"
       :model="aria2ConfigForm"
       :rules="aria2ConfigFormRule"
-      label-width="200px"
+      label-width="auto"
     >
       <el-form-item label="Aria2 服务器地址" prop="host">
         <el-input v-model="aria2ConfigForm.host"></el-input>
@@ -19,7 +19,7 @@
       <el-form-item label="Aria2 下载密钥" prop="secret">
         <el-input v-model="aria2ConfigForm.secret"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item label=" ">
         <el-button type="primary" v-on:click="saveAria2Config(aria2ConfigFormRef)">
           保存
         </el-button>
@@ -52,7 +52,7 @@
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column prop="server_filename" label="文件名"></el-table-column>
       <el-table-column prop="dlink" label="下载链接"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="190">
         <template #default="scope">
           <el-button
             type="primary"
@@ -97,7 +97,7 @@
       ref="getFileListFormRef"
       :model="getFileListForm"
       :rules="getFileListFormRule"
-      label-width="100"
+      label-width="auto"
       class="form"
     >
       <el-form-item label="链接" prop="url">
@@ -112,7 +112,7 @@
       <el-form-item label="当前路径" prop="dir">
         <el-input v-model="getFileListForm.dir" disabled></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item label=" ">
         <el-button type="primary" @click="getFileListClickEvent(getFileListFormRef)">
           解析链接
         </el-button>

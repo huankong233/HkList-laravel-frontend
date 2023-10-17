@@ -4,7 +4,7 @@
     :model="changeConfigForm"
     :rules="changeConfigFormRule"
     :disabled="changeConfigForm.getPending"
-    label-width="230px"
+    label-width="auto"
   >
     <el-form-item label="版本号" prop="version">
       <el-input disabled v-model="changeConfigForm.version"></el-input>
@@ -36,7 +36,7 @@
     <el-form-item label="获取列表时的 Cookie" prop="cookie">
       <el-input type="textarea" v-model="changeConfigForm.cookie" rows="5"></el-input>
     </el-form-item>
-    <el-form-item>
+    <el-form-item label=" ">
       <el-button
         type="primary"
         @click="changeConfig(changeConfigFormRef)"
