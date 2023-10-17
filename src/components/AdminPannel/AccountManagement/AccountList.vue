@@ -68,10 +68,14 @@ const { currentPage, pageSize, accountList, accountLoading, selectAccounts } =
   storeToRefs(accountManagement)
 
 const switchAccount = async (userId: number, state: number) => {
+  accountLoading.value = true
+
   const response =
     (await doSwitchAccount({
       account_id: userId
     })) ?? 'failed'
+
+  accountLoading.value = false
 
   if (response.toString() === 'failed') return
   ElMessage.success(`成功${state === 0 ? '启用' : '禁用'}`)
@@ -79,10 +83,14 @@ const switchAccount = async (userId: number, state: number) => {
 }
 
 const updateAccount = async (userId: number) => {
+  accountLoading.value = true
+
   const response =
     (await doUpdateAccount({
       account_id: userId
     })) ?? 'failed'
+
+  accountLoading.value = false
 
   if (response.toString() === 'failed') return
 
@@ -91,10 +99,14 @@ const updateAccount = async (userId: number) => {
 }
 
 const deleteAccount = async (userId: number) => {
+  accountLoading.value = true
+
   const response =
     (await doDeleteAccount({
       account_id: userId
     })) ?? 'failed'
+
+  accountLoading.value = false
 
   if (response.toString() === 'failed') return
 
