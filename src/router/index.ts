@@ -26,6 +26,16 @@ const router = createRouter({
       name: 'admin',
       meta: { title: '后台控制中心' },
       component: () => import('../views/AdminPannel.vue')
+    },
+    {
+      path: '/404',
+      name: '404',
+      meta: { title: '404页面不存在' },
+      component: () => import('../views/404NotFound.vue')
+    },
+    {
+      path: '/:pathMatch(.*)',
+      redirect: '/404'
     }
   ]
 })
