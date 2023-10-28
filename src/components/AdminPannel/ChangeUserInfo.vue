@@ -1,8 +1,8 @@
 <template>
   <el-form
     ref="changeUserInfoFormRef"
-    v-bind:model="changeUserInfoForm"
-    v-bind:rules="changeUserInfoFormRule"
+    :model="changeUserInfoForm"
+    :rules="changeUserInfoFormRule"
     label-width="auto"
   >
     <el-form-item label="新的用户名(为空就是不改)" prop="newUsername">
@@ -20,11 +20,11 @@
     <el-form-item label=" ">
       <el-button
         type="primary"
-        v-on:click="changeUserInfo(changeUserInfoFormRef)"
-        v-bind:disabled="changeUserInfoForm.pending"
-        v-bind:loading="changeUserInfoForm.pending"
+        @click="changeUserInfo(changeUserInfoFormRef)"
+        :disabled="changeUserInfoForm.pending"
+        :loading="changeUserInfoForm.pending"
       >
-        提交
+        保存
       </el-button>
     </el-form-item>
   </el-form>
@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 
-import { useChangeUserInfoStore } from '@/store/ChangeUserInfo.js'
+import { useChangeUserInfoStore } from '@/store/AdminPannel/ChangeUserInfo.js'
 import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
 import { doChangeUserInfo } from '@/apis/admin.js'
@@ -53,33 +53,25 @@ const changeUserInfoFormRule = {
 
 const changeUserInfo = async (formEl: FormInstance | null) => {
   if (!formEl) return
-  if (await formEl.validate(() => {})) {
-    if (changeUserInfoForm.value.newPassword !== changeUserInfoForm.value.confirmPassword) {
-      ElMessage.error('两次密码不一致')
-      return
-    }
+  if (!(await formEl.validate(() => {}))) return
 
-    changeUserInfoForm.value.pending = true
-    const response =
-      (await doChangeUserInfo({
-        ...changeUserInfoForm.value,
-        newUsername: changeUserInfoForm.value.newUsername ?? ''
-      })) ?? 'failed'
-    changeUserInfoForm.value.pending = false
-
-    if (response.toString() === 'failed') return
-
-    changeUserInfoForm.value = {
-      newUsername: '',
-      nowPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-      pending: false
-    }
-    ElMessage.success('修改成功')
-    setLoginState('0')
-    router.push('/login')
+  if (changeUserInfoForm.value.newPassword !== changeUserInfoForm.value.confirmPassword) {
+    return ElMessage.error('两次密码不一致')
   }
+
+  changeUserInfoForm.value.pending = true
+  const response =
+    (await doChangeUserInfo({
+      ...changeUserInfoForm.value,
+      newUsername: changeUserInfoForm.value.newUsername ?? ''
+    })) ?? 'failed'
+  changeUserInfoForm.value.pending = false
+
+  if (response.toString() === 'failed') return
+
+  ElMessage.success('修改成功')
+  setLoginState('0')
+  router.push('/login')
 }
 </script>
 

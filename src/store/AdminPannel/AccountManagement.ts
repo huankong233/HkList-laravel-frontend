@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { doGetAccounts } from '@/apis/admin.js'
+import type { _response } from '@/utils/request.js'
 
 export interface Account {
   add_time: string
@@ -66,7 +67,7 @@ export const useAccountManagementStore = defineStore('AccountManagement', () => 
 
     if (response.toString() === 'failed') return
 
-    const { data } = response
+    const { data } = response as _response
     accountList.value = data
   }
 

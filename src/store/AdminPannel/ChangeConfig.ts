@@ -14,6 +14,8 @@ export const useChangeConfigStore = defineStore('ChangeConfig', () => {
     ssl: false,
     prefix: '/admin',
     debug: false,
+    password: '',
+    passwordSwitch: false,
     getPending: false,
     changePending: false
   })

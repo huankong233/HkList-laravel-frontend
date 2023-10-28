@@ -12,7 +12,7 @@ const instance = axios.create({
   }
 })
 
-interface _response {
+export interface _response {
   code: number
   message: string
   data: any

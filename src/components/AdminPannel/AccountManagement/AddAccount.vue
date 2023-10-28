@@ -2,12 +2,17 @@
   <el-dialog v-model="addAccountFormVisible" title="添加代理账号" width="60%">
     <el-form
       ref="addAccountFormRef"
-      v-bind:model="addAccountForm"
-      v-bind:rules="addAccountFormRule"
+      :model="addAccountForm"
+      :rules="addAccountFormRule"
       label-width="auto"
     >
       <el-form-item label="账户Cookie" prop="cookie">
-        <el-input type="textarea" v-model="addAccountForm.cookie" rows="5"></el-input>
+        <el-input
+          type="textarea"
+          v-model.trim="addAccountForm.cookie"
+          rows="5"
+          @input="clearState()"
+        ></el-input>
       </el-form-item>
       <el-form-item label="账号名称" prop="username">
         <el-input v-model="addAccountForm.username" disabled></el-input>
@@ -20,7 +25,7 @@
       <el-button type="info" @click="accountManagement.closeAddDialog()">取消</el-button>
       <el-button
         type="primary"
-        @click="getAccountInfo"
+        @click="getAccountInfo(addAccountFormRef)"
         :disabled="addAccountForm.checkedInfo"
         :loading="addAccountForm.checkPending"
       >
@@ -41,36 +46,45 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 
+import type { _response } from '@/utils/request.js'
 import { storeToRefs } from 'pinia'
-import { useAccountManagementStore } from '@/store/AccountManagement.js'
+import { useAccountManagementStore } from '@/store/AdminPannel/AccountManagement.js'
 import { doAddAccount, doGetAccountInfo } from '@/apis/admin.js'
 import { ElMessage } from 'element-plus'
 
 const accountManagement = useAccountManagementStore()
 const { addAccountForm, addAccountFormRef, addAccountFormVisible } = storeToRefs(accountManagement)
 
+const clearState = () => {
+  addAccountForm.value.checkedInfo = false
+  addAccountForm.value.username = ''
+  addAccountForm.value.vipType = ''
+}
+
 const addAccount = async (formEl: FormInstance | null) => {
   if (!formEl) return
-  if (await formEl.validate(() => {})) {
-    addAccountForm.value.addPending = true
+  if (!(await formEl.validate(() => {}))) return
 
-    const response =
-      (await doAddAccount({
-        cookie: addAccountForm.value.cookie.trim()
-      }).catch(() => {
-        addAccountForm.value.checkedInfo = false
-        addAccountForm.value.username = ''
-        addAccountForm.value.vipType = ''
-      })) ?? 'failed'
+  addAccountForm.value.addPending = true
 
-    addAccountForm.value.addPending = false
+  let response: _response | 'failed'
 
-    if (response !== 'failed') {
-      accountManagement.closeAddDialog()
-      ElMessage.success('添加成功')
-      await accountManagement.getAccounts()
-    }
+  try {
+    response = await doAddAccount({
+      cookie: addAccountForm.value.cookie
+    })
+  } catch (error) {
+    clearState()
+    response = 'failed'
   }
+
+  addAccountForm.value.addPending = false
+
+  if (response.toString() === 'failed') return
+
+  accountManagement.closeAddDialog()
+  await accountManagement.getAccounts()
+  ElMessage.success('添加成功')
 }
 
 const addAccountFormRule = {
@@ -83,22 +97,23 @@ const vipTypeMap = new Map([
   [2, '超级会员']
 ])
 
-const getAccountInfo = async () => {
-  if (!addAccountFormRef.value) return
-  if (!(await addAccountFormRef.value.validate(() => {}))) return
+const getAccountInfo = async (formEl: FormInstance | null) => {
+  if (!formEl) return
+  if (!(await formEl.validate(() => {}))) return
+
   addAccountForm.value.checkPending = true
 
   const response =
     (await doGetAccountInfo({
-      cookie: addAccountForm.value.cookie.trim()
+      cookie: addAccountForm.value.cookie
     })) ?? 'failed'
 
   addAccountForm.value.checkPending = false
 
-  // @ts-ignore
-  if (response === 'failed') return
+  if (response.toString() === 'failed') return
 
-  const { data } = response
+  const { data } = response as _response
+
   addAccountForm.value.checkedInfo = true
   addAccountForm.value.username = data.baidu_name
   addAccountForm.value.vipType = vipTypeMap.get(data.vip_type) ?? '普通用户'

@@ -3,8 +3,8 @@
     ref="changeConfigFormRef"
     :model="changeConfigForm"
     :rules="changeConfigFormRule"
-    :disabled="changeConfigForm.getPending"
     label-width="auto"
+    v-loading="changeConfigForm.getPending"
   >
     <el-form-item label="版本号" prop="version">
       <el-input disabled v-model="changeConfigForm.version"></el-input>
@@ -36,41 +36,67 @@
     <el-form-item label="获取列表时的 Cookie" prop="cookie">
       <el-input type="textarea" v-model="changeConfigForm.cookie" rows="5"></el-input>
     </el-form-item>
+    <el-form-item label="密码开关" prop="passwordSwitch">
+      <el-switch v-model="changeConfigForm.passwordSwitch" size="large" />
+    </el-form-item>
+    <el-form-item label="密码" prop="password">
+      <el-input v-model="changeConfigForm.password"></el-input>
+    </el-form-item>
     <el-form-item label=" ">
       <el-button
         type="primary"
         @click="changeConfig(changeConfigFormRef)"
-        :disabled="changeConfigForm.changePending"
         :loading="changeConfigForm.changePending"
       >
-        提交
+        保存
       </el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script lang="ts" setup>
-import type { FormInstance } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useChangeConfigStore } from '@/store/ChangeConfig.js'
+import { useChangeConfigStore } from '@/store/AdminPannel/ChangeConfig.js'
 import { storeToRefs } from 'pinia'
 import { doGetAccountInfo, doChangeConfig, doGetConfig } from '@/apis/admin.js'
 import { setPrefix } from '@/utils/env.js'
+import { _response } from '@/utils/request.js'
 
 const changeConfigStore = useChangeConfigStore()
 const { changeConfigForm, changeConfigFormRef } = storeToRefs(changeConfigStore)
 
-const changeConfigFormRule = {
+const passwordValidator = (rule: any, value: any, callback: any) => {
+  if (changeConfigForm.value.passwordSwitch) {
+    if (value === '') {
+      callback(new Error('请输入密码'))
+    }
+  }
+  callback()
+}
+
+const announceValidator = (rule: any, value: any, callback: any) => {
+  if (changeConfigForm.value.passwordSwitch) {
+    if (value === '') {
+      callback(new Error('请输入公告内容'))
+    }
+  }
+  callback()
+}
+
+const changeConfigFormRule: FormRules = {
   userAgent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }],
-  announce: [{ required: true, message: '请公告内容', trigger: 'blur' }],
+  announce: [{ required: true, validator: announceValidator, trigger: 'blur' }],
   announceSwitch: [{ required: true, message: '请确认开关状态', trigger: 'blur' }],
   debug: [{ required: true, message: '请确认开关状态', trigger: 'blur' }],
   ssl: [{ required: true, message: '请确认开关状态', trigger: 'blur' }],
   prefix: [{ required: true, message: '请输入后台接口后缀', trigger: 'blur' }],
   cookie: [{ required: true, message: '请输入获取列表时的 Cookie', trigger: 'blur' }],
   maxOnce: [{ required: true, message: '请输入批量解析时单次最大解析数量', trigger: 'blur' }],
-  sleep: [{ required: true, message: '请输入批量解析时休眠时间(秒)', trigger: 'blur' }]
+  sleep: [{ required: true, message: '请输入批量解析时休眠时间(秒)', trigger: 'blur' }],
+  password: [{ validator: passwordValidator, trigger: 'blur' }],
+  passwordSwitch: [{ required: true, message: '请确认开关状态', trigger: 'blur' }]
 }
 
 onMounted(async () => await getConfig())
@@ -80,10 +106,9 @@ const getConfig = async () => {
   const response = (await doGetConfig()) ?? 'failed'
   changeConfigForm.value.getPending = false
 
-  // @ts-ignore
-  if (response === 'failed') return
+  if (response.toString() === 'failed') return
 
-  changeConfigForm.value = { ...changeConfigForm.value, ...response.data }
+  changeConfigForm.value = { ...changeConfigForm.value, ...(response as _response).data }
 }
 
 const changeConfig = async (formEl: FormInstance | null) => {
@@ -98,11 +123,10 @@ const changeConfig = async (formEl: FormInstance | null) => {
         check: true
       })) ?? 'failed'
 
-    // @ts-ignore
-    if (accountInfo === 'failed') return
+    if (accountInfo.toString() === 'failed') return
 
     changeConfigForm.value.changePending = false
-    if (accountInfo.message !== 'cookie校验成功') {
+    if ((accountInfo as _response).message !== 'cookie校验成功') {
       ElMessage.error('请不要使用包含账户的cookie,直接退出登陆获取一个新cookie')
       return
     }
@@ -115,8 +139,7 @@ const changeConfig = async (formEl: FormInstance | null) => {
 
     changeConfigForm.value.changePending = false
 
-    // @ts-ignore
-    if (response === 'failed') return
+    if (response.toString() === 'failed') return
 
     ElMessage.success('修改成功')
     // 修改后台接口前缀
