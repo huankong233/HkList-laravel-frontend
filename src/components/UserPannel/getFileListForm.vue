@@ -113,8 +113,6 @@ const urlValidator = (rule: any, value: string, callback: any) => {
     return callback(new Error('请先输入需要解析的链接'))
   }
 
-  console.log(getUrlId(value))
-
   if (getUrlId(value)) {
     return callback()
   } else {
