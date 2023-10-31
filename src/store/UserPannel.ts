@@ -29,7 +29,7 @@ export const useUserPannelStore = defineStore('UserPannel', () => {
     havePassword: false,
     haveLogin: false,
     userAgent: '',
-    ishttps: document.location.protocol === 'https',
+    ishttps: document.location.protocol === 'https:',
     pending: false
   })
 
