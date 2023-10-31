@@ -21,7 +21,7 @@
     <el-table-column prop="netdisk_name" label="网盘用户名"> </el-table-column>
     <el-table-column prop="state" label="状态"> </el-table-column>
     <el-table-column prop="add_time" label="添加时间"> </el-table-column>
-    <el-table-column prop="svip_end_time" label="到期时间"> </el-table-column>
+    <el-table-column prop="svip_end_time" label="SVIP到期时间"> </el-table-column>
     <el-table-column prop="use" label="最后有效时间"> </el-table-column>
     <el-table-column prop="vip_type" label="会员类型"> </el-table-column>
     <el-table-column prop="cookie" label="cookie值"> </el-table-column>

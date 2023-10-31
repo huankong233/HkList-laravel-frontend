@@ -19,13 +19,13 @@
       <el-switch v-model="changeConfigForm.announceSwitch" size="large" />
     </el-form-item>
     <el-form-item label="公告内容" prop="announce">
-      <el-input type="textarea" v-model="changeConfigForm.announce"></el-input>
+      <el-input type="textarea" v-model.trim="changeConfigForm.announce"></el-input>
     </el-form-item>
     <el-form-item label="后台接口前缀" prop="prefix">
-      <el-input v-model="changeConfigForm.prefix"></el-input>
+      <el-input v-model.trim="changeConfigForm.prefix"></el-input>
     </el-form-item>
     <el-form-item label="下载使用的 User_Agent" prop="userAgent">
-      <el-input v-model="changeConfigForm.userAgent"></el-input>
+      <el-input v-model.trim="changeConfigForm.userAgent"></el-input>
     </el-form-item>
     <el-form-item label="批量解析时休眠时间(秒)" prop="sleep">
       <el-input-number v-model="changeConfigForm.sleep"></el-input-number>
@@ -34,13 +34,13 @@
       <el-input-number v-model="changeConfigForm.maxOnce"></el-input-number>
     </el-form-item>
     <el-form-item label="获取列表时的 Cookie" prop="cookie">
-      <el-input type="textarea" v-model="changeConfigForm.cookie" rows="5"></el-input>
+      <el-input type="textarea" v-model.trim="changeConfigForm.cookie" rows="5"></el-input>
     </el-form-item>
     <el-form-item label="密码开关" prop="passwordSwitch">
       <el-switch v-model="changeConfigForm.passwordSwitch" size="large" />
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="changeConfigForm.password"></el-input>
+      <el-input v-model.trim="changeConfigForm.password"></el-input>
     </el-form-item>
     <el-form-item label=" ">
       <el-button
@@ -62,12 +62,12 @@ import { useChangeConfigStore } from '@/store/AdminPannel/ChangeConfig.js'
 import { storeToRefs } from 'pinia'
 import { doGetAccountInfo, doChangeConfig, doGetConfig } from '@/apis/admin.js'
 import { setPrefix } from '@/utils/env.js'
-import { _response } from '@/utils/request.js'
+import type { _response } from '@/utils/request.js'
 
 const changeConfigStore = useChangeConfigStore()
 const { changeConfigForm, changeConfigFormRef } = storeToRefs(changeConfigStore)
 
-const passwordValidator = (rule: any, value: any, callback: any) => {
+const passwordValidator = (rule: any, value: string, callback: any) => {
   if (changeConfigForm.value.passwordSwitch) {
     if (value === '') {
       callback(new Error('请输入密码'))
@@ -76,7 +76,7 @@ const passwordValidator = (rule: any, value: any, callback: any) => {
   callback()
 }
 
-const announceValidator = (rule: any, value: any, callback: any) => {
+const announceValidator = (rule: any, value: string, callback: any) => {
   if (changeConfigForm.value.passwordSwitch) {
     if (value === '') {
       callback(new Error('请输入公告内容'))
@@ -87,7 +87,7 @@ const announceValidator = (rule: any, value: any, callback: any) => {
 
 const changeConfigFormRule: FormRules = {
   userAgent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }],
-  announce: [{ required: true, validator: announceValidator, trigger: 'blur' }],
+  announce: [{ validator: announceValidator, trigger: 'blur' }],
   announceSwitch: [{ required: true, message: '请确认开关状态', trigger: 'blur' }],
   debug: [{ required: true, message: '请确认开关状态', trigger: 'blur' }],
   ssl: [{ required: true, message: '请确认开关状态', trigger: 'blur' }],

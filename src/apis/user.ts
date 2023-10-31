@@ -15,9 +15,14 @@ export const doInstall = (params: {
 
 export const doGetConfig = (): response => axios.post('/user/getConfig')
 
-export const doGetFileList = (params: { url: string; password: string; dir: string }): response =>
-  axios.post('/user/getFileList', params)
-export const doGetSign = (params: { uk: number; shareid: number }): response =>
+export const doGetFileList = (params: {
+  url: string
+  pwd: string
+  dir: string
+  password: string
+}): response => axios.post('/user/getFileList', params)
+
+export const doGetSign = (params: { uk: number; shareid: number; password: string }): response =>
   axios.post('/user/getSign', params)
 
 export const doDownloadFiles = (params: {
@@ -27,4 +32,6 @@ export const doDownloadFiles = (params: {
   sign: string
   randsk: string
   shareid: number
+  password: string
+  bd_user_id?: number | null
 }): response => axios.post('/user/downloadFiles', params)

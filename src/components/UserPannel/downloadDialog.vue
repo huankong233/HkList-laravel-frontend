@@ -2,9 +2,9 @@
   <el-dialog v-model="downloadDialogVisible" title="解析任务列表" width="80%">
     <el-space>
       <el-text class="mx-1">当前的UA :</el-text>
-      <el-link type="danger" @click="copy(config.userAgent, '已复制UA')">{{
-        config.userAgent
-      }}</el-link>
+      <el-link type="danger" @click="copy(clientConfig.userAgent, '已复制UA')">
+        {{ clientConfig.userAgent }}
+      </el-link>
       <el-button
         type="primary"
         :disabled="selectDownloadFiles.length <= 0"
@@ -46,6 +46,65 @@
   </el-dialog>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { useUserPannelStore } from '@/store/UserPannel.js'
+import { copy } from '@/utils/copy.js'
+import { sleep } from '@/utils/sleep.js'
+import { getAppName } from '@/utils/env.js'
+import { ElMessage } from 'element-plus'
+import axios from '@/utils/request.js'
+import type { _response } from '@/utils/request.js'
+
+const userPannelStore = useUserPannelStore()
+const {
+  clientConfig,
+  dlinkList,
+  downloadDialogVisible,
+  selectDownloadFiles,
+  aria2ConfigForm,
+  aria2ConfigDialogVisible
+} = storeToRefs(userPannelStore)
+
+const sendDownloadFile = async (dlink: string, filename: string) => {
+  let response: _response | 'failed'
+
+  try {
+    response = await axios.post(
+      `${aria2ConfigForm.value.host}:${aria2ConfigForm.value.port}/jsonrpc`,
+      {
+        jsonrpc: '2.0',
+        id: getAppName(),
+        method: 'aria2.addUri',
+        params: [
+          `token:${aria2ConfigForm.value.secret}`,
+          [dlink],
+          {
+            out: filename,
+            header: [`User-Agent: ${clientConfig.value.userAgent}`]
+          }
+        ]
+      }
+    )
+  } catch (error) {
+    ElMessage.error('发送失败，请检查控制台输出')
+    response = 'failed'
+  }
+
+  if (response.toString() === 'failed') return
+  ElMessage.success(`已把${filename}任务发送给下载器`)
+}
+
+const selectDownloadFilesChange = (row: any) => (selectDownloadFiles.value = row)
+
+const openAria2ConfigDialog = () => (aria2ConfigDialogVisible.value = true)
+
+const sendDownloadFiles = async () => {
+  ElMessage.error('请确保最大同时下载文件数在5及以下,否则可能出现下载失败!')
+  await sleep(3000)
+  ElMessage.success('开始下载')
+  selectDownloadFiles.value.forEach(item => sendDownloadFile(item.dlink, item.server_filename))
+}
+</script>
 
 <style lang="scss" scoped></style>
