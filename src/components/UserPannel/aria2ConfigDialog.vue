@@ -32,8 +32,18 @@ const userPannelStore = useUserPannelStore()
 const { aria2ConfigForm, aria2ConfigFormRef, aria2ConfigDialogVisible } =
   storeToRefs(userPannelStore)
 
+const hostValidator = (rule: any, value: string, callback: any) => {
+  if (value === '') {
+    return callback(new Error('请输入Aria2 服务器地址'))
+  } else if (value.includes('jsonrpc')) {
+    return callback(new Error('地址不需要包含端口或jsonrpc路径'))
+  } else {
+    return callback()
+  }
+}
+
 const aria2ConfigFormRule = {
-  host: [{ required: true, message: '请输入Aria2 服务器地址', trigger: 'blur' }],
+  host: [{ required: true, validator: hostValidator, message: '', trigger: 'blur' }],
   port: [{ required: true, message: '请输入Aria2 端口号', trigger: 'blur' }]
 }
 </script>

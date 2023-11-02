@@ -87,11 +87,12 @@ const sendDownloadFile = async (dlink: string, filename: string) => {
       }
     )
   } catch (error) {
-    ElMessage.error('发送失败，请检查控制台输出')
+    ElMessage.error('发送失败，请检查控制台输出，自行谷歌搜索或拉起issue')
     response = 'failed'
   }
 
-  if (response.toString() === 'failed') return
+  if (response === 'failed') return
+
   ElMessage.success(`已把${filename}任务发送给下载器`)
 }
 
