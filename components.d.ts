@@ -12,6 +12,7 @@ declare module 'vue' {
     AnnounceDialog: typeof import('./src/components/UserPannel/announceDialog.vue')['default']
     Aria2ConfigDialog: typeof import('./src/components/UserPannel/aria2ConfigDialog.vue')['default']
     ChangeConfig: typeof import('./src/components/AdminPannel/ChangeConfig.vue')['default']
+    ChangeMailConfig: typeof import('./src/components/AdminPannel/ChangeMailConfig.vue')['default']
     ChangeUserInfo: typeof import('./src/components/AdminPannel/ChangeUserInfo.vue')['default']
     DownloadDialog: typeof import('./src/components/UserPannel/downloadDialog.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']

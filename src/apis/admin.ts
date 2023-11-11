@@ -24,6 +24,7 @@ export const doUpdateAccount = (params: { account_id: number }): response =>
   axios.post(`${getPrefix()}/updateAccount`, params)
 
 export const doGetConfig = (): response => axios.post(`${getPrefix()}/getConfig`)
+export const doGetMailConfig = (): response => axios.post(`${getPrefix()}/getMailConfig`)
 export const doChangeConfig = (params: {
   sleep: number
   maxOnce: number
@@ -35,6 +36,18 @@ export const doChangeConfig = (params: {
   ssl: boolean
   prefix: string
 }): response => axios.post(`${getPrefix()}/changeConfig`, params)
+
+export const doChangeMailConfig = (params: {
+  mailSwitch: boolean
+  mailTo: string
+  mailHost: string
+  mailPort: string
+  mailUsername: string
+  mailPassword: string
+  mailFromAddress: string
+}): response => axios.post(`${getPrefix()}/changeMailConfig`, params)
+
+export const doSendTestMsg = (): response => axios.post(`${getPrefix()}/sendTestMsg`)
 
 export const doChangeUserInfo = (params: {
   nowPassword: string

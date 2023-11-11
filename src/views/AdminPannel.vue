@@ -8,6 +8,9 @@
       <el-tab-pane label="基础配置" name="changeConfig">
         <ChangeConfig />
       </el-tab-pane>
+      <el-tab-pane label="邮件配置" name="changeMailConfig">
+        <ChangeMailConfig />
+      </el-tab-pane>
       <el-tab-pane label="修改用户信息" name="changeUserInfo">
         <ChangeUserInfo />
       </el-tab-pane>
@@ -43,6 +46,9 @@ if (getLoginState() === '0') {
 }
 
 const ChangeConfig = defineAsyncComponent(() => import('@/components/AdminPannel/ChangeConfig.vue'))
+const ChangeMailConfig = defineAsyncComponent(
+  () => import('@/components/AdminPannel/ChangeMailConfig.vue')
+)
 const ChangeUserInfo = defineAsyncComponent(
   () => import('@/components/AdminPannel/ChangeUserInfo.vue')
 )
