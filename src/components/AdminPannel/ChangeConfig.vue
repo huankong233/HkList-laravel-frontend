@@ -6,8 +6,11 @@
     label-width="auto"
     v-loading="changeConfigForm.getPending"
   >
-    <el-form-item label="版本号" prop="version">
+    <el-form-item label="后端版本号" prop="version">
       <el-input disabled v-model="changeConfigForm.version"></el-input>
+    </el-form-item>
+    <el-form-item label="前端版本号" prop="frontEndVersion">
+      <el-input disabled v-model="changeConfigForm.frontEndVersion"></el-input>
     </el-form-item>
     <el-form-item label="DEBUG模式开关" prop="debug">
       <el-switch v-model="changeConfigForm.debug" size="large" />
@@ -55,14 +58,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { FormInstance, FormRules } from 'element-plus'
-import { onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
+import { doChangeConfig, doGetAccountInfo, doGetConfig } from '@/apis/admin.js'
 import { useChangeConfigStore } from '@/store/AdminPannel/ChangeConfig.js'
-import { storeToRefs } from 'pinia'
-import { doGetAccountInfo, doChangeConfig, doGetConfig } from '@/apis/admin.js'
-import { setPrefix } from '@/utils/env.js'
+import { getFrontEndVersion, setPrefix } from '@/utils/env.js'
 import type { _response } from '@/utils/request.js'
+import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 
 const changeConfigStore = useChangeConfigStore()
 const { changeConfigForm, changeConfigFormRef } = storeToRefs(changeConfigStore)
@@ -108,7 +111,11 @@ const getConfig = async () => {
 
   if (response.toString() === 'failed') return
 
-  changeConfigForm.value = { ...changeConfigForm.value, ...(response as _response).data }
+  changeConfigForm.value = {
+    ...changeConfigForm.value,
+    ...(response as _response).data,
+    frontEndVersion: await getFrontEndVersion()
+  }
 }
 
 const changeConfig = async (formEl: FormInstance | null) => {

@@ -54,8 +54,8 @@ export const useAccountManagementStore = defineStore('AccountManagement', () => 
 
   const selectAccounts = ref<Account[]>([])
 
-  const getAccounts = async () => {
-    accountLoading.value = true
+  const getAccounts = async (loading = true) => {
+    if (loading) accountLoading.value = true
 
     const response =
       (await doGetAccounts({
@@ -63,7 +63,7 @@ export const useAccountManagementStore = defineStore('AccountManagement', () => 
         size: pageSize.value
       })) ?? 'failed'
 
-    accountLoading.value = false
+    if (loading) accountLoading.value = false
 
     if (response.toString() === 'failed') return
 

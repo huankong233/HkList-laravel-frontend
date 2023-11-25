@@ -3,8 +3,14 @@
   <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="enableSelectAccounts">
     批量启用
   </el-button>
-  <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="blockSelectAccounts">
+  <el-button type="danger" :disabled="selectAccounts.length <= 0" @click="blockSelectAccounts">
     批量禁用
+  </el-button>
+  <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="updateSelectAccounts">
+    批量更新
+  </el-button>
+  <el-button type="danger" :disabled="selectAccounts.length <= 0" @click="deleteSelectAccounts">
+    批量删除
   </el-button>
 
   <el-table
@@ -57,79 +63,113 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
-import { storeToRefs } from 'pinia'
+import { doDeleteAccount, doSwitchAccount, doUpdateAccount } from '@/apis/admin.js'
 import type { Account } from '@/store/AdminPannel/AccountManagement.js'
 import { useAccountManagementStore } from '@/store/AdminPannel/AccountManagement.js'
-import { doSwitchAccount, doDeleteAccount, doUpdateAccount } from '@/apis/admin.js'
 import { ElMessage } from 'element-plus'
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 
 const accountManagement = useAccountManagementStore()
 const { currentPage, pageSize, accountList, accountLoading, selectAccounts } =
   storeToRefs(accountManagement)
 
-const switchAccount = async (userId: number, state: number) => {
-  accountLoading.value = true
+const switchAccount = async (userId: number, state: number, getAccount = true) => {
+  if (getAccount) accountLoading.value = true
 
   const response =
     (await doSwitchAccount({
       account_id: userId
     })) ?? 'failed'
 
-  accountLoading.value = false
+  if (getAccount) accountLoading.value = false
 
   if (response.toString() === 'failed') return
 
-  await accountManagement.getAccounts()
+  if (getAccount) await accountManagement.getAccounts()
   ElMessage.success(`成功${state === 0 ? '启用' : '禁用'}`)
 }
 
-const updateAccount = async (userId: number) => {
-  accountLoading.value = true
+const updateAccount = async (userId: number, getAccount = true) => {
+  if (getAccount) accountLoading.value = true
 
   const response =
     (await doUpdateAccount({
       account_id: userId
     })) ?? 'failed'
 
-  accountLoading.value = false
+  if (getAccount) accountLoading.value = false
 
   if (response.toString() === 'failed') return
 
-  await accountManagement.getAccounts()
+  if (getAccount) await accountManagement.getAccounts()
   ElMessage.success(`更新账户信息成功`)
 }
 
-const deleteAccount = async (userId: number) => {
-  accountLoading.value = true
+const deleteAccount = async (userId: number, getAccount = false) => {
+  if (getAccount) accountLoading.value = true
 
   const response =
     (await doDeleteAccount({
       account_id: userId
     })) ?? 'failed'
 
-  accountLoading.value = false
+  if (getAccount) accountLoading.value = false
 
   if (response.toString() === 'failed') return
 
-  await accountManagement.getAccounts()
+  if (getAccount) await accountManagement.getAccounts()
   ElMessage.success(`删除账户成功`)
 }
 
 const selectAccountsChange = (row: Account[]) => (selectAccounts.value = row)
 
-const enableSelectAccounts = () => {
-  selectAccounts.value.forEach((item: Account) => {
-    if (item.switch === 1) return ElMessage.info(`编号:${item.id},已经启用了`)
-    switchAccount(item.id, item.switch)
-  })
+const enableSelectAccounts = async () => {
+  accountLoading.value = true
+  for (let i = 0; i < selectAccounts.value.length; i++) {
+    const item = selectAccounts.value[i]
+    if (item.switch === 1) {
+      ElMessage.warning(`编号:${item.id},已经启用了`)
+      continue
+    }
+    await switchAccount(item.id, item.switch, false)
+  }
+  await accountManagement.getAccounts(false)
+  accountLoading.value = false
 }
 
-const blockSelectAccounts = () => {
-  selectAccounts.value.forEach((item: Account) => {
-    if (item.switch === 0) return ElMessage.info(`编号:${item.id},已经禁用了`)
-    switchAccount(item.id, item.switch)
-  })
+const blockSelectAccounts = async () => {
+  accountLoading.value = true
+  for (let i = 0; i < selectAccounts.value.length; i++) {
+    const item = selectAccounts.value[i]
+    if (item.switch === 0) {
+      ElMessage.warning(`编号:${item.id},已经禁用了`)
+      continue
+    }
+    await switchAccount(item.id, item.switch, false)
+  }
+  await accountManagement.getAccounts(false)
+  accountLoading.value = false
+}
+
+const deleteSelectAccounts = async () => {
+  accountLoading.value = true
+  for (let i = 0; i < selectAccounts.value.length; i++) {
+    const item = selectAccounts.value[i]
+    await deleteAccount(item.id, false)
+  }
+  await accountManagement.getAccounts(false)
+  accountLoading.value = false
+}
+
+const updateSelectAccounts = async () => {
+  accountLoading.value = true
+  for (let i = 0; i < selectAccounts.value.length; i++) {
+    const item = selectAccounts.value[i]
+    await updateAccount(item.id, false)
+  }
+  await accountManagement.getAccounts(false)
+  accountLoading.value = false
 }
 
 onMounted(accountManagement.getAccounts)

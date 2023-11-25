@@ -22,3 +22,7 @@ export const loadAria2Config = () => {
 
 export const setAria2Config = (config: { host: string; port: string; secret: string }) =>
   localStorage.setItem('aria2_config', JSON.stringify(config))
+
+export const getFrontEndVersion = async () => {
+  return (await import('../../package.json')).default.version
+}

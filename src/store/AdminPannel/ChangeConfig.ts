@@ -5,6 +5,7 @@ import { ref } from 'vue'
 export const useChangeConfigStore = defineStore('ChangeConfig', () => {
   const changeConfigForm = ref({
     version: '',
+    frontEndVersion: '',
     userAgent: '',
     sleep: 1,
     maxOnce: 20,
