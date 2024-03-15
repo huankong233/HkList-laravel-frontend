@@ -23,7 +23,13 @@
     >
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column prop="server_filename" label="文件名"></el-table-column>
-      <el-table-column prop="dlink" label="下载链接"></el-table-column>
+      <el-table-column prop="dlink" label="下载链接">
+        <!-- <template #default="scope">
+          <el-link type="danger" @click="downlaod(scope.row.dlink, scope.row.server_filename)">
+            {{ scope.row.dlink }}
+          </el-link>
+        </template> -->
+      </el-table-column>
       <el-table-column label="操作" width="190">
         <template #default="scope">
           <el-button
@@ -106,6 +112,25 @@ const sendDownloadFiles = async () => {
   ElMessage.success('开始下载')
   selectDownloadFiles.value.forEach(item => sendDownloadFile(item.dlink, item.server_filename))
 }
+
+// const downlaod = async (url: string, filename: string) => {
+//   const blob = await axios.get(url, {
+//     headers: {
+//       'User-Agent': clientConfig.value.userAgent
+//     },
+//     responseType: 'blob'
+//   })
+
+//   if (blob instanceof Blob) {
+//     const url = URL.createObjectURL(blob)
+//     const a = document.createElement('a')
+//     a.href = url
+//     a.download = filename
+//     a.click()
+//     URL.revokeObjectURL(url)
+//     a.remove()
+//   }
+// }
 </script>
 
 <style lang="scss" scoped></style>
