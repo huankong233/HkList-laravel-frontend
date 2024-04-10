@@ -76,7 +76,14 @@ const { clientConfig, getFileListForm, getFileListFormRef, selectedRows } =
 const checkLink = () => {
   const data = getUrlId(getFileListForm.value.url)
   if (!data) return
-  if (data.id) getFileListForm.value.url = `https://pan.baidu.com/s/${data.id}`
+  if (data.id) {
+    if (data.surl) {
+      getFileListForm.value.url = `https://pan.baidu.com/share/init?surl=${data.id}`
+    } else {
+      getFileListForm.value.url = `https://pan.baidu.com/s/${data.id}`
+    }
+  }
+
   if (data.pwd) {
     getFileListForm.value.pwd = data.pwd
     ElMessage.success('已自动填写密码')
@@ -85,33 +92,32 @@ const checkLink = () => {
 
 const getUrlId = (url: string) => {
   const fullMatch = url.match(/s\/([a-zA-Z0-9_-]+)/)
+  const fullMatch2 = url.match(/surl=([a-zA-Z0-9_-]+)/)
   const pwdMatch = url.match(/\?pwd=([a-zA-Z0-9_-]+)/)
-  const pwdMatch2 = url.match(/提取码:\s?([a-zA-Z0-9_-]+)/)
-  if (fullMatch) {
-    if (pwdMatch) {
-      return {
-        id: fullMatch[1],
-        pwd: pwdMatch ? pwdMatch[1] : null
-      }
-    } else if (pwdMatch2) {
-      return {
-        id: fullMatch[1],
-        pwd: pwdMatch2 ? pwdMatch2[1] : null
-      }
-    } else {
-      return {
-        id: fullMatch[1]
-      }
-    }
+  const pwdMatch2 = url.match(/&pwd=([a-zA-Z0-9_-]+)/)
+  const pwdMatch3 = url.match(/提取码:\s?([a-zA-Z0-9_-]+)/)
+
+  console.log(fullMatch, fullMatch2, pwdMatch, pwdMatch2)
+
+  let id: string
+  if (fullMatch2) {
+    id = fullMatch2[1]
+  } else if (fullMatch) {
+    id = fullMatch[1]
+  } else {
+    return false
   }
 
-  return false
+  const pwd = pwdMatch ? pwdMatch[1] : pwdMatch2 ? pwdMatch2[1] : pwdMatch3 ? pwdMatch3[1] : null
+  return fullMatch2 ? { surl: true, id, pwd } : { id, pwd }
 }
 
 const urlValidator = (rule: any, value: string, callback: any) => {
   if (value === '') {
     return callback(new Error('请先输入需要解析的链接'))
   }
+
+  console.log(getUrlId(value))
 
   if (getUrlId(value)) {
     return callback()

@@ -2,6 +2,10 @@
 
 ## 2024
 
+### 03-15 v0.1.9
+
+- 兼容 `url` 格式 (`https://pan.baidu.com/share/init?surl=xxxxxxxxx&pwd=xxxx`)
+
 ### 03-15 v0.1.8
 
 - 更新依赖
