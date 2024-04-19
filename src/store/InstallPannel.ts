@@ -1,8 +1,9 @@
 import type { FormInstance } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { StoreDefinition } from 'pinia'
 
-export const useInstallPannelStore = defineStore('InstallPannel', () => {
+export const useInstallPannelStore: StoreDefinition = defineStore('InstallPannel', () => {
   const installForm = ref({
     db_connection: '',
     db_host: 'localhost',

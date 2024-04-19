@@ -2,8 +2,9 @@ import { getPrefix } from '@/utils/env'
 import type { FormInstance } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { StoreDefinition } from 'pinia'
 
-export const useLoginPannelStore = defineStore('LoginPannel', () => {
+export const useLoginPannelStore: StoreDefinition = defineStore('LoginPannel', () => {
   const loginForm = ref({
     prefix: getPrefix(),
     username: '',

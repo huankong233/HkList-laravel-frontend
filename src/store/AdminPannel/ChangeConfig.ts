@@ -1,8 +1,9 @@
 import type { FormInstance } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { StoreDefinition } from 'pinia'
 
-export const useChangeConfigStore = defineStore('ChangeConfig', () => {
+export const useChangeConfigStore: StoreDefinition = defineStore('ChangeConfig', () => {
   const changeConfigForm = ref({
     version: '',
     frontEndVersion: '',

@@ -2,6 +2,7 @@ import { setLoginState } from './../utils/env'
 import { loadAria2Config } from '@/utils/env.js'
 import type { FormInstance, TableInstance } from 'element-plus'
 import { defineStore } from 'pinia'
+import type { StoreDefinition } from 'pinia'
 import { ref } from 'vue'
 import { doGetConfig, doGetFileList, doGetSign, doDownloadFiles } from '@/apis/user'
 import type { _response } from '@/utils/request.js'
@@ -20,7 +21,7 @@ export interface file {
   size: string
 }
 
-export const useUserPannelStore = defineStore('UserPannel', () => {
+export const useUserPannelStore: StoreDefinition = defineStore('UserPannel', () => {
   const clientConfig = ref({
     announce: '',
     announceSwitch: false,

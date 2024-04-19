@@ -4,6 +4,7 @@ import { ref } from 'vue'
 
 import { doGetAccounts } from '@/apis/admin.js'
 import type { _response } from '@/utils/request.js'
+import type { StoreDefinition } from 'pinia'
 
 export interface Account {
   add_time: string
@@ -17,7 +18,7 @@ export interface Account {
   vip_type: string
 }
 
-export const useAccountManagementStore = defineStore('AccountManagement', () => {
+export const useAccountManagementStore: StoreDefinition = defineStore('AccountManagement', () => {
   const addAccountFormVisible = ref(false)
 
   const addAccountForm = ref({

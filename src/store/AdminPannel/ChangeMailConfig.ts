@@ -1,8 +1,9 @@
 import type { FormInstance } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { StoreDefinition } from 'pinia'
 
-export const useChangeMailConfigStore = defineStore('ChangeMailConfig', () => {
+export const useChangeMailConfigStore: StoreDefinition = defineStore('ChangeMailConfig', () => {
   const changeMailConfigForm = ref({
     mailSwitch: false,
     mailTo: '',
