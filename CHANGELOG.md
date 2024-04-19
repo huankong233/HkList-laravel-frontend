@@ -2,7 +2,11 @@
 
 ## 2024
 
-### 03-15 v0.1.9
+### 04-19 v0.2.0
+
+- 修复全选文件时会选中文件夹的问题
+
+### 04-10 v0.1.9
 
 - 兼容 `url` 格式 (`https://pan.baidu.com/share/init?surl=xxxxxxxxx&pwd=xxxx`)
 

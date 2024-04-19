@@ -37,9 +37,20 @@ import folder from '@/assets/image/folder.png'
 import unknownfile from '@/assets/image/unknownfile.png'
 
 const userPannelStore = useUserPannelStore()
-const { getFileListForm, filelist, selectedRows } = storeToRefs(userPannelStore)
+const { getFileListForm, fileListTableRef, filelist, selectedRows } = storeToRefs(userPannelStore)
 
-const clickSelection = (row: file[]) => (selectedRows.value = row)
+const clickSelection = (row: file[]) => {
+  const dirRow: file[] = []
+  selectedRows.value = row.filter(v => {
+    if (v.isdir.toString() === '1') {
+      dirRow.push(v)
+      return true
+    } else {
+      return false
+    }
+  })
+  dirRow.forEach(v => fileListTableRef.value?.toggleRowSelection(v, false))
+}
 
 const clickRow = async (scope: any) => {
   if (!/Mobi|Android|iPhone/i.test(navigator.userAgent)) return
