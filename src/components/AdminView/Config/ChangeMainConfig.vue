@@ -1,0 +1,100 @@
+<template>
+  <el-form
+    ref="changeConfigFormRef"
+    :model="changeConfigForm"
+    :rules="changeConfigFormRule"
+    label-width="auto"
+    v-loading="pending"
+  >
+    <el-form-item label="前端版本号" prop="front_end_version">
+      <el-input disabled v-model="changeConfigForm.front_end_version"></el-input>
+    </el-form-item>
+    <el-form-item label="后端版本号" prop="version">
+      <el-input disabled v-model="changeConfigForm.version"></el-input>
+    </el-form-item>
+    <el-form-item label="DEBUG模式开关" prop="debug">
+      <el-switch v-model="changeConfigForm.debug" size="large" />
+    </el-form-item>
+    <el-form-item label="邀请码开关" prop="need_inv_code">
+      <el-switch v-model="changeConfigForm.need_inv_code" size="large" />
+    </el-form-item>
+    <el-form-item label="白名单模式开关" prop="whitelist_mode">
+      <el-switch v-model="changeConfigForm.whitelist_mode" size="large" />
+    </el-form-item>
+    <el-form-item label="下载使用的 User_Agent" prop="user_agent">
+      <el-input v-model.trim="changeConfigForm.user_agent"></el-input>
+    </el-form-item>
+    <el-form-item label="批量解析时休眠时间(秒)" prop="sleep">
+      <el-input-number v-model="changeConfigForm.sleep"></el-input-number>
+    </el-form-item>
+    <el-form-item label="批量解析时单次最大解析数量" prop="max_once">
+      <el-input-number v-model="changeConfigForm.max_once"></el-input-number>
+    </el-form-item>
+    <el-form-item label="公告内容" prop="announce">
+      <el-input type="textarea" v-model.trim="changeConfigForm.announce"></el-input>
+    </el-form-item>
+    <el-form-item label="密码" prop="password">
+      <el-input v-model.trim="changeConfigForm.password"></el-input>
+    </el-form-item>
+    <el-form-item label=" ">
+      <el-button type="primary" @click="updateConfig(changeConfigFormRef)"> 保存 </el-button>
+    </el-form-item>
+  </el-form>
+</template>
+
+<script lang="ts" setup>
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import * as mainConfigApi from '@/apis/admin/config/main.js'
+import { getFrontEndVersion } from '@/utils/env.js'
+import { ref, onMounted } from 'vue'
+
+const pending = ref(false)
+
+const changeConfigForm = ref<mainConfigApi.config>({
+  front_end_version: '',
+  version: '',
+  sleep: 0,
+  max_once: 0,
+  password: '',
+  announce: '',
+  user_agent: '',
+  need_inv_code: false,
+  whitelist_mode: false,
+  debug: false
+})
+const changeConfigFormRef = ref<FormInstance | null>(null)
+const changeConfigFormRule: FormRules = {
+  sleep: [{ required: true, message: '请输入批量解析时休眠时间(秒)', trigger: 'blur' }],
+  max_once: [{ required: true, message: '请输入批量解析时单次最大解析数量', trigger: 'blur' }],
+  user_agent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }]
+}
+
+const getConfig = async () => {
+  try {
+    pending.value = true
+    changeConfigForm.value = {
+      ...(await mainConfigApi.getConfig()).data,
+      front_end_version: await getFrontEndVersion()
+    }
+  } finally {
+    pending.value = false
+  }
+}
+
+const updateConfig = async (formEl: FormInstance | null) => {
+  if (!formEl || !(await formEl.validate())) return
+
+  try {
+    pending.value = true
+    await mainConfigApi.updateConfig(changeConfigForm.value)
+    ElMessage.success('保存成功')
+  } finally {
+    pending.value = false
+    await getConfig()
+  }
+}
+
+onMounted(getConfig)
+</script>
+
+<style lang="scss" scoped></style>
