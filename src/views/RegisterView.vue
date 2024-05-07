@@ -35,7 +35,7 @@ import favicon from '@/assets/image/favicon.ico'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { getAppName, getLoginState } from '@/utils/env.js'
-import { register } from '@/apis/user/user.js'
+import * as UserApi from '@/apis/user/user.js'
 import { ref } from 'vue'
 import { useMainStore } from '@/stores/mainStore.js'
 
@@ -62,7 +62,7 @@ const submitForm = async (formEl: FormInstance | null) => {
   try {
     pending.value = true
 
-    await register({
+    await UserApi.register({
       username: registerForm.value.username,
       password: registerForm.value.password,
       inv_code: registerForm.value.inv_code

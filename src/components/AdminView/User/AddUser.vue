@@ -24,7 +24,7 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button type="info" @click="emit('switchAddUser')">取消</el-button>
+      <el-button type="info" @click="isAddUser = false">取消</el-button>
       <el-button type="primary" @click="addAccount(addAccountFormRef)"> 添加 </el-button>
     </template>
   </el-dialog>
@@ -37,7 +37,7 @@ import * as UserApi from '@/apis/admin/user.js'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 
-const emit = defineEmits(['switchAddUser', 'getAccount'])
+const emit = defineEmits(['getAccount'])
 const isAddUser = defineModel()
 
 const pending = ref(false)

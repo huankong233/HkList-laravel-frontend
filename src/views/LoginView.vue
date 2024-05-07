@@ -27,7 +27,7 @@ import favicon from '@/assets/image/favicon.ico'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { getAppName, getLoginState, setLoginState } from '@/utils/env.js'
-import { login } from '@/apis/user/user.js'
+import * as UserApi from '@/apis/user/user.js'
 import { ref } from 'vue'
 
 const router = useRouter()
@@ -49,7 +49,7 @@ const submitForm = async (formEl: FormInstance | null) => {
   try {
     pending.value = true
 
-    await login({
+    await UserApi.login({
       username: loginForm.value.username,
       password: loginForm.value.password
     })

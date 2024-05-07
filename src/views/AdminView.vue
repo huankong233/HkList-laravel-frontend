@@ -43,7 +43,7 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent } from 'vue'
 import { getAppName, setLoginState, getLoginState } from '@/utils/env.js'
-import { logout as doLogout } from '@/apis/user/user.js'
+import * as UserApi from '@/apis/user/user.js'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
@@ -63,10 +63,13 @@ const activeName = ref('changeMainConfig')
 const router = useRouter()
 if (getLoginState() === '0') router.push('/login')
 const logout = async () => {
-  await doLogout()
-  ElMessage.success('退出登陆成功~')
-  setLoginState('0')
-  router.push('/')
+  try {
+    await UserApi.logout()
+  } finally {
+    setLoginState('0')
+    router.push('/')
+    ElMessage.success('退出登陆成功~')
+  }
 }
 </script>
 

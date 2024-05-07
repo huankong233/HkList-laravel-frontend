@@ -1,5 +1,5 @@
 <template>
-  <AddUser @switchAddUser="switchAddUser" @getAccount="getAccount" v-model="isAddUser"></AddUser>
+  <AddUser @getAccount="getAccount" v-model="isAddUser"></AddUser>
 
   <el-button type="primary" @click="switchAddUser"> 添加用户 </el-button>
   <el-button type="danger" :disabled="selectAccounts.length <= 0" @click="deleteSelectAccounts">
@@ -30,7 +30,12 @@
         <el-input v-show="row.edit" v-model="row.username"></el-input>
       </template>
     </el-table-column>
-    <el-table-column prop="password" label="密码"></el-table-column>
+    <el-table-column prop="password" label="密码">
+      <template #default="{ row }">
+        <span v-show="!row.edit">{{ row.password }}</span>
+        <el-input v-show="row.edit" v-model="row.password"></el-input>
+      </template>
+    </el-table-column>
     <el-table-column prop="role" label="权限">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.role }}</span>
