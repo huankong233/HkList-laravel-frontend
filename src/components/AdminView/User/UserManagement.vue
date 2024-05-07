@@ -133,7 +133,15 @@ const deleteUser = async (user: UserApi.User) => {
 }
 
 const deleteSelectUsers = async () => {
-  selectUsers.value.forEach(async user => await deleteUser(user))
+  try {
+    pending.value = true
+    const user_ids = selectUsers.value.map(user => user.id)
+    await UserApi.deleteUsers(user_ids)
+    ElMessage.success('批量删除用户成功')
+  } finally {
+    pending.value = false
+    await getUsers()
+  }
 }
 
 const selectUsersChange = (row: UserApi.User[]) => (selectUsers.value = row)

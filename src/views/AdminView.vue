@@ -18,7 +18,7 @@
         <InvCodeManagement />
       </el-tab-pane>
       <el-tab-pane label="用户组管理" name="groupManagement">
-        <!-- <GroupManagement /> -->
+        <GroupManagement />
       </el-tab-pane>
       <el-tab-pane label="账号管理" name="accountManagement">
         <!-- <AccountManagement /> -->
@@ -61,6 +61,10 @@ const UserManagement = defineAsyncComponent(
 
 const InvCodeManagement = defineAsyncComponent(
   () => import('@/components/AdminView/InvCode/InvCodeManagement.vue')
+)
+
+const GroupManagement = defineAsyncComponent(
+  () => import('@/components/AdminView/Group/GroupManagement.vue')
 )
 
 const activeName = ref('changeMainConfig')

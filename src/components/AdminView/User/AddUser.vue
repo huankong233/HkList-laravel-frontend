@@ -60,12 +60,6 @@ const addUser = async (formEl: FormInstance | null) => {
     pending.value = true
     await UserApi.addUser(addUserForm.value)
     ElMessage.success('添加成功')
-    addUserForm.value = {
-      username: '',
-      password: '',
-      role: 'user',
-      group_id: undefined
-    }
   } finally {
     pending.value = false
   }

@@ -123,7 +123,15 @@ const deleteInvCode = async (invCode: InvCodeApi.InvCode) => {
 }
 
 const deleteSelectInvCodes = async () => {
-  selectInvCodes.value.forEach(async invCode => await deleteInvCode(invCode))
+  try {
+    pending.value = true
+    const inv_code_ids = selectInvCodes.value.map(invCode => invCode.id)
+    await InvCodeApi.deleteInvCodes(inv_code_ids)
+    ElMessage.success('删除邀请码成功')
+  } finally {
+    pending.value = false
+    await getInvCodes()
+  }
 }
 
 const selectInvCodeChange = (row: InvCodeApi.InvCode[]) => (selectInvCodes.value = row)

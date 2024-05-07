@@ -47,7 +47,10 @@ export const addInvCodeRandom = (data: addInvCodeRandom) =>
 export const getInvCode = (data: { page: number; size: number }) =>
   axios.get<getInvCode>(`/admin/inv_code?page=${data.page}&size=${data.size}`)
 
-export const updateInvCode = (InvCode: InvCode) =>
-  axios.patch(`/admin/inv_code/${InvCode.id}`, InvCode)
+export const updateInvCode = (invCode: InvCode) =>
+  axios.patch(`/admin/inv_code/${invCode.id}`, invCode)
 
-export const deleteInvCode = (InvCode: InvCode) => axios.delete(`/admin/inv_code/${InvCode.id}`)
+export const deleteInvCode = (invCode: InvCode) => axios.delete(`/admin/inv_code/${invCode.id}`)
+
+export const deleteInvCodes = (inv_code_ids: number[]) =>
+  axios.delete('/admin/inv_code', { data: { inv_code_ids } })
