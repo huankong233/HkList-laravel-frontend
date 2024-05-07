@@ -1,19 +1,18 @@
 <template>
-  <AddUser @getAccount="getAccount" v-model="isAddUser"></AddUser>
+  <AddUser @getUsers="getUsers" v-model="isAddUser" />
 
   <el-button type="primary" @click="switchAddUser"> 添加用户 </el-button>
-  <el-button type="danger" :disabled="selectAccounts.length <= 0" @click="deleteSelectAccounts">
+  <el-button type="danger" :disabled="selectUsers.length <= 0" @click="deleteSelectUsers">
     批量删除
   </el-button>
 
   <el-table
     v-loading="pending"
-    :data="accountList?.data ?? []"
+    :data="userList?.data ?? []"
     border
     show-overflow-tooltip
     class="table"
-    @selection-change="selectAccountsChange"
-    editable
+    @selection-change="selectUsersChange"
   >
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="id" label="ID"> </el-table-column>
@@ -55,15 +54,15 @@
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column width="135" label="操作" fixed="right">
+    <el-table-column width="150" label="操作" fixed="right">
       <template #default="{ row }">
-        <el-button size="small" type="primary" @click="turnOnEditMode(row)" v-show="!row.edit">
+        <el-button size="small" type="primary" @click="turnOnEditMode(row)" v-if="!row.edit">
           编辑
         </el-button>
-        <el-button size="small" type="primary" @click="turnOffEditMode(row)" v-show="row.edit">
+        <el-button size="small" type="primary" @click="turnOffEditMode(row)" v-if="row.edit">
           保存
         </el-button>
-        <el-button size="small" type="danger" @click="deleteAccount(row)">删除</el-button>
+        <el-button size="small" type="danger" @click="deleteUser(row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -72,11 +71,10 @@
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
     :page-sizes="[15, 30, 50, 100]"
-    :total="accountList?.total ?? 100"
+    :total="userList?.total ?? 100"
     layout="sizes, prev, pager, next"
-    hide-on-single-page
-    @size-change="getAccount"
-    @current-change="getAccount"
+    @size-change="getUsers"
+    @current-change="getUsers"
   />
 </template>
 
@@ -90,14 +88,14 @@ const pending = ref(false)
 
 const pageSize = ref(15)
 const currentPage = ref(1)
-const accountList = ref<UserApi.getUser>()
-const selectAccounts = ref<UserApi.User[]>([])
+const userList = ref<UserApi.getUser>()
+const selectUsers = ref<UserApi.User[]>([])
 
-const getAccount = async () => {
+const getUsers = async () => {
   try {
     pending.value = true
     const res = await UserApi.getUser({ page: currentPage.value, size: pageSize.value })
-    accountList.value = res.data
+    userList.value = res.data
   } finally {
     pending.value = false
   }
@@ -109,38 +107,38 @@ const turnOnEditMode = async (row: UserApi.User & { edit?: boolean }) => {
 
 const turnOffEditMode = async (row: UserApi.User & { edit?: boolean }) => {
   row.edit = !(row.edit ?? true)
-  await updateAccount(row)
+  await updateUser(row)
 }
 
-const updateAccount = async (user: UserApi.User) => {
+const updateUser = async (user: UserApi.User) => {
   try {
     pending.value = true
     await UserApi.updateUser(user)
     ElMessage.success('修改用户成功')
   } finally {
     pending.value = false
-    getAccount()
+    await getUsers()
   }
 }
 
-const deleteAccount = async (user: UserApi.User) => {
+const deleteUser = async (user: UserApi.User) => {
   try {
     pending.value = true
     await UserApi.deleteUser(user)
     ElMessage.success('删除用户成功')
   } finally {
     pending.value = false
-    getAccount()
+    await getUsers()
   }
 }
 
-const deleteSelectAccounts = async () => {
-  selectAccounts.value.forEach(async account => await deleteAccount(account))
+const deleteSelectUsers = async () => {
+  selectUsers.value.forEach(async user => await deleteUser(user))
 }
 
-const selectAccountsChange = (row: UserApi.User[]) => (selectAccounts.value = row)
+const selectUsersChange = (row: UserApi.User[]) => (selectUsers.value = row)
 
-onMounted(getAccount)
+onMounted(getUsers)
 
 const isAddUser = ref(false)
 const switchAddUser = () => (isAddUser.value = !isAddUser.value)

@@ -9,6 +9,7 @@ export interface User {
   role: 'user' | 'admin'
   created_at: string
   updated_at: string
+  deleted_at: string
 }
 
 export interface getUser {
