@@ -30,14 +30,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { FormInstance, FormRules } from 'element-plus'
-import favicon from '@/assets/image/favicon.ico'
-import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
-import { getAppName, getLoginState } from '@/utils/env.js'
 import * as UserApi from '@/apis/user/user.js'
-import { ref } from 'vue'
+import favicon from '@/assets/image/favicon.ico'
 import { useMainStore } from '@/stores/mainStore.js'
+import { getAppName, getLoginState } from '@/utils/env.js'
+import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 if (getLoginState() === '1') router.push('/admin')

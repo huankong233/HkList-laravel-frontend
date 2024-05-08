@@ -3,14 +3,14 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
 import { useDark } from '@vueuse/core'
+import { RouterView } from 'vue-router'
 
 useDark()
 
 import { useMainStore } from '@/stores/mainStore.js'
-import * as ParseApi from './apis/user/parse.js'
 import { onMounted } from 'vue'
+import * as ParseApi from './apis/user/parse.js'
 import { setLoginState } from './utils/env.js'
 const mainStore = useMainStore()
 onMounted(async () => {

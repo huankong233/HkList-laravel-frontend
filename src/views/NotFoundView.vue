@@ -2,8 +2,8 @@
   <div class="page">
     <div class="container">
       <div class="font-h1">:(</div>
-      <div class="tip">你的电脑遇到问题，需要重新启动</div>
-      <div class="tip">我们只收集某些错误信息，然后自动为你重新启动</div>
+      <div class="tip">你的电脑遇到问题, 需要重新启动</div>
+      <div class="tip">我们只收集某些错误信息, 然后自动为你重新启动</div>
       <div class="complete">
         <span class="percentage">{{ complete }}</span>
         <span>% 完成</span>
@@ -14,10 +14,10 @@
         </div>
         <div class="stopcode">
           <div class="stopcode-text">
-            有关问题的详细信息和可能的解决方法，请访问 https://cutt.ly/kwErLg0w
+            有关问题的详细信息和可能的解决方法, 请访问 https://cutt.ly/kwErLg0w
           </div>
           <div class="stopcode-text">
-            <p>如需致电支持人员，请向他们提供以下信息:</p>
+            <p>如需致电支持人员, 请向他们提供以下信息:</p>
             <p>终止代码: BE TRICKED BY RICKROLL</p>
           </div>
         </div>
@@ -27,9 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
 import qrcode from '@/assets/image/qrcode.png'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const complete = ref(0)

@@ -70,9 +70,9 @@
 
 <script lang="ts" setup>
 import * as InvCodeApi from '@/apis/admin/invCode.js'
-import { ElMessage } from 'element-plus'
-import { ref, onMounted } from 'vue'
 import AddInvCode from '@/components/AdminView/InvCode/AddInvCode.vue'
+import { ElMessage } from 'element-plus'
+import { onMounted, ref } from 'vue'
 
 const pending = ref(false)
 

@@ -80,9 +80,9 @@
 
 <script lang="ts" setup>
 import * as UserApi from '@/apis/admin/user.js'
-import { ElMessage } from 'element-plus'
-import { ref, onMounted } from 'vue'
 import AddUser from '@/components/AdminView/User/AddUser.vue'
+import { ElMessage } from 'element-plus'
+import { onMounted, ref } from 'vue'
 
 const pending = ref(false)
 

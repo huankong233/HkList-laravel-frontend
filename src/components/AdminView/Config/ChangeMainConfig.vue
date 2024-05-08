@@ -43,10 +43,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import * as mainConfigApi from '@/apis/admin/config/main.js'
 import { getFrontEndVersion } from '@/utils/env.js'
-import { ref, onMounted } from 'vue'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { onMounted, ref } from 'vue'
 
 const pending = ref(false)
 

@@ -1,6 +1,6 @@
+import { setLoginState } from '@/utils/env.js'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import { setLoginState } from '@/utils/env.js'
 
 const instance = axios.create({
   baseURL: '/api/v1',
@@ -26,7 +26,7 @@ instance.interceptors.response.use(
         ElMessage.error(message)
       }
     } else {
-      ElMessage.error('服务器异常，请稍后再试')
+      ElMessage.error('服务器异常, 请稍后再试')
     }
 
     return Promise.reject(error.response.data)

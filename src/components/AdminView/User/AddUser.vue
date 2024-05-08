@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { FormInstance } from 'element-plus'
 import * as UserApi from '@/apis/admin/user.js'
+import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 

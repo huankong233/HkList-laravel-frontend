@@ -1,6 +1,6 @@
+import type { config } from '@/apis/user/parse.js'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { config } from '@/apis/user/parse.js'
 
 export const useMainStore = defineStore('mainStore', () => {
   const config = ref<config>({

@@ -49,10 +49,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { FormInstance, FormRules } from 'element-plus'
-import { ref, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
 import * as MailConfigApi from '@/apis/admin/config/mail.js'
+import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { onMounted, ref } from 'vue'
 
 const pending = ref(false)
 

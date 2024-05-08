@@ -22,13 +22,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { FormInstance, FormRules } from 'element-plus'
-import favicon from '@/assets/image/favicon.ico'
-import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
-import { getAppName, getLoginState, setLoginState } from '@/utils/env.js'
 import * as UserApi from '@/apis/user/user.js'
+import favicon from '@/assets/image/favicon.ico'
+import { getAppName, getLoginState, setLoginState } from '@/utils/env.js'
+import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 if (getLoginState() === '1') router.push('/admin')

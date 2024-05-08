@@ -70,9 +70,9 @@
 
 <script lang="ts" setup>
 import * as GroupApi from '@/apis/admin/group.js'
-import { ElMessage } from 'element-plus'
-import { ref, onMounted } from 'vue'
 import AddGroup from '@/components/AdminView/Group/AddGroup.vue'
+import { ElMessage } from 'element-plus'
+import { onMounted, ref } from 'vue'
 
 const pending = ref(false)
 
