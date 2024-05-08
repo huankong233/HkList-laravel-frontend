@@ -14,8 +14,7 @@
     </el-form-item>
     <el-form-item label="SMTP服务器加密方式" prop="encryption">
       <el-select v-model="changeMailConfigForm.encryption" placeholder="选择加密方式">
-        <el-option key="tls" label="tls" value="tls" />
-        <el-option key="ssl" label="ssl" value="ssl" />
+        <el-option v-for="item in ['tls', 'ssl']" :key="item" :label="item" :value="item" />
       </el-select>
     </el-form-item>
     <el-form-item label="SMTP服务器端口" prop="port">

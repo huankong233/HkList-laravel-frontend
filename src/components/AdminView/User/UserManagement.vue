@@ -39,8 +39,7 @@
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.role }}</span>
         <el-select v-show="row.edit" v-model="row.role">
-          <el-option key="admin" label="admin" value="admin" />
-          <el-option key="user" label="user" value="user" />
+          <el-option v-for="item in ['user', 'admin']" :key="item" :label="item" :value="item" />
         </el-select>
       </template>
     </el-table-column>
@@ -135,7 +134,7 @@ const deleteUser = async (user: UserApi.User) => {
 const deleteSelectUsers = async () => {
   try {
     pending.value = true
-    const user_ids = selectUsers.value.map(user => user.id)
+    const user_ids = selectUsers.value.map((user) => user.id)
     await UserApi.deleteUsers(user_ids)
     ElMessage.success('批量删除用户成功')
   } finally {

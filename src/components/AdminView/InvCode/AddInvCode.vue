@@ -9,8 +9,7 @@
     >
       <el-form-item label="创建方式" prop="type">
         <el-select v-model="addInvCodeForm.type">
-          <el-option key="single" label="single" value="single"></el-option>
-          <el-option key="random" label="random" value="random"></el-option>
+          <el-option v-for="item in ['single', 'random']" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
       <el-form-item label="可注册次数" prop="can_count">

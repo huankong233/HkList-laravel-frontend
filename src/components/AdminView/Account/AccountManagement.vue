@@ -1,0 +1,152 @@
+<template>
+  <AddAccount @getAccounts="getAccounts" v-model="isAddAccount" />
+
+  <el-button type="primary" @click="switchAddAccount"> 添加账号 </el-button>
+  <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="updateSelectAccounts">
+    批量更新信息
+  </el-button>
+  <el-button type="danger" :disabled="selectAccounts.length <= 0" @click="deleteSelectAccounts">
+    批量删除
+  </el-button>
+
+  <el-table
+    v-loading="pending"
+    :data="AccountList?.data ?? []"
+    border
+    show-overflow-tooltip
+    class="table"
+    @selection-change="selectAccountsChange"
+  >
+    <el-table-column type="selection" width="40"></el-table-column>
+    <el-table-column prop="id" label="ID"></el-table-column>
+    <el-table-column prop="baidu_name" label="百度用户名"></el-table-column>
+    <el-table-column prop="netdisk_name" label="网盘用户名"></el-table-column>
+    <el-table-column prop="cookie" label="Cookie"></el-table-column>
+    <el-table-column prop="vip_type" label="会员类型"></el-table-column>
+    <el-table-column prop="switch" label="开关">
+      <template #default="{ row }">
+        <span v-show="!row.edit">{{ row.switch ? '启用' : '禁用' }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="svip_end_at" label="超级会员结束时间">
+      <template #default="{ row }">
+        {{ new Date(row.svip_end_at).toLocaleString() }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="last_use_at" label="上次使用时间">
+      <template #default="{ row }">
+        {{ new Date(row.last_use_at).toLocaleString() }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="created_at" label="创建时间">
+      <template #default="{ row }">
+        {{ new Date(row.created_at).toLocaleString() }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="updated_at" label="更新时间">
+      <template #default="{ row }">
+        {{ new Date(row.updated_at).toLocaleString() }}
+      </template>
+    </el-table-column>
+    <el-table-column width="160" label="操作" fixed="right">
+      <template #default="{ row }">
+        <el-button size="small" type="primary" @click="updateAccount(row)"> 更新信息 </el-button>
+        <el-button size="small" type="danger" @click="deleteAccount(row)">删除</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+
+  <el-pagination
+    v-model:current-page="currentPage"
+    v-model:page-size="pageSize"
+    :page-sizes="[15, 30, 50, 100]"
+    :total="AccountList?.total ?? 100"
+    layout="sizes, prev, pager, next"
+    @size-change="getAccounts"
+    @current-change="getAccounts"
+  />
+</template>
+
+<script lang="ts" setup>
+import * as AccountApi from '@/apis/admin/account.js'
+import AddAccount from '@/components/AdminView/Account/AddAccount.vue'
+import { ElMessage } from 'element-plus'
+import { onMounted, ref } from 'vue'
+
+const pending = ref(false)
+
+const pageSize = ref(15)
+const currentPage = ref(1)
+const AccountList = ref<AccountApi.getAccount>()
+const selectAccounts = ref<AccountApi.Account[]>([])
+
+const getAccounts = async () => {
+  try {
+    pending.value = true
+    const res = await AccountApi.getAccount({ page: currentPage.value, size: pageSize.value })
+    AccountList.value = res.data
+  } finally {
+    pending.value = false
+  }
+}
+
+const updateAccount = async (Account: AccountApi.Account) => {
+  try {
+    pending.value = true
+    await AccountApi.updateAccount(Account)
+    ElMessage.success('更新账户信息成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
+  }
+}
+
+const updateSelectAccounts = async () => {
+  try {
+    pending.value = true
+    const Account_ids = selectAccounts.value.map((account) => account.id)
+    await AccountApi.updateAccounts(Account_ids)
+    ElMessage.success('批量更新账户成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
+  }
+}
+
+const deleteAccount = async (Account: AccountApi.Account) => {
+  try {
+    pending.value = true
+    await AccountApi.deleteAccount(Account)
+    ElMessage.success('删除账户成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
+  }
+}
+
+const deleteSelectAccounts = async () => {
+  try {
+    pending.value = true
+    const Account_ids = selectAccounts.value.map((account) => account.id)
+    await AccountApi.deleteAccounts(Account_ids)
+    ElMessage.success('批量删除账户成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
+  }
+}
+
+const selectAccountsChange = (row: AccountApi.Account[]) => (selectAccounts.value = row)
+
+onMounted(getAccounts)
+
+const isAddAccount = ref(false)
+const switchAddAccount = () => (isAddAccount.value = !isAddAccount.value)
+</script>
+
+<style lang="scss" scoped>
+.table,
+.el-pagination {
+  margin-top: 15px;
+}
+</style>
