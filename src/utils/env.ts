@@ -10,3 +10,23 @@ export const getFrontEndVersion = async () => (await import('../../package.json'
 
 export const getAppName = () =>
   document.querySelector("meta[name='app_name']")?.getAttribute('content') ?? '94list-laravel'
+
+interface aria2Config {
+  host: string
+  port: number
+  token: string
+}
+
+export const loadAria2Config = () => {
+  const config = localStorage.getItem('aria2_config')
+  return config
+    ? (JSON.parse(config) as aria2Config)
+    : {
+        host: 'http://localhost',
+        port: 6800,
+        token: ''
+      }
+}
+
+export const setAria2Config = (config: aria2Config) =>
+  localStorage.setItem('aria2_config', JSON.stringify(config))

@@ -1,5 +1,5 @@
 <template>
-  <RouterView v-if="mainStore.config.announce !== ''" />
+  <RouterView />
 </template>
 
 <script setup lang="ts">
@@ -15,7 +15,10 @@ import { setLoginState } from './utils/env.js'
 const mainStore = useMainStore()
 onMounted(async () => {
   const configRes = await ParseApi.getConfig()
-  mainStore.config = configRes.data
+  mainStore.config = {
+    ...configRes.data,
+    is_https: document.location.protocol === 'https:'
+  }
   setLoginState(configRes.data.have_login ? '1' : '0')
 })
 </script>

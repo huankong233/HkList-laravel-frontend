@@ -36,9 +36,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        // 修改 config 时服务会重启会报错 替换 url 为非 php artisan serve 启动即可
-        // target: 'http://localhost/94list-laravel/public',
-        target: 'http://localhost:8000',
+        target: 'http://localhost/94list-laravel/public',
         changeOrigin: true
       }
     }

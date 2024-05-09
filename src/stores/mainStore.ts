@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useMainStore = defineStore('mainStore', () => {
-  const config = ref<config>({
+  const config = ref<config & { is_https: boolean }>({
     announce: '',
     user_agent: '',
     debug: false,
@@ -11,8 +11,11 @@ export const useMainStore = defineStore('mainStore', () => {
     have_account: false,
     have_login: false,
     need_inv_code: false,
-    need_password: false
+    need_password: false,
+    is_https: false
   })
 
-  return { config }
+  return {
+    config
+  }
 })

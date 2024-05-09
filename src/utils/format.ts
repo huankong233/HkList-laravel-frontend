@@ -1,3 +1,12 @@
+export const formatTimestamp = (timestamp: number) => {
+  const date = new Date(timestamp * 1000)
+  return date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
 export const formatBytes = (bytes: number | string, decimals = 2) => {
   if (typeof bytes === 'string') bytes = parseFloat(bytes)
   if (bytes === 0) return '0 Bytes'
