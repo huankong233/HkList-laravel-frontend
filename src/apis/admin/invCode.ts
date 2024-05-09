@@ -29,12 +29,14 @@ export interface addInvCodeSingle {
   type: 'single'
   name: string
   can_count: number
+  group_id: number
 }
 
 export interface addInvCodeRandom {
   type: 'random'
   can_count: number
   count: number
+  group_id: number
 }
 
 export type addInvCode = addInvCodeSingle | addInvCodeRandom

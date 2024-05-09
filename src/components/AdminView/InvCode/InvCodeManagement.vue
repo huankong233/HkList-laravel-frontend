@@ -22,13 +22,19 @@
         <el-input v-show="row.edit" v-model="row.name"></el-input>
       </template>
     </el-table-column>
+    <el-table-column prop="group_id" label="用户组ID">
+      <template #default="{ row }">
+        <span v-show="!row.edit">{{ row.group_id }}</span>
+        <el-input-number v-show="row.edit" v-model="row.group_id"></el-input-number>
+      </template>
+    </el-table-column>
     <el-table-column prop="can_count" label="可用次数">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.can_count }}</span>
         <el-input-number v-show="row.edit" v-model="row.can_count"></el-input-number>
       </template>
     </el-table-column>
-    <el-table-column prop="use_count" label="使用次数">
+    <el-table-column prop="use_count" label="已使用次数">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.use_count }}</span>
         <el-input-number v-show="row.edit" v-model="row.use_count"></el-input-number>
@@ -125,7 +131,7 @@ const deleteInvCode = async (invCode: InvCodeApi.InvCode) => {
 const deleteSelectInvCodes = async () => {
   try {
     pending.value = true
-    const inv_code_ids = selectInvCodes.value.map(invCode => invCode.id)
+    const inv_code_ids = selectInvCodes.value.map((invCode) => invCode.id)
     await InvCodeApi.deleteInvCodes(inv_code_ids)
     ElMessage.success('删除邀请码成功')
   } finally {

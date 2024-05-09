@@ -14,11 +14,11 @@
       <el-tab-pane label="用户管理" name="userManagement">
         <UserManagement />
       </el-tab-pane>
-      <el-tab-pane label="邀请码管理" name="invCodeManagement">
-        <InvCodeManagement />
-      </el-tab-pane>
       <el-tab-pane label="用户组管理" name="groupManagement">
         <GroupManagement />
+      </el-tab-pane>
+      <el-tab-pane label="邀请码管理" name="invCodeManagement">
+        <InvCodeManagement />
       </el-tab-pane>
       <el-tab-pane label="账号管理" name="accountManagement">
         <AccountManagement />

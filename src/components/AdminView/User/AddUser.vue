@@ -14,7 +14,9 @@
         <el-input v-model="addUserForm.password"></el-input>
       </el-form-item>
       <el-form-item label="权限" prop="role">
-        <el-option v-for="item in ['user', 'admin']" :key="item" :label="item" :value="item" />
+        <el-select v-model="addUserForm.role">
+          <el-option v-for="item in ['user', 'admin']" :key="item" :label="item" :value="item" />
+        </el-select>
       </el-form-item>
       <el-form-item label="用户组ID" prop="group_id">
         <el-input v-model="addUserForm.group_id"></el-input>

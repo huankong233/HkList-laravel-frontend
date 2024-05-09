@@ -12,8 +12,11 @@
           <el-option v-for="item in ['single', 'random']" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
-      <el-form-item label="可注册次数" prop="can_count">
+      <el-form-item label="可用次数" prop="can_count">
         <el-input-number v-model="addInvCodeForm.can_count"></el-input-number>
+      </el-form-item>
+      <el-form-item label="用户组ID" prop="group_id">
+        <el-input-number v-model="addInvCodeForm.group_id"></el-input-number>
       </el-form-item>
       <el-form-item label="邀请码名称" prop="name" v-if="addInvCodeForm.type === 'single'">
         <el-input v-model="addInvCodeForm.name"></el-input>
@@ -41,11 +44,13 @@ const isAddInvCode = defineModel()
 const pending = ref(false)
 const addInvCodeForm = ref<InvCodeApi.addInvCode>({
   type: 'single',
+  group_id: 0,
   name: '',
   can_count: 10
 })
 const addInvCodeFormRef = ref<FormInstance | null>(null)
 const addInvCodeFormRule = {
+  group_id: [{ required: true, message: '请输入邀请码用户组ID', trigger: 'blur' }],
   name: [{ required: true, message: '请输入邀请码名称', trigger: 'blur' }],
   can_count: [{ required: true, message: '请输入可注册次数', trigger: 'blur' }],
   count: [{ required: true, message: '请输入邀请码个数', trigger: 'blur' }]
@@ -60,13 +65,15 @@ const addInvCode = async (formEl: FormInstance | null) => {
       await InvCodeApi.addInvCodeSingle({
         type: 'single',
         name: addInvCodeForm.value.name,
-        can_count: addInvCodeForm.value.can_count
+        can_count: addInvCodeForm.value.can_count,
+        group_id: addInvCodeForm.value.group_id
       })
     } else {
       await InvCodeApi.addInvCodeRandom({
         type: 'random',
         count: addInvCodeForm.value.count,
-        can_count: addInvCodeForm.value.can_count
+        can_count: addInvCodeForm.value.can_count,
+        group_id: addInvCodeForm.value.group_id
       })
     }
     ElMessage.success('添加成功')
