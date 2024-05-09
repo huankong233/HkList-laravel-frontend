@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import * as UserApi from '@/apis/admin/user.js'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 
@@ -47,7 +47,7 @@ const addUserForm = ref<UserApi.addUser>({
   group_id: undefined
 })
 const addUserFormRef = ref<FormInstance | null>(null)
-const addUserFormRule = {
+const addUserFormRule: FormRules = {
   username: [{ required: true, message: '请输入账户用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入账户密码', trigger: 'blur' }]
 }

@@ -26,8 +26,8 @@
       <el-tab-pane label="记录管理" name="recordManagement">
         <RecordManagement />
       </el-tab-pane>
-      <el-tab-pane label="黑白名单管理" name="ipManagement">
-        <!-- <IpManagement /> -->
+      <el-tab-pane label="IP管理" name="ipManagement">
+        <IpManagement />
       </el-tab-pane>
       <el-tab-pane label="开源说明" name="openSourceNotice">
         <el-card>
@@ -78,6 +78,10 @@ const AccountManagement = defineAsyncComponent(
 
 const RecordManagement = defineAsyncComponent(
   () => import('@/components/AdminView/Record/RecordManagement.vue')
+)
+
+const IpManagement = defineAsyncComponent(
+  () => import('@/components/AdminView/Ip/IpManagement.vue')
 )
 
 const activeName = ref('changeMainConfig')

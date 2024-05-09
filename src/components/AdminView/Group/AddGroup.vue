@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import * as GroupApi from '@/apis/admin/group.js'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 
@@ -41,7 +41,7 @@ const addGroupForm = ref<GroupApi.addGroup>({
   size: 0
 })
 const addGroupFormRef = ref<FormInstance | null>(null)
-const addGroupFormRule = {
+const addGroupFormRule: FormRules = {
   name: [{ required: true, message: '请输入组名', trigger: 'blur' }],
   count: [{ required: true, message: '请输入可解析个数', trigger: 'blur' }],
   size: [{ required: true, message: '请输入可解析大小', trigger: 'blur' }]

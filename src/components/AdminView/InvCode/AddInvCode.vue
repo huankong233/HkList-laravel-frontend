@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import * as InvCodeApi from '@/apis/admin/invCode.js'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 
@@ -49,7 +49,7 @@ const addInvCodeForm = ref<InvCodeApi.addInvCode>({
   can_count: 10
 })
 const addInvCodeFormRef = ref<FormInstance | null>(null)
-const addInvCodeFormRule = {
+const addInvCodeFormRule: FormRules = {
   group_id: [{ required: true, message: '请输入邀请码用户组ID', trigger: 'blur' }],
   name: [{ required: true, message: '请输入邀请码名称', trigger: 'blur' }],
   can_count: [{ required: true, message: '请输入可注册次数', trigger: 'blur' }],

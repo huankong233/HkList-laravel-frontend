@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import * as AccountApi from '@/apis/admin/account.js'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 
@@ -36,7 +36,7 @@ const addAccountForm = ref<{ cookie: string }>({
   cookie: ''
 })
 const addAccountFormRef = ref<FormInstance | null>(null)
-const addAccountFormRule = {
+const addAccountFormRule: FormRules = {
   cookie: [{ required: true, message: '请输入Cookie', trigger: 'blur' }]
 }
 
