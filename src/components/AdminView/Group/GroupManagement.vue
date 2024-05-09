@@ -1,7 +1,8 @@
 <template>
   <AddGroup @getGroups="getGroups" v-model="isAddGroup" />
 
-  <el-button type="primary" @click="switchAddGroup"> 添加用户组 </el-button>
+  <el-button type="primary" @click="getGroups">刷新列表</el-button>
+  <el-button type="primary" @click="switchAddGroup">添加用户组</el-button>
   <el-button type="danger" :disabled="selectGroups.length <= 0" @click="deleteSelectGroups">
     批量删除
   </el-button>
@@ -15,7 +16,7 @@
     @selection-change="selectGroupsChange"
   >
     <el-table-column type="selection" width="40"></el-table-column>
-    <el-table-column prop="id" label="ID"> </el-table-column>
+    <el-table-column prop="id" label="ID"></el-table-column>
     <el-table-column prop="name" label="组名">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.name }}</span>
@@ -125,7 +126,7 @@ const deleteGroup = async (Group: GroupApi.Group) => {
 const deleteSelectGroups = async () => {
   try {
     pending.value = true
-    const Group_ids = selectGroups.value.map(Group => Group.id)
+    const Group_ids = selectGroups.value.map((Group) => Group.id)
     await GroupApi.deleteGroups(Group_ids)
     ElMessage.success('批量删除用户组成功')
   } finally {

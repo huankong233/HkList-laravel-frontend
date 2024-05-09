@@ -1,7 +1,8 @@
 <template>
   <AddInvCode @getInvCodes="getInvCodes" v-model="isAddInvCode" />
 
-  <el-button type="primary" @click="switchAddInvCode"> 添加邀请码 </el-button>
+  <el-button type="primary" @click="getInvCodes">刷新列表</el-button>
+  <el-button type="primary" @click="switchAddInvCode">添加邀请码</el-button>
   <el-button type="danger" :disabled="selectInvCodes.length <= 0" @click="deleteSelectInvCodes">
     批量删除
   </el-button>
@@ -15,7 +16,7 @@
     @selection-change="selectInvCodeChange"
   >
     <el-table-column type="selection" width="40"></el-table-column>
-    <el-table-column prop="id" label="ID"> </el-table-column>
+    <el-table-column prop="id" label="ID"></el-table-column>
     <el-table-column prop="name" label="邀请码名称">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.name }}</span>

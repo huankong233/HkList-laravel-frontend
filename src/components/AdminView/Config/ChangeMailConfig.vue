@@ -39,7 +39,7 @@
       <el-input v-model="changeMailConfigForm.to_address"></el-input>
     </el-form-item>
     <el-form-item label=" ">
-      <el-button type="primary" @click="changeConfig(changeMailConfigFormRef)"> 保存 </el-button>
+      <el-button type="primary" @click="changeConfig(changeMailConfigFormRef)">保存</el-button>
       <el-button type="primary" @click="sendTestMsg(changeMailConfigFormRef)">
         发送测试邮件
       </el-button>

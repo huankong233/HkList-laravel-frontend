@@ -2,7 +2,7 @@
   <el-card class="box-card" v-if="getLoginState() === '1'">
     <h2>
       后台控制中心 | {{ getAppName() }}
-      <el-button type="danger" @click="logout()"> 退出登陆 </el-button>
+      <el-button type="danger" @click="logout()">退出登陆</el-button>
     </h2>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基础配置" name="changeMainConfig">
@@ -24,7 +24,7 @@
         <AccountManagement />
       </el-tab-pane>
       <el-tab-pane label="记录管理" name="recordManagement">
-        <!-- <RecordManagement /> -->
+        <RecordManagement />
       </el-tab-pane>
       <el-tab-pane label="黑白名单管理" name="ipManagement">
         <!-- <IpManagement /> -->
@@ -74,6 +74,10 @@ const GroupManagement = defineAsyncComponent(
 
 const AccountManagement = defineAsyncComponent(
   () => import('@/components/AdminView/Account/AccountManagement.vue')
+)
+
+const RecordManagement = defineAsyncComponent(
+  () => import('@/components/AdminView/Record/RecordManagement.vue')
 )
 
 const activeName = ref('changeMainConfig')

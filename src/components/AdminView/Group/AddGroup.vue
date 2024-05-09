@@ -19,7 +19,7 @@
     </el-form>
     <template #footer>
       <el-button type="info" @click="cancel()">取消</el-button>
-      <el-button type="primary" @click="addGroup(addGroupFormRef)"> 添加 </el-button>
+      <el-button type="primary" @click="addGroup(addGroupFormRef)">添加</el-button>
     </template>
   </el-dialog>
 </template>

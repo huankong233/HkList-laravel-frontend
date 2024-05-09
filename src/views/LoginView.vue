@@ -13,8 +13,8 @@
           <el-input v-model="loginForm.password" type="password"></el-input>
         </el-form-item>
         <el-form-item class="center">
-          <el-button type="primary" @click="goRegister"> 注册 </el-button>
-          <el-button type="primary" @click="submitForm(loginFormRef)"> 登陆 </el-button>
+          <el-button type="primary" @click="goRegister">注册</el-button>
+          <el-button type="primary" @click="submitForm(loginFormRef)">登陆</el-button>
         </el-form-item>
       </el-form>
     </el-card>

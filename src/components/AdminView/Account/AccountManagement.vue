@@ -1,7 +1,8 @@
 <template>
   <AddAccount @getAccounts="getAccounts" v-model="isAddAccount" />
 
-  <el-button type="primary" @click="switchAddAccount"> 添加账号 </el-button>
+  <el-button type="primary" @click="getAccounts">刷新列表</el-button>
+  <el-button type="primary" @click="switchAddAccount">添加账号</el-button>
   <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="updateSelectAccounts">
     批量更新信息
   </el-button>
@@ -50,7 +51,7 @@
     </el-table-column>
     <el-table-column width="160" label="操作" fixed="right">
       <template #default="{ row }">
-        <el-button size="small" type="primary" @click="updateAccount(row)"> 更新信息 </el-button>
+        <el-button size="small" type="primary" @click="updateAccount(row)">更新信息</el-button>
         <el-button size="small" type="danger" @click="deleteAccount(row)">删除</el-button>
       </template>
     </el-table-column>

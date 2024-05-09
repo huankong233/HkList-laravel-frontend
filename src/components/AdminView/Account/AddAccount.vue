@@ -8,7 +8,7 @@
       v-loading="pending"
     >
       <el-form-item label="提示">
-        <el-text> 可以使用换行来分割多个账号 </el-text>
+        <el-text>可以使用换行来分割多个账号</el-text>
       </el-form-item>
       <el-form-item label="Cookie" prop="cookie">
         <el-input type="textarea" v-model.trim="addAccountForm.cookie"></el-input>
@@ -16,7 +16,7 @@
     </el-form>
     <template #footer>
       <el-button type="info" @click="cancel()">取消</el-button>
-      <el-button type="primary" @click="addAccount(addAccountFormRef)"> 添加 </el-button>
+      <el-button type="primary" @click="addAccount(addAccountFormRef)">添加</el-button>
     </template>
   </el-dialog>
 </template>

@@ -21,8 +21,8 @@
           <el-input v-model="registerForm.inv_code"></el-input>
         </el-form-item>
         <el-form-item class="center">
-          <el-button type="primary" @click="goLogin"> 登陆 </el-button>
-          <el-button type="primary" @click="submitForm(registerFormRef)"> 注册 </el-button>
+          <el-button type="primary" @click="goLogin">登陆</el-button>
+          <el-button type="primary" @click="submitForm(registerFormRef)">注册</el-button>
         </el-form-item>
       </el-form>
     </el-card>
