@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import * as UserApi from '@/apis/user/user.js'
 import favicon from '@/assets/image/favicon.ico'
-import { getAppName, getLoginState, setLoginState } from '@/utils/env.js'
+import { getAppName, getLoginState, setLoginState, setLoginRole } from '@/utils/env.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -49,14 +49,17 @@ const submitForm = async (formEl: FormInstance | null) => {
   try {
     pending.value = true
 
-    await UserApi.login({
+    const res = await UserApi.login({
       username: loginForm.value.username,
       password: loginForm.value.password
     })
 
     ElMessage.success('登陆成功')
     setLoginState('1')
-    router.push('/admin')
+
+    const role = res.data.role
+    setLoginRole(role)
+    router.push(`/${role}`)
   } finally {
     pending.value = false
   }

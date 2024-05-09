@@ -24,11 +24,12 @@
     <el-table-column prop="netdisk_name" label="网盘用户名"></el-table-column>
     <el-table-column prop="cookie" label="Cookie"></el-table-column>
     <el-table-column prop="vip_type" label="会员类型"></el-table-column>
-    <el-table-column prop="switch" label="开关">
+    <el-table-column prop="switch" label="状态">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.switch ? '启用' : '禁用' }}</span>
       </template>
     </el-table-column>
+    <el-table-column prop="reason" label="禁用原因"></el-table-column>
     <el-table-column prop="svip_end_at" label="超级会员结束时间">
       <template #default="{ row }">
         {{ new Date(row.svip_end_at).toLocaleString() }}

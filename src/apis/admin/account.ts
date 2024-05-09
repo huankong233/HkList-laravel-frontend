@@ -7,6 +7,7 @@ export interface Account {
   cookie: string
   vip_type: string
   switch: 0 | 1
+  reason: string
   svip_end_at: string
   last_use_at: string
   created_at: string
@@ -33,17 +34,18 @@ export interface addAccount {
   cookie: string[]
 }
 
-export const addAccount = (data: addAccount) => axios.post('/admin/account', data)
+export const addAccount = (data: addAccount) => axios.post<null>('/admin/account', data)
 
 export const getAccount = (data: { page: number; size: number }) =>
   axios.get<getAccount>(`/admin/account?page=${data.page}&size=${data.size}`)
 
-export const updateAccount = (account: Account) => axios.patch(`/admin/account/${account.id}`)
+export const updateAccount = (account: Account) => axios.patch<null>(`/admin/account/${account.id}`)
 
 export const updateAccounts = (account_ids: number[]) =>
-  axios.patch(`/admin/account`, { account_ids })
+  axios.patch<null>(`/admin/account`, { account_ids })
 
-export const deleteAccount = (account: Account) => axios.delete(`/admin/account/${account.id}`)
+export const deleteAccount = (account: Account) =>
+  axios.delete<null>(`/admin/account/${account.id}`)
 
 export const deleteAccounts = (account_ids: number[]) =>
-  axios.delete('/admin/account', { data: { account_ids } })
+  axios.delete<null>('/admin/account', { data: { account_ids } })

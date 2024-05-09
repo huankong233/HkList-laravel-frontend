@@ -34,14 +34,14 @@ export interface addUser {
   group_id?: number
 }
 
-export const addUser = (data: addUser) => axios.post('/admin/user', data)
+export const addUser = (data: addUser) => axios.post<null>('/admin/user', data)
 
 export const getUser = (data: { page: number; size: number }) =>
   axios.get<getUser>(`/admin/user?page=${data.page}&size=${data.size}`)
 
-export const updateUser = (user: User) => axios.patch(`/admin/user/${user.id}`, user)
+export const updateUser = (user: User) => axios.patch<null>(`/admin/user/${user.id}`, user)
 
-export const deleteUser = (user: User) => axios.delete(`/admin/user/${user.id}`)
+export const deleteUser = (user: User) => axios.delete<null>(`/admin/user/${user.id}`)
 
 export const deleteUsers = (user_ids: number[]) =>
-  axios.delete('/admin/user', { data: { user_ids } })
+  axios.delete<null>('/admin/user', { data: { user_ids } })

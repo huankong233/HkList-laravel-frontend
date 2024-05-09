@@ -28,13 +28,13 @@ export interface addIp {
   mode: 0 | 1
 }
 
-export const addIp = (data: addIp) => axios.post('/admin/ip', data)
+export const addIp = (data: addIp) => axios.post<null>('/admin/ip', data)
 
 export const getIp = (data: { page: number; size: number }) =>
   axios.get<getIp>(`/admin/ip?page=${data.page}&size=${data.size}`)
 
-export const updateIp = (ip: Ip) => axios.patch(`/admin/ip/${ip.id}`, ip)
+export const updateIp = (ip: Ip) => axios.patch<null>(`/admin/ip/${ip.id}`, ip)
 
-export const deleteIp = (ip: Ip) => axios.delete(`/admin/ip/${ip.id}`)
+export const deleteIp = (ip: Ip) => axios.delete<null>(`/admin/ip/${ip.id}`)
 
-export const deleteIps = (ip_ids: number[]) => axios.delete('/admin/ip', { data: { ip_ids } })
+export const deleteIps = (ip_ids: number[]) => axios.delete<null>('/admin/ip', { data: { ip_ids } })

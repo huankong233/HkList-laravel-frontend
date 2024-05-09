@@ -31,14 +31,14 @@ export interface addGroup {
   count: number
 }
 
-export const addGroup = (data: addGroup) => axios.post('/admin/group', data)
+export const addGroup = (data: addGroup) => axios.post<null>('/admin/group', data)
 
 export const getGroup = (data: { page: number; size: number }) =>
   axios.get<getGroup>(`/admin/group?page=${data.page}&size=${data.size}`)
 
-export const updateGroup = (group: Group) => axios.patch(`/admin/group/${group.id}`, group)
+export const updateGroup = (group: Group) => axios.patch<null>(`/admin/group/${group.id}`, group)
 
-export const deleteGroup = (group: Group) => axios.delete(`/admin/group/${group.id}`)
+export const deleteGroup = (group: Group) => axios.delete<null>(`/admin/group/${group.id}`)
 
 export const deleteGroups = (group_ids: number[]) =>
-  axios.delete('/admin/group', { data: { group_ids } })
+  axios.delete<null>('/admin/group', { data: { group_ids } })

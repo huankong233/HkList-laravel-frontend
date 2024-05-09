@@ -1,4 +1,4 @@
-import { setLoginState } from '@/utils/env.js'
+import { setLoginRole, setLoginState } from '@/utils/env.js'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
@@ -13,15 +13,21 @@ const instance = axios.create({
 
 // http response 响应拦截器
 instance.interceptors.response.use(
-  response => response.data,
-  error => {
+  (response) => response.data,
+  (error) => {
     const message = error.response.data?.message
 
     if (message) {
       if (message === '用户未登陆') {
-        ElMessage.error('登陆已过期,请重新登陆')
+        ElMessage.error('登陆已过期, 请重新登陆!')
         setLoginState('0')
         setTimeout(() => (location.href = '/login'), 1000)
+      } else if (message === 'Too Many Attempts.') {
+        ElMessage.error('请求量过大! 请等待10分钟后重试!')
+      } else if (message === '用户权限不足') {
+        ElMessage.error('用户权限不足, 请联系管理员!')
+        setLoginRole('user')
+        setTimeout(() => (location.href = '/user'), 1000)
       } else {
         ElMessage.error(message)
       }

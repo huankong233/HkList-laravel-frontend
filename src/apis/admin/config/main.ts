@@ -23,4 +23,4 @@ export const updateConfig = (data: {
   user_agent: string
   need_inv_code: boolean
   whitelist_mode: boolean
-}) => axios.patch('/admin/config/main', data)
+}) => axios.patch<null>('/admin/config/main', data)

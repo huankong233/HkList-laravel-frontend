@@ -33,7 +33,7 @@ export interface getRecord {
 export const getRecord = (data: { page: number; size: number }) =>
   axios.get<getRecord>(`/admin/record?page=${data.page}&size=${data.size}`)
 
-export const deleteRecord = (record: Record) => axios.delete(`/admin/record/${record.id}`)
+export const deleteRecord = (record: Record) => axios.delete<null>(`/admin/record/${record.id}`)
 
 export const deleteRecords = (record_ids: number[]) =>
-  axios.delete('/admin/record', { data: { record_ids } })
+  axios.delete<null>('/admin/record', { data: { record_ids } })

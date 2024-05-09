@@ -41,18 +41,20 @@ export interface addInvCodeRandom {
 
 export type addInvCode = addInvCodeSingle | addInvCodeRandom
 
-export const addInvCodeSingle = (data: addInvCodeSingle) => axios.post('/admin/inv_code', data)
+export const addInvCodeSingle = (data: addInvCodeSingle) =>
+  axios.post<null>('/admin/inv_code', data)
 
 export const addInvCodeRandom = (data: addInvCodeRandom) =>
-  axios.post('/admin/inv_code/generate', data)
+  axios.post<null>('/admin/inv_code/generate', data)
 
 export const getInvCode = (data: { page: number; size: number }) =>
   axios.get<getInvCode>(`/admin/inv_code?page=${data.page}&size=${data.size}`)
 
 export const updateInvCode = (invCode: InvCode) =>
-  axios.patch(`/admin/inv_code/${invCode.id}`, invCode)
+  axios.patch<null>(`/admin/inv_code/${invCode.id}`, invCode)
 
-export const deleteInvCode = (invCode: InvCode) => axios.delete(`/admin/inv_code/${invCode.id}`)
+export const deleteInvCode = (invCode: InvCode) =>
+  axios.delete<null>(`/admin/inv_code/${invCode.id}`)
 
 export const deleteInvCodes = (inv_code_ids: number[]) =>
-  axios.delete('/admin/inv_code', { data: { inv_code_ids } })
+  axios.delete<null>('/admin/inv_code', { data: { inv_code_ids } })
