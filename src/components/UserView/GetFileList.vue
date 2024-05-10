@@ -40,7 +40,6 @@
       </el-form-item>
       <el-form-item label=" ">
         <el-button type="primary" @click="fileListStore.getFileList()">获取文件列表</el-button>
-        {{ selectedRows.length }}
         <el-button
           type="primary"
           :disabled="selectedRows.length <= 0"
