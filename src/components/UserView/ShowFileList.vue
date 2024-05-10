@@ -48,7 +48,7 @@ const fileListTableRef = ref<TableInstance | null>(null)
 
 const clickSelection = (row: ParseApi.file[]) => {
   selectedRows.value = row.filter((file) =>
-    file.isdir === 1 ? fileListTableRef.value?.toggleRowSelection(file, false) : false
+    file.isdir === 1 ? fileListTableRef.value?.toggleRowSelection(file, false) : true
   )
 }
 

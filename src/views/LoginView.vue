@@ -13,7 +13,7 @@
           <el-input v-model="loginForm.password" type="password"></el-input>
         </el-form-item>
         <el-form-item class="center">
-          <el-button type="primary" @click="goRegister">注册</el-button>
+          <el-button type="primary" @click="goRegister()">注册</el-button>
           <el-button type="primary" @click="submitForm(loginFormRef)">登陆</el-button>
         </el-form-item>
       </el-form>
@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import * as UserApi from '@/apis/user/user.js'
 import favicon from '@/assets/image/favicon.ico'
-import { getAppName, getLoginState, setLoginState, setLoginRole } from '@/utils/env.js'
+import { getAppName, getLoginState, setLoginRole, setLoginState } from '@/utils/env.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'

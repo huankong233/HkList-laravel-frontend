@@ -16,7 +16,7 @@
         <el-input v-model="aria2ConfigForm.token"></el-input>
       </el-form-item>
       <el-form-item label=" ">
-        <el-button type="primary" @click="aria2Store.saveAria2Config"> 保存 </el-button>
+        <el-button type="primary" @click="aria2Store.saveAria2Config()"> 保存 </el-button>
       </el-form-item>
     </el-form>
   </el-dialog>

@@ -38,31 +38,18 @@
       <el-form-item label="当前路径" prop="dir">
         <el-input v-model="getFileListForm.dir" disabled></el-input>
       </el-form-item>
-      <template v-if="vcode.hit_captcha">
-        <el-form-item label="验证码图片" prop="vcode_img">
-          <img
-            :src="`${vcode.vcode_img}&time=${timestamp}`"
-            alt="验证码图片"
-            @click="changeTimestamp"
-          />
-        </el-form-item>
-        <el-form-item label="验证码ID" prop="vcode_id">
-          <el-input v-model.trim="vcode.vcode_id" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="验证码" prop="vcode_input">
-          <el-input v-model.trim="vcode.vcode_input"></el-input>
-        </el-form-item>
-      </template>
       <el-form-item label=" ">
-        <el-button type="primary" @click="fileListStore.getFileList">获取文件列表</el-button>
+        <el-button type="primary" @click="fileListStore.getFileList()">获取文件列表</el-button>
+        {{ selectedRows.length }}
         <el-button
           type="primary"
           :disabled="selectedRows.length <= 0"
-          @click="fileListStore.downloadFiles"
+          @click="fileListStore.downloadFiles()"
         >
           批量解析
         </el-button>
         <el-button type="primary" @click="copyLink(getFileListFormRef)">复制当前地址</el-button>
+        <el-button type="primary" @click="goLogin()">登陆</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -76,11 +63,11 @@ import { getAppName } from '@/utils/env.js'
 import type { RuleItem } from 'async-validator'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const fileListStore = useFileListStore()
-const { pending, getFileListForm, getFileListFormRef, selectedRows, vcode } =
-  storeToRefs(fileListStore)
+const { pending, getFileListForm, getFileListFormRef, selectedRows } = storeToRefs(fileListStore)
 const mainStore = useMainStore()
 const { config } = storeToRefs(mainStore)
 
@@ -135,7 +122,7 @@ const copyLink = async (formEl: FormInstance | null) => {
   if (!formEl || !(await formEl.validate())) return
 
   copy(
-    `${location.host}/?url=${getFileListForm.value.url}&shorturl=${getFileListForm.value.shorturl}&pwd=${getFileListForm.value.pwd}&dir=${getFileListForm.value.dir}`,
+    `${location.host}/?url=${getFileListForm.value.url}&shorturl=${getFileListForm.value.shorturl}&pwd=${getFileListForm.value.pwd}&dir=${encodeURIComponent(getFileListForm.value.dir)}`,
     '复制成功'
   )
 }
@@ -151,15 +138,20 @@ onMounted(() => {
 
   ElMessage.success('已读取到参数,正在加载')
 
-  setTimeout(() => fileListStore.getFileList, 1000)
+  setTimeout(() => fileListStore.getFileList(), 1000)
 })
 
-const timestamp = ref(Date.now())
-const changeTimestamp = () => (timestamp.value = Date.now())
+const router = useRouter()
+const goLogin = () => router.push('/login')
 </script>
 
 <style lang="scss" scoped>
 img:hover {
   cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 </style>

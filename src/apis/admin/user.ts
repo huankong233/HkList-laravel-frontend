@@ -41,7 +41,8 @@ export const getUser = (data: { page: number; size: number }) =>
 
 export const updateUser = (user: User) => axios.patch<null>(`/admin/user/${user.id}`, user)
 
-export const deleteUser = (user: User) => axios.delete<null>(`/admin/user/${user.id}`)
+export const deleteUser = (user: User) =>
+  axios.delete<null>(`/admin/user`, { data: { user_ids: [user.id] } })
 
 export const deleteUsers = (user_ids: number[]) =>
-  axios.delete<null>('/admin/user', { data: { user_ids } })
+  axios.delete<null>('/admin/user/switch', { data: { user_ids } })

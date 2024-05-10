@@ -1,9 +1,9 @@
 <template>
   <AddUser @getUsers="getUsers" v-model="isAddUser" />
 
-  <el-button type="primary" @click="getUsers">刷新列表</el-button>
-  <el-button type="primary" @click="switchAddUser">添加用户</el-button>
-  <el-button type="danger" :disabled="selectUsers.length <= 0" @click="deleteSelectUsers">
+  <el-button type="primary" @click="getUsers()">刷新列表</el-button>
+  <el-button type="primary" @click="switchAddUser()">添加用户</el-button>
+  <el-button type="danger" :disabled="selectUsers.length <= 0" @click="deleteSelectUsers()">
     批量删除
   </el-button>
 

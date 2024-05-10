@@ -1,5 +1,4 @@
 import * as ParseApi from '@/apis/user/parse.js'
-// import { AxiosError } from 'axios'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -28,6 +27,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
       return
 
     try {
+      selectedRows.value = []
       pending.value = true
       const res = await ParseApi.getFileList(getFileListForm.value)
       fileList.value = res.data
@@ -60,13 +60,6 @@ export const useFileListStore = defineStore('fileListStore', () => {
     list: []
   })
 
-  const vcode = ref({
-    hit_captcha: false,
-    vcode_id: 0,
-    vcode_img: '',
-    vcode_input: ''
-  })
-
   const selectedRows = ref<ParseApi.file[]>([])
 
   const downloadLinks = ref<ParseApi.downloadLinks>([])
@@ -74,49 +67,26 @@ export const useFileListStore = defineStore('fileListStore', () => {
   const downloadFiles = async (fs_id?: number, path?: string) => {
     const fs_ids = fs_id ? [fs_id] : selectedRows.value.map((row) => row.fs_id)
     const path_list = path ? [path] : selectedRows.value.map((row) => row.path)
-    // let isNow = false
 
     try {
       pending.value = true
-      const req: ParseApi.downloadFiles = {
+      const res = await ParseApi.downloadFiles({
         uk: fileList.value.uk,
         shareid: fileList.value.shareid,
         randsk: fileList.value.randsk,
         fs_ids,
-        path_list
-      }
-      // if (vcode.value.hit_captcha) {
-      //   req.vcode_id = vcode.value.vcode_id
-      //   req.vcode_input = vcode.value.vcode_input
-      // }
-      const res = await ParseApi.downloadFiles(req)
+        path_list,
+        url: getFileListForm.value.url
+      })
       downloadLinks.value = res.data
       ElMessage.success('解析成功')
-    } catch (error) {
-      // if (!(error instanceof AxiosError)) {
-      //   const errorData = error as { message: string; data: ParseApi.vcode }
-      //   if (errorData.message === '触发验证码') {
-      //     isNow = true
-      //     vcode.value.hit_captcha = true
-      //     vcode.value.vcode_id = errorData.data.vcode_id
-      //     vcode.value.vcode_img = errorData.data.vcode_img
-      //   }
-      // }
     } finally {
-      // pending.value = false
-      // && !isNow
-      // if (vcode.value.hit_captcha) {
-      //   vcode.value.hit_captcha = false
-      //   vcode.value.vcode_id = 0
-      //   vcode.value.vcode_img = ''
-      //   vcode.value.vcode_input = ''
-      // }
+      pending.value = false
     }
   }
 
   return {
     pending,
-    vcode,
     fileList,
     getFileList,
     getFileListForm,

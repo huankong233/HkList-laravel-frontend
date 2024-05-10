@@ -45,7 +45,16 @@ export const updateAccounts = (account_ids: number[]) =>
   axios.patch<null>(`/admin/account`, { account_ids })
 
 export const deleteAccount = (account: Account) =>
-  axios.delete<null>(`/admin/account/${account.id}`)
+  axios.delete<null>(`/admin/account`, { data: { account_ids: [account.id] } })
 
 export const deleteAccounts = (account_ids: number[]) =>
   axios.delete<null>('/admin/account', { data: { account_ids } })
+
+export const switchAccount = (data: { account: Account; switch: 1 | 0 }) =>
+  axios.patch<null>('/admin/account/switch', {
+    account_ids: [data.account.id],
+    switch: data.switch
+  })
+
+export const switchAccounts = (data: { account_ids: number[]; switch: 1 | 0 }) =>
+  axios.patch<null>('/admin/account/switch', data)

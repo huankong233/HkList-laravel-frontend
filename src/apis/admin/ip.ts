@@ -35,6 +35,6 @@ export const getIp = (data: { page: number; size: number }) =>
 
 export const updateIp = (ip: Ip) => axios.patch<null>(`/admin/ip/${ip.id}`, ip)
 
-export const deleteIp = (ip: Ip) => axios.delete<null>(`/admin/ip/${ip.id}`)
+export const deleteIp = (ip: Ip) => axios.delete<null>(`/admin/ip`, { data: { ip_ids: [ip.id] } })
 
 export const deleteIps = (ip_ids: number[]) => axios.delete<null>('/admin/ip', { data: { ip_ids } })

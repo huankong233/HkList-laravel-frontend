@@ -48,8 +48,7 @@ export interface downloadFiles {
   randsk: string
   fs_ids: number[]
   path_list: string[]
-  vcode_id?: number
-  vcode_input?: string
+  url: string
 }
 
 export interface link {
@@ -59,11 +58,6 @@ export interface link {
 }
 
 export type downloadLinks = link[]
-
-export interface vcode {
-  vcode_id: number
-  vcode_img: string
-}
 
 export const getConfig = () => axios.get<config>('/parse/config')
 

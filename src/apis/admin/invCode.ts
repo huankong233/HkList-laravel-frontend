@@ -54,7 +54,7 @@ export const updateInvCode = (invCode: InvCode) =>
   axios.patch<null>(`/admin/inv_code/${invCode.id}`, invCode)
 
 export const deleteInvCode = (invCode: InvCode) =>
-  axios.delete<null>(`/admin/inv_code/${invCode.id}`)
+  axios.delete<null>(`/admin/inv_code`, { data: { inv_code_ids: [invCode.id] } })
 
 export const deleteInvCodes = (inv_code_ids: number[]) =>
   axios.delete<null>('/admin/inv_code', { data: { inv_code_ids } })

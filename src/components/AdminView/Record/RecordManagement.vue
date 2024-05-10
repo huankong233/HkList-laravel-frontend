@@ -1,6 +1,6 @@
 <template>
-  <el-button type="primary" @click="getRecords">刷新列表</el-button>
-  <el-button type="danger" :disabled="selectRecords.length <= 0" @click="deleteSelectRecords">
+  <el-button type="primary" @click="getRecords()">刷新列表</el-button>
+  <el-button type="danger" :disabled="selectRecords.length <= 0" @click="deleteSelectRecords()">
     批量删除
   </el-button>
 
@@ -21,7 +21,8 @@
     <el-table-column prop="url" label="下载链接"></el-table-column>
     <el-table-column prop="ua" label="UA"></el-table-column>
     <el-table-column prop="user_id" label="用户ID"></el-table-column>
-    <el-table-column prop="account_id" label="账号ID"></el-table-column>
+    <el-table-column prop="normal_account_id" label="dlink账号ID"></el-table-column>
+    <el-table-column prop="account_id" label="reallink账号ID"></el-table-column>
     <el-table-column prop="created_at" label="创建时间">
       <template #default="{ row }">
         {{ new Date(row.created_at).toLocaleString() }}

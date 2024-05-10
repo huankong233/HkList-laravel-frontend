@@ -38,7 +38,8 @@ export const getGroup = (data: { page: number; size: number }) =>
 
 export const updateGroup = (group: Group) => axios.patch<null>(`/admin/group/${group.id}`, group)
 
-export const deleteGroup = (group: Group) => axios.delete<null>(`/admin/group/${group.id}`)
+export const deleteGroup = (group: Group) =>
+  axios.delete<null>(`/admin/group`, { data: { group_ids: [group.id] } })
 
 export const deleteGroups = (group_ids: number[]) =>
   axios.delete<null>('/admin/group', { data: { group_ids } })

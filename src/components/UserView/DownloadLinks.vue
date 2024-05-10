@@ -5,11 +5,11 @@
       <el-button
         type="primary"
         :disabled="selectDownloadFiles.length <= 0"
-        @click="sendDownloadFiles"
+        @click="sendDownloadFiles()"
       >
         批量下载
       </el-button>
-      <el-button type="primary" @click="openAria2ConfigDialog">下载配置</el-button>
+      <el-button type="primary" @click="openAria2ConfigDialog()">下载配置</el-button>
     </el-space>
 
     <el-table

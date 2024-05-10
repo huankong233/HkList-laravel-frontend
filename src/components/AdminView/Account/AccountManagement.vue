@@ -1,12 +1,18 @@
 <template>
   <AddAccount @getAccounts="getAccounts" v-model="isAddAccount" />
 
-  <el-button type="primary" @click="getAccounts">刷新列表</el-button>
-  <el-button type="primary" @click="switchAddAccount">添加账号</el-button>
-  <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="updateSelectAccounts">
+  <el-button type="primary" @click="getAccounts()">刷新列表</el-button>
+  <el-button type="primary" @click="switchAddAccount()">添加账号</el-button>
+  <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="updateSelectAccounts()">
     批量更新信息
   </el-button>
-  <el-button type="danger" :disabled="selectAccounts.length <= 0" @click="deleteSelectAccounts">
+  <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="enableSelectAccounts()">
+    批量启用
+  </el-button>
+  <el-button type="primary" :disabled="selectAccounts.length <= 0" @click="disableSelectAccounts()">
+    批量禁用
+  </el-button>
+  <el-button type="danger" :disabled="selectAccounts.length <= 0" @click="deleteSelectAccounts()">
     批量删除
   </el-button>
 
@@ -50,9 +56,13 @@
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column width="160" label="操作" fixed="right">
+    <el-table-column width="220" label="操作" fixed="right">
       <template #default="{ row }">
         <el-button size="small" type="primary" @click="updateAccount(row)">更新信息</el-button>
+        <el-button size="small" type="primary" @click="enableAccount(row)" v-if="row.switch === 0">
+          启用
+        </el-button>
+        <el-button size="small" type="primary" @click="disableAccount(row)" v-else>禁用</el-button>
         <el-button size="small" type="danger" @click="deleteAccount(row)">删除</el-button>
       </template>
     </el-table-column>
@@ -132,6 +142,64 @@ const deleteSelectAccounts = async () => {
     const Account_ids = selectAccounts.value.map((account) => account.id)
     await AccountApi.deleteAccounts(Account_ids)
     ElMessage.success('批量删除账户成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
+  }
+}
+
+const enableAccount = async (Account: AccountApi.Account) => {
+  try {
+    pending.value = true
+    await AccountApi.switchAccount({
+      account: Account,
+      switch: 1
+    })
+    ElMessage.success('启用账户成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
+  }
+}
+
+const disableAccount = async (Account: AccountApi.Account) => {
+  try {
+    pending.value = true
+    await AccountApi.switchAccount({
+      account: Account,
+      switch: 0
+    })
+    ElMessage.success('禁用账户成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
+  }
+}
+
+const enableSelectAccounts = async () => {
+  try {
+    pending.value = true
+    const Account_ids = selectAccounts.value.map((account) => account.id)
+    await AccountApi.switchAccounts({
+      account_ids: Account_ids,
+      switch: 1
+    })
+    ElMessage.success('批量启用账户成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
+  }
+}
+
+const disableSelectAccounts = async () => {
+  try {
+    pending.value = true
+    const Account_ids = selectAccounts.value.map((account) => account.id)
+    await AccountApi.switchAccounts({
+      account_ids: Account_ids,
+      switch: 0
+    })
+    ElMessage.success('批量禁用账户成功')
   } finally {
     pending.value = false
     await getAccounts()

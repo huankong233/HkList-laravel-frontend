@@ -1,9 +1,9 @@
 <template>
   <AddInvCode @getInvCodes="getInvCodes" v-model="isAddInvCode" />
 
-  <el-button type="primary" @click="getInvCodes">刷新列表</el-button>
-  <el-button type="primary" @click="switchAddInvCode">添加邀请码</el-button>
-  <el-button type="danger" :disabled="selectInvCodes.length <= 0" @click="deleteSelectInvCodes">
+  <el-button type="primary" @click="getInvCodes()">刷新列表</el-button>
+  <el-button type="primary" @click="switchAddInvCode()">添加邀请码</el-button>
+  <el-button type="danger" :disabled="selectInvCodes.length <= 0" @click="deleteSelectInvCodes()">
     批量删除
   </el-button>
 

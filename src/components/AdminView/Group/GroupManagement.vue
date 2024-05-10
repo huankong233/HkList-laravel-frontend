@@ -1,9 +1,9 @@
 <template>
   <AddGroup @getGroups="getGroups" v-model="isAddGroup" />
 
-  <el-button type="primary" @click="getGroups">刷新列表</el-button>
-  <el-button type="primary" @click="switchAddGroup">添加用户组</el-button>
-  <el-button type="danger" :disabled="selectGroups.length <= 0" @click="deleteSelectGroups">
+  <el-button type="primary" @click="getGroups()">刷新列表</el-button>
+  <el-button type="primary" @click="switchAddGroup()">添加用户组</el-button>
+  <el-button type="danger" :disabled="selectGroups.length <= 0" @click="deleteSelectGroups()">
     批量删除
   </el-button>
 

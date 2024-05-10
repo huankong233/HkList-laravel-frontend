@@ -1,9 +1,9 @@
 <template>
   <AddIp @getIps="getIps" v-model="isAddIp" />
 
-  <el-button type="primary" @click="getIps">刷新列表</el-button>
-  <el-button type="primary" @click="switchAddIp">添加IP</el-button>
-  <el-button type="danger" :disabled="selectIps.length <= 0" @click="deleteSelectIps">
+  <el-button type="primary" @click="getIps()">刷新列表</el-button>
+  <el-button type="primary" @click="switchAddIp()">添加IP</el-button>
+  <el-button type="danger" :disabled="selectIps.length <= 0" @click="deleteSelectIps()">
     批量删除
   </el-button>
 
