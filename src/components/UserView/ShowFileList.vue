@@ -9,6 +9,7 @@
       @row-click="clickRow"
       @row-dblclick="dblclickRow"
       @selection-change="clickSelection"
+      class="table"
     >
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column label="文件名">
@@ -65,7 +66,7 @@ const clickRow = async (row: ParseApi.file) => {
     if (row.isdir === 1) {
       await getDir(row.path)
     } else {
-      await fileListStore.downloadFiles(row.fs_id)
+      await fileListStore.downloadFiles(row.fs_id, row.path)
     }
   } finally {
     pending.value = false
@@ -81,7 +82,7 @@ const dblclickRow = async (row: ParseApi.file) => {
     if (row.isdir === 1) {
       await getDir(row.path)
     } else {
-      await fileListStore.downloadFiles(row.fs_id)
+      await fileListStore.downloadFiles(row.fs_id, row.path)
     }
   } finally {
     pending.value = false
@@ -90,6 +91,10 @@ const dblclickRow = async (row: ParseApi.file) => {
 </script>
 
 <style lang="scss" scoped>
+.table {
+  height: 500px;
+}
+
 img {
   width: 20px;
   height: 20px;

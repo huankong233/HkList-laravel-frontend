@@ -47,7 +47,8 @@ export interface downloadFiles {
   shareid: number
   randsk: string
   fs_ids: number[]
-  vcode_str?: string
+  path_list: string[]
+  vcode_id?: number
   vcode_input?: string
 }
 
@@ -59,9 +60,9 @@ export interface link {
 
 export type downloadLinks = link[]
 
-export interface generateVocde {
-  img: string
-  vcode: string
+export interface vcode {
+  vcode_id: number
+  vcode_img: string
 }
 
 export const getConfig = () => axios.get<config>('/parse/config')
@@ -84,5 +85,3 @@ export const getFileList = async (data: getFileList) => {
 
 export const downloadFiles = (data: downloadFiles) =>
   axios.post<downloadLinks>('/parse/download_files', data)
-
-export const generateVcode = () => axios.get<generateVocde>(`/parse/generate_vcode`)

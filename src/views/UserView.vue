@@ -1,9 +1,10 @@
 <template>
   <AnnounceDialog />
   <Aria2Dialog />
+
   <GetFileList />
-  <DownloadLinks />
   <ShowFileList />
+  <DownloadLinks />
 </template>
 
 <script lang="ts" setup>

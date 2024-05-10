@@ -1,5 +1,5 @@
 import * as ParseApi from '@/apis/user/parse.js'
-import { AxiosError } from 'axios'
+// import { AxiosError } from 'axios'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -62,7 +62,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
   const vcode = ref({
     hit_captcha: false,
-    vcode_str: '',
+    vcode_id: 0,
     vcode_img: '',
     vcode_input: ''
   })
@@ -71,8 +71,10 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
   const downloadLinks = ref<ParseApi.downloadLinks>([])
 
-  const downloadFiles = async (fs_id?: number) => {
+  const downloadFiles = async (fs_id?: number, path?: string) => {
     const fs_ids = fs_id ? [fs_id] : selectedRows.value.map((row) => row.fs_id)
+    const path_list = path ? [path] : selectedRows.value.map((row) => row.path)
+    // let isNow = false
 
     try {
       pending.value = true
@@ -80,41 +82,35 @@ export const useFileListStore = defineStore('fileListStore', () => {
         uk: fileList.value.uk,
         shareid: fileList.value.shareid,
         randsk: fileList.value.randsk,
-        fs_ids
+        fs_ids,
+        path_list
       }
-      if (vcode.value.hit_captcha) {
-        req.vcode_str = vcode.value.vcode_str
-        req.vcode_input = vcode.value.vcode_input
-      }
+      // if (vcode.value.hit_captcha) {
+      //   req.vcode_id = vcode.value.vcode_id
+      //   req.vcode_input = vcode.value.vcode_input
+      // }
       const res = await ParseApi.downloadFiles(req)
       downloadLinks.value = res.data
       ElMessage.success('解析成功')
     } catch (error) {
-      if (!(error instanceof AxiosError)) {
-        const errorData = error as { message: string }
-        if (errorData.message === '触发验证码') getVcode()
-      }
+      // if (!(error instanceof AxiosError)) {
+      //   const errorData = error as { message: string; data: ParseApi.vcode }
+      //   if (errorData.message === '触发验证码') {
+      //     isNow = true
+      //     vcode.value.hit_captcha = true
+      //     vcode.value.vcode_id = errorData.data.vcode_id
+      //     vcode.value.vcode_img = errorData.data.vcode_img
+      //   }
+      // }
     } finally {
-      pending.value = false
-      if (vcode.value.hit_captcha) {
-        vcode.value.hit_captcha = false
-        vcode.value.vcode_str = ''
-        vcode.value.vcode_img = ''
-        vcode.value.vcode_input = ''
-      }
-    }
-  }
-
-  const getVcode = async () => {
-    try {
-      ElMessage.info('开始尝试获取验证码')
-      pending.value = true
-      const res = await ParseApi.generateVcode()
-      vcode.value.hit_captcha = true
-      vcode.value.vcode_str = res.data.vcode
-      vcode.value.vcode_img = res.data.img
-    } finally {
-      pending.value = false
+      // pending.value = false
+      // && !isNow
+      // if (vcode.value.hit_captcha) {
+      //   vcode.value.hit_captcha = false
+      //   vcode.value.vcode_id = 0
+      //   vcode.value.vcode_img = ''
+      //   vcode.value.vcode_input = ''
+      // }
     }
   }
 

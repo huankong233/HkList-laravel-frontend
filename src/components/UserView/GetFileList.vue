@@ -46,8 +46,8 @@
             @click="changeTimestamp"
           />
         </el-form-item>
-        <el-form-item label="验证码ID" prop="vcode_str">
-          <el-input v-model.trim="vcode.vcode_str" disabled></el-input>
+        <el-form-item label="验证码ID" prop="vcode_id">
+          <el-input v-model.trim="vcode.vcode_id" disabled></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="vcode_input">
           <el-input v-model.trim="vcode.vcode_input"></el-input>
