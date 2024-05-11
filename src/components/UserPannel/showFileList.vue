@@ -29,27 +29,27 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
+import folder from '@/assets/image/folder.png'
+import unknownfile from '@/assets/image/unknownfile.png'
 import type { file } from '@/store/UserPannel.js'
 import { useUserPannelStore } from '@/store/UserPannel.js'
 import { formatBytes, formatTimestamp } from '@/utils/format.js'
-import folder from '@/assets/image/folder.png'
-import unknownfile from '@/assets/image/unknownfile.png'
+import { storeToRefs } from 'pinia'
 
 const userPannelStore = useUserPannelStore()
 const { getFileListForm, fileListTableRef, filelist, selectedRows } = storeToRefs(userPannelStore)
 
 const clickSelection = (row: file[]) => {
   const dirRow: file[] = []
-  selectedRows.value = row.filter(v => {
+  selectedRows.value = row.filter((v) => {
     if (v.isdir.toString() === '1') {
       dirRow.push(v)
-      return true
-    } else {
       return false
+    } else {
+      return true
     }
   })
-  dirRow.forEach(v => fileListTableRef.value?.toggleRowSelection(v, false))
+  dirRow.forEach((v) => fileListTableRef.value?.toggleRowSelection(v, false))
 }
 
 const clickRow = async (scope: any) => {

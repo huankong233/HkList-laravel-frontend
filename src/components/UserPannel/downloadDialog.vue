@@ -110,7 +110,9 @@ const sendDownloadFiles = async () => {
   ElMessage.error('请确保最大同时下载文件数在5及以下,否则可能出现下载失败!')
   await sleep(3000)
   ElMessage.success('开始下载')
-  selectDownloadFiles.value.forEach(item => sendDownloadFile(item.dlink, item.server_filename))
+  selectDownloadFiles.value.forEach((item: any) =>
+    sendDownloadFile(item.dlink, item.server_filename)
+  )
 }
 
 // const downlaod = async (url: string, filename: string) => {
