@@ -1,5 +1,13 @@
 import axios from '@/utils/request.js'
 
+export interface addGroup {
+  name: string
+  size: number
+  count: number
+}
+
+export const addGroup = (data: addGroup) => axios.post<null>('/admin/group', data)
+
 export interface Group {
   id: number
   name: string
@@ -24,14 +32,6 @@ export interface getGroup {
   to: number
   total: number
 }
-
-export interface addGroup {
-  name: string
-  size: number
-  count: number
-}
-
-export const addGroup = (data: addGroup) => axios.post<null>('/admin/group', data)
 
 export const getGroup = (data: { page: number; size: number }) =>
   axios.get<getGroup>(`/admin/group?page=${data.page}&size=${data.size}`)

@@ -12,19 +12,14 @@ export interface config {
   need_password: boolean
 }
 
+export const getConfig = () => axios.get<config>('/parse/config')
+
 export interface getFileList {
   url: string
-  shorturl: string
+  surl: string
   dir: string
   pwd: string
   password?: string
-}
-
-export interface fileList {
-  uk: number
-  shareid: number
-  randsk: string
-  list: file[]
 }
 
 export interface file {
@@ -42,24 +37,12 @@ export interface file {
   dlink: string
 }
 
-export interface downloadFiles {
+export interface fileList {
   uk: number
   shareid: number
   randsk: string
-  fs_ids: number[]
-  path_list: string[]
-  url: string
+  list: file[]
 }
-
-export interface link {
-  url: string
-  filename: string
-  ua: string
-}
-
-export type downloadLinks = link[]
-
-export const getConfig = () => axios.get<config>('/parse/config')
 
 export const getFileList = async (data: getFileList) => {
   const res = await axios.post<fileList>('/parse/get_file_list', data)
@@ -77,5 +60,37 @@ export const getFileList = async (data: getFileList) => {
   return res
 }
 
-export const downloadFiles = (data: downloadFiles) =>
-  axios.post<downloadLinks>('/parse/download_files', data)
+export interface getSign {
+  surl: string
+  uk: number
+  shareid: number
+  password?: string
+}
+
+export interface sign {
+  timestamp: number
+  sign: string
+}
+
+export const getSign = (data: getSign) => axios.post<sign>('/parse/get_sign', data)
+
+export interface getDownloadLinks {
+  fs_ids: number[]
+  randsk: string
+  shareid: number
+  uk: number
+  sign: string
+  timestamp: number
+  password?: string
+}
+
+export interface link {
+  url: string
+  filename: string
+  ua: string
+}
+
+export type downloadLinks = link[]
+
+export const getDownloadLinks = (data: getDownloadLinks) =>
+  axios.post<downloadLinks>('/parse/get_download_links', data)

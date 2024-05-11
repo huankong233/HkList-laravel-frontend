@@ -1,5 +1,27 @@
 import axios from '@/utils/request.js'
 
+export interface addInvCodeSingle {
+  type: 'single'
+  name: string
+  can_count: number
+  group_id: number
+}
+
+export interface addInvCodeRandom {
+  type: 'random'
+  can_count: number
+  count: number
+  group_id: number
+}
+
+export type addInvCode = addInvCodeSingle | addInvCodeRandom
+
+export const addInvCodeSingle = (data: addInvCodeSingle) =>
+  axios.post<null>('/admin/inv_code', data)
+
+export const addInvCodeRandom = (data: addInvCodeRandom) =>
+  axios.post<null>('/admin/inv_code/generate', data)
+
 export interface InvCode {
   id: number
   name: string
@@ -24,28 +46,6 @@ export interface getInvCode {
   to: number
   total: number
 }
-
-export interface addInvCodeSingle {
-  type: 'single'
-  name: string
-  can_count: number
-  group_id: number
-}
-
-export interface addInvCodeRandom {
-  type: 'random'
-  can_count: number
-  count: number
-  group_id: number
-}
-
-export type addInvCode = addInvCodeSingle | addInvCodeRandom
-
-export const addInvCodeSingle = (data: addInvCodeSingle) =>
-  axios.post<null>('/admin/inv_code', data)
-
-export const addInvCodeRandom = (data: addInvCodeRandom) =>
-  axios.post<null>('/admin/inv_code/generate', data)
 
 export const getInvCode = (data: { page: number; size: number }) =>
   axios.get<getInvCode>(`/admin/inv_code?page=${data.page}&size=${data.size}`)

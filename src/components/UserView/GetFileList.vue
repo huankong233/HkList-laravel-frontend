@@ -43,7 +43,7 @@
         <el-button
           type="primary"
           :disabled="selectedRows.length <= 0"
-          @click="fileListStore.downloadFiles()"
+          @click="fileListStore.getDownloadLinks()"
         >
           批量解析
         </el-button>
@@ -84,7 +84,7 @@ const checkLink = () => {
     } else {
       getFileListForm.value.url = `https://pan.baidu.com/s/${data.id}`
     }
-    getFileListForm.value.shorturl = data.id
+    getFileListForm.value.surl = data.id
   }
 
   if (data.pwd) {
@@ -121,7 +121,7 @@ const copyLink = async (formEl: FormInstance | null) => {
   if (!formEl || !(await formEl.validate())) return
 
   copy(
-    `${location.host}/?url=${getFileListForm.value.url}&shorturl=${getFileListForm.value.shorturl}&pwd=${getFileListForm.value.pwd}&dir=${encodeURIComponent(getFileListForm.value.dir)}`,
+    `${location.host}/?url=${getFileListForm.value.url}&surl=${getFileListForm.value.surl}&pwd=${getFileListForm.value.pwd}&dir=${encodeURIComponent(getFileListForm.value.dir)}`,
     '复制成功'
   )
 }
@@ -133,7 +133,7 @@ onMounted(() => {
   getFileListForm.value.url = searchParams.get('url') ?? ''
   getFileListForm.value.pwd = searchParams.get('pwd') ?? ''
   getFileListForm.value.dir = searchParams.get('dir') ?? '/'
-  getFileListForm.value.shorturl = searchParams.get('shorturl') ?? ''
+  getFileListForm.value.surl = searchParams.get('surl') ?? ''
 
   ElMessage.success('已读取到参数,正在加载')
 

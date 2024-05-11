@@ -1,5 +1,12 @@
 import axios from '@/utils/request.js'
 
+export interface addIp {
+  ip: string
+  mode: 0 | 1
+}
+
+export const addIp = (data: addIp) => axios.post<null>('/admin/ip', data)
+
 export interface Ip {
   id: number
   ip: string
@@ -22,13 +29,6 @@ export interface getIp {
   to: number
   total: number
 }
-
-export interface addIp {
-  ip: string
-  mode: 0 | 1
-}
-
-export const addIp = (data: addIp) => axios.post<null>('/admin/ip', data)
 
 export const getIp = (data: { page: number; size: number }) =>
   axios.get<getIp>(`/admin/ip?page=${data.page}&size=${data.size}`)

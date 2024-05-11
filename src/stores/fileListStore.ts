@@ -7,10 +7,11 @@ export const useFileListStore = defineStore('fileListStore', () => {
   const pending = ref(false)
 
   const getFileListForm = ref<ParseApi.getFileList>({
-    shorturl: '',
+    surl: '',
     url: '',
     pwd: '',
-    dir: '/'
+    dir: '/',
+    password: ''
   })
   const getFileListFormRef = ref(null)
 
@@ -20,6 +21,38 @@ export const useFileListStore = defineStore('fileListStore', () => {
     newArr.pop()
     const newPath = newArr.join('/')
     return newPath === '' ? '/' : newPath
+  }
+
+  const signData = ref({
+    sign: '',
+    timestamp: 0
+  })
+
+  const getSign = async () => {
+    try {
+      pending.value = true
+      const res = await ParseApi.getSign({
+        surl: getFileListForm.value.surl,
+        uk: fileList.value.uk,
+        shareid: fileList.value.shareid,
+        password: getFileListForm.value.password
+      })
+      signData.value.sign = res.data.sign
+      signData.value.timestamp = res.data.timestamp
+      ElMessage.success('获取签名成功')
+    } finally {
+      pending.value = false
+    }
+  }
+
+  // 检查签名是否过期
+  const checkSign = async () => {
+    if (Date.now() / 1000 - signData.value.timestamp > 250) {
+      ElMessage.info('获取签名中')
+      await getSign()
+    } else {
+      ElMessage.success('签名未过期,无需更新')
+    }
   }
 
   const getFileList = async () => {
@@ -50,6 +83,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
       ElMessage.success('获取文件列表成功')
     } finally {
       pending.value = false
+      await checkSign()
     }
   }
 
@@ -64,19 +98,21 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
   const downloadLinks = ref<ParseApi.downloadLinks>([])
 
-  const downloadFiles = async (fs_id?: number, path?: string) => {
+  const getDownloadLinks = async (fs_id?: number) => {
     const fs_ids = fs_id ? [fs_id] : selectedRows.value.map((row) => row.fs_id)
-    const path_list = path ? [path] : selectedRows.value.map((row) => row.path)
+
+    await checkSign()
 
     try {
       pending.value = true
-      const res = await ParseApi.downloadFiles({
+      const res = await ParseApi.getDownloadLinks({
         uk: fileList.value.uk,
         shareid: fileList.value.shareid,
         randsk: fileList.value.randsk,
         fs_ids,
-        path_list,
-        url: getFileListForm.value.url
+        sign: signData.value.sign,
+        timestamp: signData.value.timestamp,
+        password: getFileListForm.value.password
       })
       downloadLinks.value = res.data
       ElMessage.success('解析成功')
@@ -92,7 +128,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
     getFileListForm,
     getFileListFormRef,
     selectedRows,
-    downloadFiles,
-    downloadLinks
+    downloadLinks,
+    getDownloadLinks
   }
 })

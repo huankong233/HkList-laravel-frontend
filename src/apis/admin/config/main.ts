@@ -15,7 +15,7 @@ export interface config {
 
 export const getConfig = () => axios.get<config>('/admin/config/main')
 
-export const updateConfig = (data: {
+export interface updateConfig {
   sleep: number
   max_once: number
   password: string
@@ -23,4 +23,6 @@ export const updateConfig = (data: {
   user_agent: string
   need_inv_code: boolean
   whitelist_mode: boolean
-}) => axios.patch<null>('/admin/config/main', data)
+}
+
+export const updateConfig = (data: updateConfig) => axios.patch<null>('/admin/config/main', data)

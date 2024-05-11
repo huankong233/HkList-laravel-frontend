@@ -1,5 +1,11 @@
 import axios from '@/utils/request.js'
 
+export interface addAccount {
+  cookie: string[]
+}
+
+export const addAccount = (data: addAccount) => axios.post<null>('/admin/account', data)
+
 export interface Account {
   id: number
   baidu_name: string
@@ -29,12 +35,6 @@ export interface getAccount {
   to: number
   total: number
 }
-
-export interface addAccount {
-  cookie: string[]
-}
-
-export const addAccount = (data: addAccount) => axios.post<null>('/admin/account', data)
 
 export const getAccount = (data: { page: number; size: number }) =>
   axios.get<getAccount>(`/admin/account?page=${data.page}&size=${data.size}`)

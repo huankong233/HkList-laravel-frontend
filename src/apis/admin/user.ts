@@ -1,5 +1,14 @@
 import axios from '@/utils/request.js'
 
+export interface addUser {
+  username: string
+  password: string
+  role: 'user' | 'admin'
+  group_id?: number
+}
+
+export const addUser = (data: addUser) => axios.post<null>('/admin/user', data)
+
 export interface User {
   id: number
   group_id: number
@@ -26,15 +35,6 @@ export interface getUser {
   to: number
   total: number
 }
-
-export interface addUser {
-  username: string
-  password: string
-  role: 'user' | 'admin'
-  group_id?: number
-}
-
-export const addUser = (data: addUser) => axios.post<null>('/admin/user', data)
 
 export const getUser = (data: { page: number; size: number }) =>
   axios.get<getUser>(`/admin/user?page=${data.page}&size=${data.size}`)

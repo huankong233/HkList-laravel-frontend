@@ -66,7 +66,7 @@ const clickRow = async (row: ParseApi.file) => {
     if (row.isdir === 1) {
       await getDir(row.path)
     } else {
-      await fileListStore.downloadFiles(row.fs_id, row.path)
+      await fileListStore.getDownloadLinks(row.fs_id)
     }
   } finally {
     pending.value = false
@@ -82,7 +82,7 @@ const dblclickRow = async (row: ParseApi.file) => {
     if (row.isdir === 1) {
       await getDir(row.path)
     } else {
-      await fileListStore.downloadFiles(row.fs_id, row.path)
+      await fileListStore.getDownloadLinks(row.fs_id)
     }
   } finally {
     pending.value = false
