@@ -62,7 +62,7 @@ import { getAppName } from '@/utils/env.js'
 import type { RuleItem } from 'async-validator'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { onMounted } from 'vue'
+import { nextTick, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const fileListStore = useFileListStore()
@@ -76,6 +76,9 @@ const urlValidator: RuleItem['validator'] = (rule, value, callback) => {
 }
 
 const checkLink = () => {
+  getFileListForm.value.dir = '/'
+  getFileListForm.value.surl = ''
+
   const data = getUrlId(getFileListForm.value.url)
   if (!data) return
   if (data.id) {
@@ -120,24 +123,31 @@ const getFileListFormRule: FormRules = {
 const copyLink = async (formEl: FormInstance | null) => {
   if (!formEl || !(await formEl.validate())) return
 
-  copy(
-    `${location.host}/?url=${getFileListForm.value.url}&surl=${getFileListForm.value.surl}&pwd=${getFileListForm.value.pwd}&dir=${encodeURIComponent(getFileListForm.value.dir)}`,
-    '复制成功'
-  )
+  const search = new URLSearchParams()
+  search.set('url', getFileListForm.value.url)
+  search.set('surl', getFileListForm.value.surl)
+  search.set('pwd', getFileListForm.value.pwd)
+  search.set('dir', getFileListForm.value.dir)
+
+  copy(`${location.host}/?${search.toString()}`, '复制成功')
 }
 
 onMounted(() => {
-  const searchParams = new URLSearchParams(location.search)
-  if (searchParams.size < 4) return
+  nextTick(() => {
+    const searchParams = new URLSearchParams(location.search)
+    if (searchParams.size < 4) return
 
-  getFileListForm.value.url = searchParams.get('url') ?? ''
-  getFileListForm.value.pwd = searchParams.get('pwd') ?? ''
-  getFileListForm.value.dir = searchParams.get('dir') ?? '/'
-  getFileListForm.value.surl = searchParams.get('surl') ?? ''
+    getFileListForm.value = {
+      url: searchParams.get('url') ?? '',
+      pwd: searchParams.get('pwd') ?? '',
+      dir: searchParams.get('dir') ?? '/',
+      surl: searchParams.get('surl') ?? ''
+    }
 
-  ElMessage.success('已读取到参数,正在加载')
+    ElMessage.success('已读取到参数,正在加载')
 
-  setTimeout(() => fileListStore.getFileList(), 1000)
+    setTimeout(() => fileListStore.getFileList(), 1000)
+  })
 })
 
 const router = useRouter()

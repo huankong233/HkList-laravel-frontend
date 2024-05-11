@@ -59,6 +59,8 @@ export const useFileListStore = defineStore('fileListStore', () => {
     if (!getFileListFormRef.value || !(await (getFileListFormRef.value as FormInstance).validate()))
       return
 
+    if (getFileListForm.value.surl === '') return ElMessage.error('获取链接surl失败')
+
     try {
       selectedRows.value = []
       pending.value = true
@@ -99,7 +101,11 @@ export const useFileListStore = defineStore('fileListStore', () => {
   const downloadLinks = ref<ParseApi.downloadLinks>([])
 
   const getDownloadLinks = async (fs_id?: number) => {
-    const fs_ids = fs_id ? [fs_id] : selectedRows.value.map((row) => row.fs_id)
+    const fs_ids = fs_id
+      ? [fs_id]
+      : selectedRows.value.filter((file) => file.isdir !== 1).map((row) => row.fs_id)
+
+    if (fs_ids.length !== selectedRows.value.length) ElMessage.error('文件夹不会被解析!')
 
     await checkSign()
 
