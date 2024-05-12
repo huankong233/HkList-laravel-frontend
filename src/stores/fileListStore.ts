@@ -105,7 +105,8 @@ export const useFileListStore = defineStore('fileListStore', () => {
       ? [fs_id]
       : selectedRows.value.filter((file) => file.isdir !== 1).map((row) => row.fs_id)
 
-    if (fs_ids.length !== selectedRows.value.length) ElMessage.error('文件夹不会被解析!')
+    if (fs_id === undefined && fs_ids.length !== selectedRows.value.length)
+      ElMessage.error('文件夹不会被解析!')
 
     await checkSign()
 
