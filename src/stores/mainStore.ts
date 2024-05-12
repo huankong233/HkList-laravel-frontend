@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router'
 
 export const useMainStore = defineStore('mainStore', () => {
   const config = ref<config & { is_https: boolean }>({
+    show_announce: false,
     announce: '',
     user_agent: '',
     debug: false,

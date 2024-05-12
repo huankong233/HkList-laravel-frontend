@@ -31,7 +31,7 @@
       <el-input-number v-model="changeConfigForm.max_once"></el-input-number>
     </el-form-item>
     <el-form-item label="公告内容" prop="announce">
-      <el-input type="textarea" v-model.trim="changeConfigForm.announce"></el-input>
+      <el-input type="textarea" v-model="changeConfigForm.announce"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
       <el-input v-model.trim="changeConfigForm.password"></el-input>
@@ -72,9 +72,12 @@ const changeConfigFormRule: FormRules = {
 const getConfig = async () => {
   try {
     pending.value = true
+    const res = await mainConfigApi.getConfig()
+    const data = res.data
     changeConfigForm.value = {
-      ...(await mainConfigApi.getConfig()).data,
-      front_end_version: await getFrontEndVersion()
+      ...data,
+      front_end_version: await getFrontEndVersion(),
+      announce: data.announce.replaceAll('[NextLine]', '\n')
     }
   } finally {
     pending.value = false

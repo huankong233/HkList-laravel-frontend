@@ -2,6 +2,7 @@ import axios from '@/utils/request.js'
 import { string2number } from '@/utils/string2number.js'
 
 export interface config {
+  show_announce: boolean
   announce: string
   user_agent: string
   debug: boolean
