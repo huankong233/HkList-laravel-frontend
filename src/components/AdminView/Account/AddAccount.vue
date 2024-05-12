@@ -11,7 +11,7 @@
         <el-text>可以使用换行来分割多个账号</el-text>
       </el-form-item>
       <el-form-item label="Cookie" prop="cookie">
-        <el-input type="textarea" v-model.trim="addAccountForm.cookie"></el-input>
+        <el-input type="textarea" v-model="addAccountForm.cookie"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>

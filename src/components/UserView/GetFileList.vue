@@ -99,10 +99,11 @@ const checkLink = () => {
   if (data.id) {
     if (data.surl) {
       getFileListForm.value.url = `https://pan.baidu.com/share/init?surl=${data.id}`
+      getFileListForm.value.surl = `1${data.id}`
     } else {
       getFileListForm.value.url = `https://pan.baidu.com/s/${data.id}`
+      getFileListForm.value.surl = data.id
     }
-    getFileListForm.value.surl = data.id
   }
 
   if (data.pwd) {
