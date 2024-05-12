@@ -47,7 +47,7 @@ export default defineConfig({
     viteCompression({
       verbose: true,
       disable: false,
-      algorithm: 'gzip',
+      algorithm: 'brotliCompress',
       ext: '.gz'
     })
   ],
@@ -59,7 +59,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost',
+        target: 'http://localhost:8000',
         changeOrigin: true
       }
     }

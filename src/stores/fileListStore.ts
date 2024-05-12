@@ -124,6 +124,28 @@ export const useFileListStore = defineStore('fileListStore', () => {
       ElMessage.success('解析成功')
     } finally {
       pending.value = false
+      await getLimit()
+    }
+  }
+
+  const limitForm = ref<ParseApi.limit>({
+    group_name: '',
+    count: 0,
+    size: 0
+  })
+
+  const hitLimit = ref(false)
+
+  const getLimit = async () => {
+    try {
+      pending.value = true
+      const res = await ParseApi.getLimit()
+      limitForm.value = res.data
+      hitLimit.value = false
+    } catch {
+      hitLimit.value = true
+    } finally {
+      pending.value = false
     }
   }
 
@@ -135,6 +157,9 @@ export const useFileListStore = defineStore('fileListStore', () => {
     getFileListFormRef,
     selectedRows,
     downloadLinks,
-    getDownloadLinks
+    getDownloadLinks,
+    limitForm,
+    getLimit,
+    hitLimit
   }
 })

@@ -94,3 +94,11 @@ export type downloadLinks = link[]
 
 export const getDownloadLinks = (data: getDownloadLinks) =>
   axios.post<downloadLinks>('/parse/get_download_links', data)
+
+export interface limit {
+  group_name: string
+  count: number
+  size: number
+}
+
+export const getLimit = () => axios.get<limit>('/parse/limit')

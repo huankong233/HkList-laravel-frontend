@@ -2,7 +2,7 @@
   <el-card class="box-card" v-if="getLoginState() === '1'">
     <h2>
       后台控制中心 | {{ getAppName() }}
-      <el-button type="danger" @click="logout()">退出登陆</el-button>
+      <el-button type="danger" @click="mainStore.logout()">退出登陆</el-button>
     </h2>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基础配置" name="changeMainConfig">
@@ -46,11 +46,12 @@
 </template>
 
 <script lang="ts" setup>
-import * as UserApi from '@/apis/user/user.js'
-import { getAppName, getLoginState, setLoginState, getLoginRole } from '@/utils/env.js'
-import { ElMessage } from 'element-plus'
+import { useMainStore } from '@/stores/mainStore.js'
+import { getAppName, getLoginRole, getLoginState } from '@/utils/env.js'
 import { defineAsyncComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+const mainStore = useMainStore()
 
 const ChangeMainConfig = defineAsyncComponent(
   () => import('@/components/AdminView/Config/ChangeMainConfig.vue')
@@ -89,16 +90,6 @@ const router = useRouter()
 
 if (getLoginState() === '0') router.push('/login')
 if (getLoginRole() === 'user') router.push('/user')
-
-const logout = async () => {
-  try {
-    await UserApi.logout()
-  } finally {
-    setLoginState('0')
-    router.push('/')
-    ElMessage.success('退出登陆成功~')
-  }
-}
 </script>
 
 <style lang="scss" scoped></style>

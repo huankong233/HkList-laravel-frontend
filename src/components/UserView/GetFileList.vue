@@ -19,6 +19,16 @@
       v-if="!config.is_https"
     />
 
+    <el-alert
+      class="alert"
+      :type="hitLimit ? 'error' : 'success'"
+      :title="
+        hitLimit
+          ? '当前用户配额已用完'
+          : `当前用户组: ${limitForm.group_name} 当前剩余解析次数: ${limitForm.count} 当前剩余解析大小: ${formatBytes(limitForm.size)}`
+      "
+    />
+
     <el-form
       ref="getFileListFormRef"
       :model="getFileListForm"
@@ -39,7 +49,7 @@
         <el-input v-model="getFileListForm.dir" disabled></el-input>
       </el-form-item>
       <el-form-item label=" ">
-        <el-button type="primary" @click="fileListStore.getFileList()">获取文件列表</el-button>
+        <el-button type="primary" @click="fileListStore.getFileList()">获取/刷新列表</el-button>
         <el-button
           type="primary"
           :disabled="selectedRows.length <= 0"
@@ -48,7 +58,10 @@
           批量解析
         </el-button>
         <el-button type="primary" @click="copyLink(getFileListFormRef)">复制当前地址</el-button>
-        <el-button type="primary" @click="goLogin()">登陆</el-button>
+        <el-button type="primary" @click="goLogin()" v-if="getLoginState() === '0'">登陆</el-button>
+        <el-button type="danger" @click="mainStore.logout()" v-if="getLoginState() === '1'"
+          >注销</el-button
+        >
       </el-form-item>
     </el-form>
   </el-card>
@@ -58,7 +71,8 @@
 import { useFileListStore } from '@/stores/fileListStore.js'
 import { useMainStore } from '@/stores/mainStore.js'
 import { copy } from '@/utils/copy.js'
-import { getAppName } from '@/utils/env.js'
+import { getAppName, getLoginState } from '@/utils/env.js'
+import { formatBytes } from '@/utils/format.js'
 import type { RuleItem } from 'async-validator'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
@@ -66,7 +80,8 @@ import { nextTick, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const fileListStore = useFileListStore()
-const { pending, getFileListForm, getFileListFormRef, selectedRows } = storeToRefs(fileListStore)
+const { pending, getFileListForm, getFileListFormRef, selectedRows, limitForm, hitLimit } =
+  storeToRefs(fileListStore)
 const mainStore = useMainStore()
 const { config } = storeToRefs(mainStore)
 
@@ -146,8 +161,9 @@ onMounted(() => {
 
     ElMessage.success('已读取到参数,正在加载')
 
-    setTimeout(() => fileListStore.getFileList(), 1000)
+    setTimeout(fileListStore.getFileList, 1000)
   })
+  fileListStore.getLimit()
 })
 
 const router = useRouter()
