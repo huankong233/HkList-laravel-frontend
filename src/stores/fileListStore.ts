@@ -124,6 +124,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
       ElMessage.success('解析成功')
     } finally {
       pending.value = false
+      signData.value.timestamp = 0
       await getLimit()
     }
   }
