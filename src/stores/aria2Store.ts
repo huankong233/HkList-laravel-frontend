@@ -6,11 +6,10 @@ import { ref } from 'vue'
 export const useAria2Store = defineStore('aria2Store', () => {
   const aria2ConfigDialogVisible = ref(false)
   const aria2ConfigForm = ref(loadAria2Config())
-  const aria2ConfigFormRef = ref(null)
+  const aria2ConfigFormRef = ref<FormInstance | null>(null)
 
   const saveAria2Config = async () => {
-    if (!aria2ConfigFormRef.value || !(await (aria2ConfigFormRef.value as FormInstance).validate()))
-      return
+    if (!aria2ConfigFormRef.value || !(await aria2ConfigFormRef.value.validate())) return
 
     setAria2Config(aria2ConfigForm.value)
     ElMessage.success('保存成功')

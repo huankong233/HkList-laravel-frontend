@@ -13,7 +13,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
     dir: '/',
     password: ''
   })
-  const getFileListFormRef = ref(null)
+  const getFileListFormRef = ref<FormInstance | null>(null)
 
   // 根据路径生成上一个路径的地址
   const getPreviousPath = () => {
@@ -56,8 +56,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
   }
 
   const getFileList = async () => {
-    if (!getFileListFormRef.value || !(await (getFileListFormRef.value as FormInstance).validate()))
-      return
+    if (!getFileListFormRef.value || !(await getFileListFormRef.value.validate())) return
 
     if (getFileListForm.value.surl === '') return ElMessage.error('获取链接surl失败')
 
