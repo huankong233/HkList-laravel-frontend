@@ -45,9 +45,10 @@ const addAccount = async (formEl: FormInstance | null) => {
 
   try {
     pending.value = true
-    await AccountApi.addAccount({
+    const res = await AccountApi.addAccount({
       cookie: addAccountForm.value.cookie.split('\n')
     })
+    if (res.data.have_repeat) ElMessage.info('存在重复的cookie,已自动过滤')
     ElMessage.success('添加成功')
   } finally {
     pending.value = false

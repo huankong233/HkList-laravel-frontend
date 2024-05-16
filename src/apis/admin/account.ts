@@ -4,7 +4,8 @@ export interface addAccount {
   cookie: string[]
 }
 
-export const addAccount = (data: addAccount) => axios.post<null>('/admin/account', data)
+export const addAccount = (data: addAccount) =>
+  axios.post<{ have_repeat: boolean }>('/admin/account', data)
 
 export interface Account {
   id: number
