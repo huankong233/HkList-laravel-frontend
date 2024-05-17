@@ -43,7 +43,7 @@
   <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
-    :page-sizes="[15, 30, 50, 100]"
+    :page-sizes="[15, 50, 100, 500, RecordList?.total ?? 100]"
     :total="RecordList?.total ?? 100"
     layout="sizes, prev, pager, next"
     @size-change="getRecords"

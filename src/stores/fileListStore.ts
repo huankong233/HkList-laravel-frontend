@@ -122,9 +122,9 @@ export const useFileListStore = defineStore('fileListStore', () => {
       })
       downloadLinks.value = res.data
       ElMessage.success('解析成功')
+      signData.value.timestamp = 0
     } finally {
       pending.value = false
-      signData.value.timestamp = 0
       await getLimit()
     }
   }
