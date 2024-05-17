@@ -1,6 +1,6 @@
 # 94list-laravel-frontend
 
-<p align="center"><a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="100" src="https://vuejs.org/images/logo.png" alt="Vue logo"></a></p>
+![Vue Logo](https://raw.githubusercontent.com/jonacruz89/SAWARATSUKI.ServiceLogos/main/Vue/Vue.png)
 
 ## 介绍
 
