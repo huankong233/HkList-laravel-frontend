@@ -30,12 +30,15 @@
       <el-table-column prop="filename" label="文件名"></el-table-column>
       <el-table-column prop="url" label="下载链接"></el-table-column>
       <el-table-column label="操作" width="190">
-        <template #default="{ row }">
+        <template #default="{ row, $index }">
           <el-button type="primary" size="small" @click="copy(row.url, '已将链接复制到粘贴板内')">
             复制链接
           </el-button>
           <el-button type="primary" size="small" @click="sendDownloadFile(row)">
             发送Aria2
+          </el-button>
+          <el-button type="danger" size="small" @click="getDownloadLinks($index, row.fs_id)">
+            重新解析
           </el-button>
         </template>
       </el-table-column>
@@ -95,6 +98,12 @@ const sendDownloadFiles = async () => {
 }
 
 const openAria2ConfigDialog = () => (aria2ConfigDialogVisible.value = true)
+
+const getDownloadLinks = async (index: number, fs_id: number) => {
+  const res = await fileListStore.getDownloadLinks(fs_id, true)
+  if (!res) return ElMessage.error('重新解析失败')
+  downloadLinks.value[index] = res[0]
+}
 </script>
 
 <style lang="scss" scoped></style>

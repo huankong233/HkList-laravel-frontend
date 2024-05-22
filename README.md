@@ -11,6 +11,7 @@
 - `vue3`
 - `vite`
 - `axios`
+- `pinia`
 - `typescript`
 - `vue-router`
 - `element-plus`

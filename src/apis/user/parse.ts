@@ -89,6 +89,7 @@ export interface link {
   url: string
   filename: string
   ua: string
+  fs_id: number
 }
 
 export type downloadLinks = link[]

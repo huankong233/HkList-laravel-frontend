@@ -99,7 +99,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
   const downloadLinks = ref<ParseApi.downloadLinks>([])
 
-  const getDownloadLinks = async (fs_id?: number) => {
+  const getDownloadLinks = async (fs_id?: number, returnValue = false) => {
     const fs_ids = fs_id
       ? [fs_id]
       : selectedRows.value.filter((file) => file.isdir !== 1).map((row) => row.fs_id)
@@ -109,9 +109,10 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
     await checkSign()
 
+    let res
     try {
       pending.value = true
-      const res = await ParseApi.getDownloadLinks({
+      res = await ParseApi.getDownloadLinks({
         uk: fileList.value.uk,
         shareid: fileList.value.shareid,
         randsk: fileList.value.randsk,
@@ -120,13 +121,15 @@ export const useFileListStore = defineStore('fileListStore', () => {
         timestamp: signData.value.timestamp,
         password: getFileListForm.value.password
       })
-      downloadLinks.value = res.data
+      if (!returnValue) downloadLinks.value = res.data
       ElMessage.success('解析成功')
       signData.value.timestamp = 0
     } finally {
       pending.value = false
       await getLimit()
     }
+
+    if (returnValue) return res.data
   }
 
   const limitForm = ref<ParseApi.limit>({
