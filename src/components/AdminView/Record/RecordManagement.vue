@@ -17,7 +17,11 @@
     <el-table-column prop="ip" label="IP"></el-table-column>
     <el-table-column prop="fs_id" label="文件ID"></el-table-column>
     <el-table-column prop="filename" label="文件名"></el-table-column>
-    <el-table-column prop="size" label="文件大小"></el-table-column>
+    <el-table-column prop="size" label="文件大小">
+      <template #default="{ row }">
+        {{ formatBytes(row.size) }}
+      </template>
+    </el-table-column>
     <el-table-column prop="url" label="下载链接"></el-table-column>
     <el-table-column prop="ua" label="UA"></el-table-column>
     <el-table-column prop="user_id" label="用户ID"></el-table-column>
@@ -53,6 +57,7 @@
 
 <script lang="ts" setup>
 import * as RecordApi from '@/apis/admin/record.js'
+import { formatBytes } from '@/utils/format.js'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
