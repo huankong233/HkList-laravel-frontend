@@ -9,7 +9,7 @@
 
   <el-table
     v-loading="pending"
-    :data="GroupList?.data ?? []"
+    :data="groupList?.data ?? []"
     border
     show-overflow-tooltip
     class="table"
@@ -61,8 +61,8 @@
   <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
-    :page-sizes="[15, 50, 100, 500, GroupList?.total ?? 100]"
-    :total="GroupList?.total ?? 100"
+    :page-sizes="[15, 50, 100, 500, groupList?.total ?? 100]"
+    :total="groupList?.total ?? 100"
     layout="sizes, prev, pager, next"
     @size-change="getGroups"
     @current-change="getGroups"
@@ -79,14 +79,14 @@ const pending = ref(false)
 
 const pageSize = ref(15)
 const currentPage = ref(1)
-const GroupList = ref<GroupApi.getGroup>()
+const groupList = ref<GroupApi.getGroup>()
 const selectGroups = ref<GroupApi.Group[]>([])
 
 const getGroups = async () => {
   try {
     pending.value = true
     const res = await GroupApi.getGroup({ page: currentPage.value, size: pageSize.value })
-    GroupList.value = res.data
+    groupList.value = res.data
   } finally {
     pending.value = false
   }

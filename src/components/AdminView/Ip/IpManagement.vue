@@ -9,7 +9,7 @@
 
   <el-table
     v-loading="pending"
-    :data="IpList?.data ?? []"
+    :data="ipList?.data ?? []"
     border
     show-overflow-tooltip
     class="table"
@@ -62,8 +62,8 @@
   <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
-    :page-sizes="[15, 50, 100, 500, IpList?.total ?? 100]"
-    :total="IpList?.total ?? 100"
+    :page-sizes="[15, 50, 100, 500, ipList?.total ?? 100]"
+    :total="ipList?.total ?? 100"
     layout="sizes, prev, pager, next"
     @size-change="getIps"
     @current-change="getIps"
@@ -81,14 +81,14 @@ const pending = ref(false)
 
 const pageSize = ref(15)
 const currentPage = ref(1)
-const IpList = ref<IpApi.getIp>()
+const ipList = ref<IpApi.getIp>()
 const selectIps = ref<IpApi.Ip[]>([])
 
 const getIps = async () => {
   try {
     pending.value = true
     const res = await IpApi.getIp({ page: currentPage.value, size: pageSize.value })
-    IpList.value = res.data
+    ipList.value = res.data
   } finally {
     pending.value = false
   }

@@ -4,6 +4,13 @@
     批量删除
   </el-button>
 
+  <el-text style="margin-left: 20px">
+    累计解析: {{ recordCount.total.count }} ({{ formatBytes(recordCount.total.size) }})
+  </el-text>
+  <el-text>
+    今日解析: {{ recordCount.today.count }} ({{ formatBytes(recordCount.today.size) }})
+  </el-text>
+
   <el-table
     v-loading="pending"
     :data="RecordList?.data ?? []"
@@ -67,12 +74,27 @@ const pageSize = ref(15)
 const currentPage = ref(1)
 const RecordList = ref<RecordApi.getRecord>()
 const selectRecords = ref<RecordApi.Record[]>([])
+const recordCount = ref<RecordApi.getRecordCount>({
+  today: { count: 0, size: 0 },
+  total: { count: 0, size: 0 }
+})
 
 const getRecords = async () => {
   try {
     pending.value = true
     const res = await RecordApi.getRecord({ page: currentPage.value, size: pageSize.value })
     RecordList.value = res.data
+  } finally {
+    pending.value = false
+    await getRecordCount()
+  }
+}
+
+const getRecordCount = async () => {
+  try {
+    pending.value = true
+    const res = await RecordApi.getRecordCount()
+    recordCount.value = res.data
   } finally {
     pending.value = false
   }

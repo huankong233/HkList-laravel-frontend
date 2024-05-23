@@ -18,7 +18,7 @@
 
   <el-table
     v-loading="pending"
-    :data="AccountList?.data ?? []"
+    :data="accountList?.data ?? []"
     border
     show-overflow-tooltip
     class="table"
@@ -71,8 +71,8 @@
   <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
-    :page-sizes="[15, 50, 100, 500, AccountList?.total ?? 100]"
-    :total="AccountList?.total ?? 100"
+    :page-sizes="[15, 50, 100, 500, accountList?.total ?? 100]"
+    :total="accountList?.total ?? 100"
     layout="sizes, prev, pager, next"
     @size-change="getAccounts"
     @current-change="getAccounts"
@@ -89,14 +89,14 @@ const pending = ref(false)
 
 const pageSize = ref(15)
 const currentPage = ref(1)
-const AccountList = ref<AccountApi.getAccount>()
+const accountList = ref<AccountApi.getAccount>()
 const selectAccounts = ref<AccountApi.Account[]>([])
 
 const getAccounts = async () => {
   try {
     pending.value = true
     const res = await AccountApi.getAccount({ page: currentPage.value, size: pageSize.value })
-    AccountList.value = res.data
+    accountList.value = res.data
   } finally {
     pending.value = false
   }

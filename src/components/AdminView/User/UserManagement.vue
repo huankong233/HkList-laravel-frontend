@@ -9,7 +9,7 @@
 
   <el-table
     v-loading="pending"
-    :data="UserList?.data ?? []"
+    :data="userList?.data ?? []"
     border
     show-overflow-tooltip
     class="table"
@@ -70,8 +70,8 @@
   <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
-    :page-sizes="[15, 50, 100, 500, UserList?.total ?? 100]"
-    :total="UserList?.total ?? 100"
+    :page-sizes="[15, 50, 100, 500, userList?.total ?? 100]"
+    :total="userList?.total ?? 100"
     layout="sizes, prev, pager, next"
     @size-change="getUsers"
     @current-change="getUsers"
@@ -88,14 +88,14 @@ const pending = ref(false)
 
 const pageSize = ref(15)
 const currentPage = ref(1)
-const UserList = ref<UserApi.getUser>()
+const userList = ref<UserApi.getUser>()
 const selectUsers = ref<UserApi.User[]>([])
 
 const getUsers = async () => {
   try {
     pending.value = true
     const res = await UserApi.getUser({ page: currentPage.value, size: pageSize.value })
-    UserList.value = res.data
+    userList.value = res.data
   } finally {
     pending.value = false
   }

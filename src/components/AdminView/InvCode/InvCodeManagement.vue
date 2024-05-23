@@ -9,7 +9,7 @@
 
   <el-table
     v-loading="pending"
-    :data="InvCodeList?.data ?? []"
+    :data="invCodeList?.data ?? []"
     border
     show-overflow-tooltip
     class="table"
@@ -67,8 +67,8 @@
   <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
-    :page-sizes="[15, 50, 100, 500, InvCodeList?.total ?? 100]"
-    :total="InvCodeList?.total ?? 100"
+    :page-sizes="[15, 50, 100, 500, invCodeList?.total ?? 100]"
+    :total="invCodeList?.total ?? 100"
     layout="sizes, prev, pager, next"
     @size-change="getInvCodes"
     @current-change="getInvCodes"
@@ -85,14 +85,14 @@ const pending = ref(false)
 
 const pageSize = ref(15)
 const currentPage = ref(1)
-const InvCodeList = ref<InvCodeApi.getInvCode>()
+const invCodeList = ref<InvCodeApi.getInvCode>()
 const selectInvCodes = ref<InvCodeApi.InvCode[]>([])
 
 const getInvCodes = async () => {
   try {
     pending.value = true
     const res = await InvCodeApi.getInvCode({ page: currentPage.value, size: pageSize.value })
-    InvCodeList.value = res.data
+    invCodeList.value = res.data
   } finally {
     pending.value = false
   }

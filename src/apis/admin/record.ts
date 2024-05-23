@@ -33,6 +33,19 @@ export interface getRecord {
 export const getRecord = (data: { page: number; size: number }) =>
   axios.get<getRecord>(`/admin/record?page=${data.page}&size=${data.size}`)
 
+export interface getRecordCount {
+  today: {
+    count: number
+    size: number
+  }
+  total: {
+    count: number
+    size: number
+  }
+}
+
+export const getRecordCount = () => axios.get<getRecordCount>(`/admin/record/count`)
+
 export const deleteRecord = (record: Record) =>
   axios.delete<null>(`/admin/record`, { data: { record_ids: [record.id] } })
 
