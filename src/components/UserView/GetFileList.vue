@@ -2,8 +2,17 @@
   <el-card v-loading="pending">
     <h2>前台解析中心 | {{ getAppName() }}</h2>
 
-    <el-alert title="当前中转账号充足" type="success" v-if="config.have_account" />
-    <el-alert title="当前中转账号不足" type="error" v-else />
+    <el-alert
+      show-icon
+      type="warning"
+      :closable="false"
+      title="项目全部开源,开源地址: https://github.com/huankong233/94list-laravel"
+      @click="openWindow()"
+      class="cursor"
+    />
+
+    <el-alert class="alert" title="当前中转账号充足" type="success" v-if="config.have_account" />
+    <el-alert class="alert" title="当前中转账号不足" type="error" v-else />
 
     <el-alert
       class="alert"
@@ -169,6 +178,10 @@ onMounted(() => {
 
 const router = useRouter()
 const goLogin = () => router.push('/login')
+
+function openWindow() {
+  window.open('https://github.com/huankong233/94list-laravel')
+}
 </script>
 
 <style lang="scss" scoped>
@@ -179,5 +192,9 @@ img:hover {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+.cursor {
+  cursor: pointer;
 }
 </style>
