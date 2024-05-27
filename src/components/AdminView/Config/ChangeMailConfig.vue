@@ -49,6 +49,7 @@
 
 <script lang="ts" setup>
 import * as MailConfigApi from '@/apis/admin/config/mail.js'
+import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
@@ -116,6 +117,8 @@ const sendTestMsg = async (formEl: FormInstance | null) => {
 }
 
 onMounted(getConfig)
+
+registerKeyDown('Enter', () => changeConfig(changeMailConfigFormRef.value))
 </script>
 
 <style lang="scss" scoped></style>

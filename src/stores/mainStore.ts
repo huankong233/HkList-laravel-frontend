@@ -1,13 +1,13 @@
-import type { config } from '@/apis/user/parse.js'
+import * as ParseApi from '@/apis/user/parse.js'
 import * as UserApi from '@/apis/user/user.js'
-import { setLoginState } from '@/utils/env.js'
+import { setLoginRole, setLoginState } from '@/utils/env.js'
 import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export const useMainStore = defineStore('mainStore', () => {
-  const config = ref<config & { is_https: boolean }>({
+  const config = ref<ParseApi.config & { is_https: boolean }>({
     show_announce: false,
     announce: '',
     user_agent: '',
@@ -27,6 +27,7 @@ export const useMainStore = defineStore('mainStore', () => {
       await UserApi.logout()
     } finally {
       setLoginState('0')
+      setLoginRole('user')
       router.push('/')
       ElMessage.success('退出登陆成功~')
     }

@@ -1,14 +1,32 @@
 <template>
-  <el-dialog v-model="mainStore.config.show_announce" title="公告" width="90%">
-    <span v-html="announce"></span>
+  <el-dialog v-model="config.show_announce" title="公告" width="60%" :before-close="beforeClose">
+    <span v-html="config.announce"></span>
+
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="danger" @click="remberAnnounce"> 下次不再提示 </el-button>
+        <el-button type="primary" @click="closeDialog()"> 确认 </el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import { useMainStore } from '@/stores/mainStore.js'
-import { computed } from 'vue'
+import { setRemberAnnounce } from '@/utils/env.js'
+import { storeToRefs } from 'pinia'
+
 const mainStore = useMainStore()
-const announce = computed(() => mainStore.config.announce.replaceAll('[NextLine]', '<br>'))
+const { config } = storeToRefs(mainStore)
+
+const beforeClose = () => {}
+
+const closeDialog = () => (config.value.show_announce = false)
+
+const remberAnnounce = () => {
+  setRemberAnnounce(config.value.announce)
+  closeDialog()
+}
 </script>
 
 <style lang="scss" scoped></style>

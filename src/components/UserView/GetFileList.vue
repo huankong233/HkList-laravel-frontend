@@ -68,9 +68,12 @@
         </el-button>
         <el-button type="primary" @click="copyLink(getFileListFormRef)">复制当前地址</el-button>
         <el-button type="primary" @click="goLogin()" v-if="getLoginState() === '0'">登陆</el-button>
-        <el-button type="danger" @click="mainStore.logout()" v-if="getLoginState() === '1'"
-          >注销</el-button
-        >
+        <el-button type="primary" @click="goAdmin()" v-if="getLoginRole() === 'admin'">
+          进入后台
+        </el-button>
+        <el-button type="danger" @click="mainStore.logout()" v-if="getLoginState() === '1'">
+          注销
+        </el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -80,7 +83,7 @@
 import { useFileListStore } from '@/stores/fileListStore.js'
 import { useMainStore } from '@/stores/mainStore.js'
 import { copy } from '@/utils/copy.js'
-import { getAppName, getLoginState } from '@/utils/env.js'
+import { getAppName, getLoginRole, getLoginState } from '@/utils/env.js'
 import { formatBytes } from '@/utils/format.js'
 import type { RuleItem } from 'async-validator'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
@@ -178,6 +181,7 @@ onMounted(() => {
 
 const router = useRouter()
 const goLogin = () => router.push('/login')
+const goAdmin = () => router.push('/admin')
 
 function openWindow() {
   window.open('https://github.com/huankong233/94list-laravel')

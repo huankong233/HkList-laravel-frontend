@@ -7,7 +7,7 @@ import { useMainStore } from '@/stores/mainStore.js'
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import * as ParseApi from './apis/user/parse.js'
-import { setLoginState } from './utils/env.js'
+import { getRemberAnnounce, setLoginState } from './utils/env.js'
 const mainStore = useMainStore()
 
 onMounted(async () => {
@@ -23,11 +23,17 @@ onMounted(async () => {
   }
 
   const configRes = await ParseApi.getConfig()
+  const data = configRes.data
+
+  data.announce = data.announce.replaceAll('[NextLine]', '<br>')
+  if (data.announce === getRemberAnnounce()) data.show_announce = false
+
   mainStore.config = {
-    ...configRes.data,
+    ...data,
     is_https: document.location.protocol === 'https:'
   }
-  setLoginState(configRes.data.have_login ? '1' : '0')
+
+  setLoginState(data.have_login ? '1' : '0')
 })
 </script>
 

@@ -7,10 +7,14 @@
       <h2>登陆 | {{ getAppName() }}</h2>
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRule" label-width="auto">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="loginForm.username"></el-input>
+          <el-input v-model="loginForm.username" @keyup.enter="submitForm(loginFormRef)" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="loginForm.password" type="password"></el-input>
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            @keyup.enter="submitForm(loginFormRef)"
+          />
         </el-form-item>
         <el-form-item class="center">
           <el-button type="primary" @click="goRegister()">注册</el-button>
@@ -25,6 +29,7 @@
 import * as UserApi from '@/apis/user/user.js'
 import favicon from '@/assets/image/favicon.ico'
 import { getAppName, getLoginState, setLoginRole, setLoginState } from '@/utils/env.js'
+import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -64,6 +69,8 @@ const submitForm = async (formEl: FormInstance | null) => {
     pending.value = false
   }
 }
+
+registerKeyDown('Enter', () => submitForm(loginFormRef.value))
 </script>
 
 <style lang="scss" scoped>

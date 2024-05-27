@@ -18,7 +18,7 @@
           </div>
           <div class="stopcode-text">
             <p>如需致电支持人员, 请向他们提供以下信息:</p>
-            <p>终止代码: BE TRICKED BY RICKROLL</p>
+            <p>终止代码: TRICKED BY RICKROLL</p>
           </div>
         </div>
       </div>

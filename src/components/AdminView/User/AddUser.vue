@@ -31,6 +31,7 @@
 
 <script lang="ts" setup>
 import * as UserApi from '@/apis/admin/user.js'
+import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -73,6 +74,8 @@ const cancel = () => {
   isAddUser.value = false
   emit('getUsers')
 }
+
+registerKeyDown('Enter', () => addUser(addUserFormRef.value))
 </script>
 
 <style lang="scss" scoped></style>

@@ -26,6 +26,7 @@
 
 <script lang="ts" setup>
 import * as GroupApi from '@/apis/admin/group.js'
+import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -68,6 +69,8 @@ const cancel = () => {
   isAddGroup.value = false
   emit('getGroups')
 }
+
+registerKeyDown('Enter', () => addGroup(addGroupFormRef.value))
 </script>
 
 <style lang="scss" scoped></style>

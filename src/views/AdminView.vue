@@ -2,6 +2,7 @@
   <el-card class="box-card" v-if="getLoginState() === '1'">
     <h2>
       后台控制中心 | {{ getAppName() }}
+      <el-button type="primary" @click="router.push('/')">回到首页</el-button>
       <el-button type="danger" @click="mainStore.logout()">退出登陆</el-button>
     </h2>
     <el-tabs v-model="activeName">

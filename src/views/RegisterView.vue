@@ -12,13 +12,13 @@
         label-width="auto"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="registerForm.username"></el-input>
+          <el-input v-model="registerForm.username" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="registerForm.password" type="password"></el-input>
+          <el-input v-model="registerForm.password" type="password" />
         </el-form-item>
         <el-form-item label="邀请码" prop="inv_code" v-if="userStore.config.need_inv_code">
-          <el-input v-model="registerForm.inv_code"></el-input>
+          <el-input v-model="registerForm.inv_code" />
         </el-form-item>
         <el-form-item class="center">
           <el-button type="primary" @click="goLogin()">登陆</el-button>
@@ -34,6 +34,7 @@ import * as UserApi from '@/apis/user/user.js'
 import favicon from '@/assets/image/favicon.ico'
 import { useMainStore } from '@/stores/mainStore.js'
 import { getAppName, getLoginState } from '@/utils/env.js'
+import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -74,6 +75,8 @@ const submitForm = async (formEl: FormInstance | null) => {
     pending.value = false
   }
 }
+
+registerKeyDown('Enter', () => submitForm(registerFormRef.value))
 </script>
 
 <style lang="scss" scoped>

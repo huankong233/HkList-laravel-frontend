@@ -23,6 +23,7 @@
 
 <script lang="ts" setup>
 import * as AccountApi from '@/apis/admin/account.js'
+import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -54,6 +55,8 @@ const addAccount = async (formEl: FormInstance | null) => {
     pending.value = false
   }
 }
+
+registerKeyDown('Enter', () => addAccount(addAccountFormRef.value))
 
 const close = (done: (cancel?: boolean) => {}) => {
   emit('getAccounts')
