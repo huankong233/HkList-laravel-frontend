@@ -45,4 +45,4 @@ export const deleteUser = (user: User) =>
   axios.delete<null>(`/admin/user`, { data: { user_ids: [user.id] } })
 
 export const deleteUsers = (user_ids: number[]) =>
-  axios.delete<null>('/admin/user/switch', { data: { user_ids } })
+  axios.delete<null>('/admin/user', { data: { user_ids } })
