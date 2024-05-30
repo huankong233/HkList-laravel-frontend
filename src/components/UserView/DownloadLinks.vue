@@ -29,7 +29,7 @@
       </el-table-column>
       <el-table-column prop="filename" label="文件名"></el-table-column>
       <el-table-column prop="url" label="下载链接"></el-table-column>
-      <el-table-column label="操作" width="250">
+      <el-table-column label="操作" width="270">
         <template #default="{ row, $index }">
           <el-button type="primary" size="small" @click="copy(row.url, '已将链接复制到粘贴板内')">
             复制链接
