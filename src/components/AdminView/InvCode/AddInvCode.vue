@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import * as InvCodeApi from '@/apis/admin/invCode.js'
-import { registerKeyDown } from '@/utils/registerkeyDown.js'
+// import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -93,7 +93,7 @@ const cancel = () => {
   emit('getInvCodes')
 }
 
-registerKeyDown('Enter', () => addInvCode(addInvCodeFormRef.value))
+// registerKeyDown('Enter', () => addInvCode(addInvCodeFormRef.value))
 </script>
 
 <style lang="scss" scoped></style>
