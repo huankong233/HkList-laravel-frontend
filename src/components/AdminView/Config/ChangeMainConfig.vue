@@ -21,6 +21,9 @@
     <el-form-item label="白名单模式开关" prop="whitelist_mode">
       <el-switch v-model="changeConfigForm.whitelist_mode" size="large" />
     </el-form-item>
+    <el-form-item label="站点名称" prop="name">
+      <el-input v-model.trim="changeConfigForm.name"></el-input>
+    </el-form-item>
     <el-form-item label="下载使用的 User_Agent" prop="user_agent">
       <el-input v-model.trim="changeConfigForm.user_agent"></el-input>
     </el-form-item>
@@ -45,7 +48,7 @@
 <script lang="ts" setup>
 import * as mainConfigApi from '@/apis/admin/config/main.js'
 import { getFrontEndVersion } from '@/utils/env.js'
-import { registerKeyDown } from '@/utils/registerkeyDown.js'
+// import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
@@ -61,7 +64,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   user_agent: '',
   need_inv_code: false,
   whitelist_mode: false,
-  debug: false
+  debug: false,
+  name: ''
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {
@@ -100,7 +104,7 @@ const updateConfig = async (formEl: FormInstance | null) => {
 
 onMounted(getConfig)
 
-registerKeyDown('Enter', () => updateConfig(changeConfigFormRef.value))
+// registerKeyDown('Enter', () => updateConfig(changeConfigFormRef.value))
 </script>
 
 <style lang="scss" scoped></style>

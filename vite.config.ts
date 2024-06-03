@@ -11,13 +11,6 @@ import viteCompression from 'vite-plugin-compression'
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    terserOptions: {
-      compress: {
-        //生产环境时移除console
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
     //   关闭文件计算
     reportCompressedSize: false,
     //   关闭生成map文件 可以达到缩小打包体积
