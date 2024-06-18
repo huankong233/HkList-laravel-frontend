@@ -23,38 +23,6 @@ export const useFileListStore = defineStore('fileListStore', () => {
     return newPath === '' ? '/' : newPath
   }
 
-  const signData = ref({
-    sign: '',
-    timestamp: 0
-  })
-
-  const getSign = async () => {
-    try {
-      pending.value = true
-      const res = await ParseApi.getSign({
-        surl: getFileListForm.value.surl,
-        uk: fileList.value.uk,
-        shareid: fileList.value.shareid,
-        password: getFileListForm.value.password
-      })
-      signData.value.sign = res.data.sign
-      signData.value.timestamp = res.data.timestamp
-      ElMessage.success('获取签名成功')
-    } finally {
-      pending.value = false
-    }
-  }
-
-  // 检查签名是否过期
-  const checkSign = async () => {
-    if (Date.now() / 1000 - signData.value.timestamp > 250) {
-      ElMessage.info('获取签名中')
-      await getSign()
-    } else {
-      ElMessage.success('签名未过期,无需更新')
-    }
-  }
-
   const getFileList = async () => {
     if (!getFileListFormRef.value || !(await getFileListFormRef.value.validate())) return
 
@@ -84,7 +52,6 @@ export const useFileListStore = defineStore('fileListStore', () => {
       ElMessage.success('获取文件列表成功')
     } finally {
       pending.value = false
-      await checkSign()
     }
   }
 
@@ -104,32 +71,35 @@ export const useFileListStore = defineStore('fileListStore', () => {
       ? [fs_id]
       : selectedRows.value.filter((file) => file.isdir !== 1).map((row) => row.fs_id)
 
-    if (fs_id === undefined && fs_ids.length !== selectedRows.value.length)
+    if (fs_id === undefined && fs_ids.length !== selectedRows.value.length) {
       ElMessage.error('文件夹不会被解析!')
-
-    await checkSign()
+    }
 
     let res
     try {
       pending.value = true
-      res = await ParseApi.getDownloadLinks({
+      const req: ParseApi.getDownloadLinks = {
         uk: fileList.value.uk,
         shareid: fileList.value.shareid,
         randsk: fileList.value.randsk,
         fs_ids,
-        sign: signData.value.sign,
-        timestamp: signData.value.timestamp,
         password: getFileListForm.value.password
-      })
-      if (!returnValue) downloadLinks.value = res.data
+      }
+
+      res = await ParseApi.getDownloadLinks(req)
       ElMessage.success('解析成功')
-      signData.value.timestamp = 0
+
+      if (!returnValue) {
+        pending.value = false
+        await getLimit()
+        return res.data
+      } else {
+        downloadLinks.value = res.data
+      }
     } finally {
       pending.value = false
       await getLimit()
     }
-
-    if (returnValue) return res.data
   }
 
   const limitForm = ref<ParseApi.limit>({

@@ -61,35 +61,17 @@ export const getFileList = async (data: getFileList) => {
   return res
 }
 
-export interface getSign {
-  surl: string
-  uk: number
-  shareid: number
-  password?: string
-}
-
-export interface sign {
-  timestamp: number
-  sign: string
-}
-
-export const getSign = (data: getSign) => axios.post<sign>('/parse/get_sign', data)
-
 export interface getDownloadLinks {
   fs_ids: number[]
   randsk: string
   shareid: number
   uk: number
-  sign: string
-  timestamp: number
   password?: string
 }
 
 export interface link {
   url: string
   filename: string
-  ua: string
-  fs_id: number
 }
 
 export type downloadLinks = link[]

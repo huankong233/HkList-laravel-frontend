@@ -21,15 +21,15 @@
     >
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column prop="ua" label="UA">
-        <template #default="{ row }">
-          <el-link type="danger" @click="copy(row.ua, '已复制UA')">
-            {{ row.ua }}
+        <template #default="{}">
+          <el-link type="danger" @click="copy(config.user_agent, '已复制UA')">
+            {{ config.user_agent }}
           </el-link>
         </template>
       </el-table-column>
       <el-table-column prop="filename" label="文件名"></el-table-column>
       <el-table-column prop="url" label="下载链接"></el-table-column>
-      <el-table-column label="操作" width="270">
+      <el-table-column label="操作" width="300">
         <template #default="{ row, $index }">
           <el-button type="primary" size="small" @click="copy(row.url, '已将链接复制到粘贴板内')">
             复制链接
@@ -50,6 +50,7 @@
 import * as ParseApi from '@/apis/user/parse.js'
 import { useAria2Store } from '@/stores/aria2Store.js'
 import { useFileListStore } from '@/stores/fileListStore.js'
+import { useMainStore } from '@/stores/mainStore.js'
 import { copy } from '@/utils/copy.js'
 import { getAppName } from '@/utils/env.js'
 import axios from '@/utils/request.js'
@@ -57,6 +58,9 @@ import { sleep } from '@/utils/sleep.js'
 import { ElMessage } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
+
+const mainStore = useMainStore()
+const { config } = storeToRefs(mainStore)
 
 const fileListStore = useFileListStore()
 const { downloadLinks } = storeToRefs(fileListStore)
@@ -79,7 +83,7 @@ const sendDownloadFile = async (row: ParseApi.link) => {
         [row.url],
         {
           out: row.filename,
-          header: [`User-Agent: ${row.ua}`]
+          header: [`User-Agent: ${config.value.user_agent}`]
         }
       ]
     })

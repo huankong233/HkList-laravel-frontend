@@ -12,6 +12,8 @@ export interface config {
   debug: boolean
   front_end_version: string
   name: string
+  code: string
+  main_server: string
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')
@@ -29,3 +31,11 @@ export interface updateConfig {
 }
 
 export const updateConfig = (data: updateConfig) => axios.patch<null>('/admin/config/main', data)
+
+export interface testAuth {
+  code: string
+  expired_at: string
+}
+
+export const testAuth = (data: updateConfig) =>
+  axios.post<testAuth>('/admin/config/main/testAuth', data)

@@ -39,8 +39,15 @@
     <el-form-item label="密码" prop="password">
       <el-input v-model.trim="changeConfigForm.password"></el-input>
     </el-form-item>
+    <el-form-item label="授权服务器" prop="main_server">
+      <el-input v-model.trim="changeConfigForm.main_server"></el-input>
+    </el-form-item>
+    <el-form-item label="授权码" prop="code">
+      <el-input v-model.trim="changeConfigForm.code"></el-input>
+    </el-form-item>
     <el-form-item label=" ">
       <el-button type="primary" @click="updateConfig(changeConfigFormRef)">保存</el-button>
+      <el-button type="primary" @click="testAuth(changeConfigFormRef)">测试授权</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -65,13 +72,17 @@ const changeConfigForm = ref<mainConfigApi.config>({
   need_inv_code: false,
   whitelist_mode: false,
   debug: false,
-  name: ''
+  name: '',
+  code: '',
+  main_server: ''
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {
   sleep: [{ required: true, message: '请输入批量解析时休眠时间(秒)', trigger: 'blur' }],
   max_once: [{ required: true, message: '请输入批量解析时单次最大解析数量', trigger: 'blur' }],
-  user_agent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }]
+  user_agent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入授权码', trigger: 'blur' }],
+  main_server: [{ required: true, message: '请输入授权服务器地址', trigger: 'blur' }]
 }
 
 const getConfig = async () => {
@@ -95,6 +106,19 @@ const updateConfig = async (formEl: FormInstance | null) => {
   try {
     pending.value = true
     await mainConfigApi.updateConfig(changeConfigForm.value)
+    ElMessage.success('保存成功')
+  } finally {
+    pending.value = false
+    await getConfig()
+  }
+}
+
+const testAuth = async (formEl: FormInstance | null) => {
+  if (!formEl || !(await formEl.validate())) return
+
+  try {
+    pending.value = true
+    await mainConfigApi.testAuth(changeConfigForm.value)
     ElMessage.success('保存成功')
   } finally {
     pending.value = false
