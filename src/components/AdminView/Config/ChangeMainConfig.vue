@@ -119,12 +119,11 @@ const testAuth = async (formEl: FormInstance | null) => {
   try {
     pending.value = true
     const res = await mainConfigApi.testAuth(changeConfigForm.value)
-    if (res.message === '未知授权码') {
+    if ('ip' in res.data) {
       ElMessage.error(`未知授权码,当前ip为: ${res.data.ip}`)
     } else {
       ElMessage.success(`测试通过,有效期至: ${res.data.expired_at}`)
     }
-    console.log(res)
   } finally {
     pending.value = false
     await getConfig()

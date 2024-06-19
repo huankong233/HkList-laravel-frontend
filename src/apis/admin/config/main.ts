@@ -32,10 +32,12 @@ export interface updateConfig {
 
 export const updateConfig = (data: updateConfig) => axios.patch<null>('/admin/config/main', data)
 
-export interface testAuth {
-  code: string
-  expired_at: string
-}
+export type testAuth =
+  | {
+      code: string
+      expired_at: string
+    }
+  | { ip: string }
 
 export const testAuth = (data: updateConfig) =>
   axios.post<testAuth>('/admin/config/main/testAuth', data)
