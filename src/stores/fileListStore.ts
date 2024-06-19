@@ -89,7 +89,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
       res = await ParseApi.getDownloadLinks(req)
       ElMessage.success('解析成功')
 
-      if (!returnValue) {
+      if (returnValue) {
         pending.value = false
         await getLimit()
         return res.data
