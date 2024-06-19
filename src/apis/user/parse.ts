@@ -71,6 +71,8 @@ export interface getDownloadLinks {
 
 export interface link {
   url: string
+  urls?: string[]
+  index: number
   filename: string
   fs_id: number
 }

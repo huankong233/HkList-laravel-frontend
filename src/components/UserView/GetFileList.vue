@@ -34,7 +34,7 @@
       :title="
         hitLimit
           ? '当前用户配额已用完'
-          : `当前用户组: ${limitForm.group_name} 当前剩余解析次数: ${limitForm.count} 当前剩余解析大小: ${formatBytes(limitForm.size)}`
+          : `当前用户组: ${limitForm.group_name} 当前剩余解析文件数: ${limitForm.count} 当前剩余解析大小: ${formatBytes(limitForm.size)}`
       "
     />
 

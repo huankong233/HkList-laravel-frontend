@@ -67,6 +67,11 @@ export const useFileListStore = defineStore('fileListStore', () => {
   const downloadLinks = ref<ParseApi.downloadLinks>([])
 
   const getDownloadLinks = async (fs_id?: number, returnValue = false) => {
+    if (pending.value) {
+      ElMessage.info('请勿重复点击~')
+      return
+    }
+
     const fs_ids = fs_id
       ? [fs_id]
       : selectedRows.value.filter((file) => file.isdir !== 1).map((row) => row.fs_id)
@@ -87,14 +92,24 @@ export const useFileListStore = defineStore('fileListStore', () => {
       }
 
       res = await ParseApi.getDownloadLinks(req)
-      ElMessage.success('解析成功')
+      ElMessage.success('解析成功,下载链接请下滑')
 
       if (returnValue) {
         pending.value = false
         await getLimit()
-        return res.data
+        return res.data.map((link) => {
+          return {
+            ...link,
+            index: 0
+          }
+        })
       } else {
-        downloadLinks.value = res.data
+        downloadLinks.value = res.data.map((link) => {
+          return {
+            ...link,
+            index: 0
+          }
+        })
       }
     } finally {
       pending.value = false

@@ -1,6 +1,9 @@
 <template>
   <el-card class="card" v-if="downloadLinks.length !== 0">
     <h2>链接列表</h2>
+    <h3>下载请携带特定UA(点击即可复制)</h3>
+    <h3>如果当前链接下载失败,请尝试更换链接,如果全部不可用可以单独重新解析单个文件</h3>
+
     <el-space>
       <el-button
         type="primary"
@@ -28,8 +31,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="filename" label="文件名"></el-table-column>
-      <el-table-column prop="url" label="下载链接"></el-table-column>
-      <el-table-column label="操作" width="300">
+      <el-table-column prop="url" label="下载链接">
+        <template #default="{ row }">
+          {{ row.urls ? row.urls[row.index] : row.url }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="450">
         <template #default="{ row, $index }">
           <el-button type="primary" size="small" @click="copy(row.url, '已将链接复制到粘贴板内')">
             复制链接
@@ -37,9 +44,29 @@
           <el-button type="primary" size="small" @click="sendDownloadFile(row)">
             发送Aria2
           </el-button>
-          <el-button type="danger" size="small" @click="getDownloadLinks($index, row.fs_id)">
-            重新解析
-          </el-button>
+          <template v-if="row.urls">
+            <el-button
+              type="danger"
+              size="small"
+              @click="changeUrl($index)"
+              v-if="row.index < row.urls.length - 1"
+            >
+              更换链接 (当前第{{ row.index + 1 }}条链接)
+            </el-button>
+            <el-button
+              type="danger"
+              size="small"
+              @click="getDownloadLinks($index, row.fs_id)"
+              v-else
+            >
+              重新解析
+            </el-button>
+          </template>
+          <template v-else>
+            <el-button type="danger" size="small" @click="getDownloadLinks($index, row.fs_id)">
+              重新解析
+            </el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -107,6 +134,10 @@ const getDownloadLinks = async (index: number, fs_id: number) => {
   const res = await fileListStore.getDownloadLinks(fs_id, true)
   if (!res) return ElMessage.error('重新解析失败')
   downloadLinks.value[index] = res[0]
+}
+
+const changeUrl = (index: number) => {
+  downloadLinks.value[index].index++
 }
 </script>
 
