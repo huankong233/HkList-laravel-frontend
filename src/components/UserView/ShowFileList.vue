@@ -58,7 +58,6 @@ const clickRow = async (row: ParseApi.file) => {
   // 手机
 
   try {
-    pending.value = true
     if (row.isdir === 1) {
       await getDir(row.path)
     } else {
@@ -74,7 +73,6 @@ const dblclickRow = async (row: ParseApi.file) => {
   // 电脑
 
   try {
-    pending.value = true
     if (row.isdir === 1) {
       await getDir(row.path)
     } else {
