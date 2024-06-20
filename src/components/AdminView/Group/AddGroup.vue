@@ -10,7 +10,7 @@
       <el-form-item label="组名" prop="name">
         <el-input v-model="addGroupForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="可解析个数" prop="count">
+      <el-form-item label="可解析文件个数" prop="count">
         <el-input-number v-model="addGroupForm.count"></el-input-number>
       </el-form-item>
       <el-form-item label="可解析大小" prop="size">
@@ -44,7 +44,7 @@ const addGroupForm = ref<GroupApi.addGroup>({
 const addGroupFormRef = ref<FormInstance | null>(null)
 const addGroupFormRule: FormRules = {
   name: [{ required: true, message: '请输入组名', trigger: 'blur' }],
-  count: [{ required: true, message: '请输入可解析个数', trigger: 'blur' }],
+  count: [{ required: true, message: '请输入可解析文件个数', trigger: 'blur' }],
   size: [{ required: true, message: '请输入可解析大小', trigger: 'blur' }]
 }
 

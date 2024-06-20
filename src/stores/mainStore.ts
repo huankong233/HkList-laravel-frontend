@@ -17,7 +17,8 @@ export const useMainStore = defineStore('mainStore', () => {
     have_login: false,
     need_inv_code: false,
     need_password: false,
-    is_https: false
+    is_https: false,
+    show_copyright: false
   })
 
   const router = useRouter()

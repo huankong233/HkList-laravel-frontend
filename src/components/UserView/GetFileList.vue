@@ -7,18 +7,26 @@
       type="warning"
       :closable="false"
       title="项目全部开源,开源地址: https://github.com/huankong233/94list-laravel"
+      v-if="config.show_copyright"
       @click="openWindow()"
       class="cursor"
     />
 
-    <el-alert class="alert" title="当前中转账号充足" type="success" v-if="config.have_account" />
-    <el-alert class="alert" title="当前中转账号不足" type="error" v-else />
+    <el-alert
+      :closable="false"
+      class="alert"
+      title="当前中转账号充足"
+      type="success"
+      v-if="config.have_account"
+    />
+    <el-alert :closable="false" class="alert" title="当前中转账号不足" type="error" v-else />
 
     <el-alert
       class="alert"
       title="当前网站开启了DEBUG模式,非调试请关闭!!!!"
       type="error"
       v-if="config.debug"
+      :closable="false"
     />
 
     <el-alert
@@ -26,11 +34,13 @@
       title="当前网站未开启SSL,可能出现无法请求Aria2服务器的问题"
       type="error"
       v-if="!config.is_https"
+      :closable="false"
     />
 
     <el-alert
       class="alert"
       :type="hitLimit ? 'error' : 'success'"
+      :closable="false"
       :title="
         hitLimit
           ? '当前用户配额已用完'
@@ -68,12 +78,12 @@
         </el-button>
         <el-button type="primary" @click="copyLink(getFileListFormRef)">复制当前地址</el-button>
         <el-button type="primary" @click="goLogin()" v-if="getLoginState() === '0'">登陆</el-button>
-        <el-button type="primary" @click="goAdmin()" v-if="getLoginRole() === 'admin'">
-          进入后台
-        </el-button>
-        <el-button type="danger" @click="mainStore.logout()" v-if="getLoginState() === '1'">
-          注销
-        </el-button>
+        <template v-if="getLoginState() === '1'">
+          <el-button type="primary" @click="goAdmin()" v-if="getLoginRole() === 'admin'">
+            进入后台
+          </el-button>
+          <el-button type="danger" @click="mainStore.logout()"> 注销 </el-button>
+        </template>
       </el-form-item>
     </el-form>
   </el-card>

@@ -23,7 +23,7 @@
         <el-input v-show="row.edit" v-model="row.name"></el-input>
       </template>
     </el-table-column>
-    <el-table-column prop="count" label="可解析次数">
+    <el-table-column prop="count" label="可解析文件数量">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.count }}</span>
         <el-input-number v-show="row.edit" v-model="row.count"></el-input-number>

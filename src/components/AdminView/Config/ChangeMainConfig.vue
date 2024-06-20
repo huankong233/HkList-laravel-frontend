@@ -45,6 +45,9 @@
     <el-form-item label="授权码" prop="code">
       <el-input v-model.trim="changeConfigForm.code"></el-input>
     </el-form-item>
+    <el-form-item label="展示授权" prop="show_copyright">
+      <el-switch v-model="changeConfigForm.show_copyright" size="large" />
+    </el-form-item>
     <el-form-item label=" ">
       <el-button type="primary" @click="updateConfig(changeConfigFormRef)">保存</el-button>
       <el-button type="primary" @click="testAuth(changeConfigFormRef)">测试授权</el-button>
@@ -74,7 +77,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   debug: false,
   name: '',
   code: '',
-  main_server: ''
+  main_server: '',
+  show_copyright: false
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {

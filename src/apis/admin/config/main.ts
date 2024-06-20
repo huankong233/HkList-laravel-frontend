@@ -14,6 +14,7 @@ export interface config {
   name: string
   code: string
   main_server: string
+  show_copyright: boolean
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')
