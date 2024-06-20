@@ -31,7 +31,6 @@
 <script lang="ts" setup>
 import * as IpApi from '@/apis/admin/ip.js'
 import { isValidIp } from '@/utils/ip.js'
-// import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { RuleItem } from 'async-validator'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
@@ -82,8 +81,6 @@ const cancel = () => {
   isAddIp.value = false
   emit('getIps')
 }
-
-// registerKeyDown('Enter', () => addIp(addIpFormRef.value))
 </script>
 
 <style lang="scss" scoped></style>

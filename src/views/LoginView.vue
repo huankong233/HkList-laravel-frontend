@@ -29,7 +29,6 @@
 import * as UserApi from '@/apis/user/user.js'
 import favicon from '@/assets/image/favicon.ico'
 import { getAppName, getLoginState, setLoginRole, setLoginState } from '@/utils/env.js'
-import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -69,8 +68,6 @@ const submitForm = async (formEl: FormInstance | null) => {
     pending.value = false
   }
 }
-
-registerKeyDown('Enter', () => submitForm(loginFormRef.value))
 </script>
 
 <style lang="scss" scoped>

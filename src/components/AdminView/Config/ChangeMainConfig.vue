@@ -58,7 +58,6 @@
 <script lang="ts" setup>
 import * as mainConfigApi from '@/apis/admin/config/main.js'
 import { getFrontEndVersion } from '@/utils/env.js'
-// import { registerKeyDown } from '@/utils/registerkeyDown.js'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
@@ -135,8 +134,6 @@ const testAuth = async (formEl: FormInstance | null) => {
 }
 
 onMounted(getConfig)
-
-// registerKeyDown('Enter', () => updateConfig(changeConfigFormRef.value))
 </script>
 
 <style lang="scss" scoped></style>
