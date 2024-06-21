@@ -68,6 +68,7 @@ export interface getDownloadLinks {
   shareid: number
   uk: number
   password?: string
+  url: string
 }
 
 export interface link {

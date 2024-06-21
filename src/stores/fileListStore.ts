@@ -88,7 +88,8 @@ export const useFileListStore = defineStore('fileListStore', () => {
         shareid: fileList.value.shareid,
         randsk: fileList.value.randsk,
         fs_ids,
-        password: getFileListForm.value.password
+        password: getFileListForm.value.password,
+        url: getFileListForm.value.url
       }
 
       res = await ParseApi.getDownloadLinks(req)

@@ -38,7 +38,11 @@
       </el-table-column>
       <el-table-column label="操作" width="450">
         <template #default="{ row, $index }">
-          <el-button type="primary" size="small" @click="copy(row.url, '已将链接复制到粘贴板内')">
+          <el-button
+            type="primary"
+            size="small"
+            @click="copy(row.urls ? row.urls[row.index] : row.url, '已将链接复制到粘贴板内')"
+          >
             复制链接
           </el-button>
           <el-button type="primary" size="small" @click="sendDownloadFile(row)">
