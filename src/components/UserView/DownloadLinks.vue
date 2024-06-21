@@ -107,7 +107,7 @@ const sendDownloadFile = async (row: ParseApi.link) => {
       method: 'aria2.addUri',
       params: [
         `token:${aria2ConfigForm.value.token}`,
-        [row.url],
+        [row.urls ? row.urls[row.index] : row.url],
         {
           out: row.filename,
           header: [`User-Agent: ${config.value.user_agent}`]
