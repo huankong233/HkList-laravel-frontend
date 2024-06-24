@@ -62,6 +62,13 @@ export const getFileList = async (data: getFileList) => {
   return res
 }
 
+export interface vcode {
+  vcode: string
+  img: string
+}
+
+export const getVcode = () => axios.post<vcode>('/parse/get_vcode')
+
 export interface getDownloadLinks {
   fs_ids: number[]
   randsk: string
@@ -69,6 +76,8 @@ export interface getDownloadLinks {
   uk: number
   password?: string
   url: string
+  vcode_str?: string
+  vcode_input?: string
 }
 
 export interface link {

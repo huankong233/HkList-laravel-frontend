@@ -55,6 +55,13 @@ export const useFileListStore = defineStore('fileListStore', () => {
     }
   }
 
+  const vcode = ref({
+    hit_captcha: false,
+    vcode_str: '',
+    vcode_img: '',
+    vcode_input: ''
+  })
+
   const fileList = ref<ParseApi.fileList>({
     uk: 0,
     shareid: 0,
@@ -92,6 +99,11 @@ export const useFileListStore = defineStore('fileListStore', () => {
         url: getFileListForm.value.url
       }
 
+      if (vcode.value.hit_captcha) {
+        req.vcode_str = vcode.value.vcode_str
+        req.vcode_input = vcode.value.vcode_input
+      }
+
       res = await ParseApi.getDownloadLinks(req)
       ElMessage.success('解析成功,下载链接请下滑')
 
@@ -111,6 +123,25 @@ export const useFileListStore = defineStore('fileListStore', () => {
             index: 0
           }
         })
+      }
+
+      vcode.value = {
+        hit_captcha: false,
+        vcode_str: '',
+        vcode_img: '',
+        vcode_input: ''
+      }
+    } catch (error) {
+      const { code, message } = error as { code?: number; message?: string }
+      if (code && message && message.includes('验证码')) {
+        const res = await ParseApi.getVcode()
+
+        vcode.value = {
+          hit_captcha: true,
+          vcode_str: res.data.vcode,
+          vcode_img: res.data.img,
+          vcode_input: ''
+        }
       }
     } finally {
       pending.value = false
@@ -150,6 +181,8 @@ export const useFileListStore = defineStore('fileListStore', () => {
     getDownloadLinks,
     limitForm,
     getLimit,
-    hitLimit
+    hitLimit,
+
+    vcode
   }
 })

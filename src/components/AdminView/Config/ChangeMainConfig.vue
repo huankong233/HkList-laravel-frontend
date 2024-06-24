@@ -48,6 +48,12 @@
     <el-form-item label="展示授权" prop="show_copyright">
       <el-switch v-model="changeConfigForm.show_copyright" size="large" />
     </el-form-item>
+    <el-form-item label="解析模式" prop="parse_mode">
+      <el-select v-model="changeConfigForm.parse_mode">
+        <el-option :value="1" label="盘内" />
+        <el-option :value="2" label="盘外(老)" />
+      </el-select>
+    </el-form-item>
     <el-form-item label=" ">
       <el-button type="primary" @click="updateConfig(changeConfigFormRef)">保存</el-button>
       <el-button type="primary" @click="testAuth(changeConfigFormRef)">测试授权</el-button>
@@ -77,7 +83,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   name: '',
   code: '',
   main_server: '',
-  show_copyright: false
+  show_copyright: false,
+  parse_mode: 1
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {

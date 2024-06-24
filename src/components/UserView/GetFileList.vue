@@ -67,6 +67,21 @@
       <el-form-item label="当前路径" prop="dir">
         <el-input v-model="getFileListForm.dir" disabled></el-input>
       </el-form-item>
+      <template v-if="vcode.hit_captcha">
+        <el-form-item label="验证码编号" prop="vcode_str">
+          <el-input v-model="vcode.vcode_str" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="验证码图片" prop="vcode_img">
+          <img
+            :src="`${vcode.vcode_img}&t=${timestamp}`"
+            alt="验证码图片"
+            @click="changeTimestamp"
+          />
+        </el-form-item>
+        <el-form-item label="验证码字符" prop="vcode_input">
+          <el-input v-model="vcode.vcode_input"></el-input>
+        </el-form-item>
+      </template>
       <el-form-item label=" ">
         <el-button type="primary" @click="fileListStore.getFileList()">获取/刷新列表</el-button>
         <el-button
@@ -98,11 +113,11 @@ import { formatBytes } from '@/utils/format.js'
 import type { RuleItem } from 'async-validator'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { nextTick, onMounted } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const fileListStore = useFileListStore()
-const { pending, getFileListForm, getFileListFormRef, selectedRows, limitForm, hitLimit } =
+const { pending, getFileListForm, getFileListFormRef, selectedRows, limitForm, hitLimit, vcode } =
   storeToRefs(fileListStore)
 const mainStore = useMainStore()
 const { config } = storeToRefs(mainStore)
@@ -187,6 +202,7 @@ onMounted(() => {
     setTimeout(fileListStore.getFileList, 1000)
   })
   fileListStore.getLimit()
+  changeTimestamp()
 })
 
 const router = useRouter()
@@ -196,6 +212,10 @@ const goAdmin = () => router.push('/admin')
 function openWindow() {
   window.open('https://github.com/huankong233/94list-laravel')
 }
+
+const timestamp = ref(0)
+
+const changeTimestamp = () => (timestamp.value = Date.now())
 </script>
 
 <style lang="scss" scoped>
