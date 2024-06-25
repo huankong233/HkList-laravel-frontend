@@ -16,6 +16,8 @@ export interface config {
   main_server: string
   show_copyright: boolean
   parse_mode: number
+  custom_copyright: string
+  max_filesize: number
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')

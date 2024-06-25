@@ -2,6 +2,7 @@ import * as ParseApi from '@/apis/user/parse.js'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useMainStore } from './mainStore'
 
 export const useFileListStore = defineStore('fileListStore', () => {
   const pending = ref(false)
@@ -85,6 +86,11 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
     if (fs_id === undefined && fs_ids.length !== selectedRows.value.length) {
       ElMessage.error('文件夹不会被解析!')
+    }
+
+    if (fs_ids.length > (useMainStore()?.config?.max_once ?? 20)) {
+      ElMessage.error(`一次最多解析${useMainStore().config.max_once}个文件`)
+      return
     }
 
     let res

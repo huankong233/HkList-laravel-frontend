@@ -12,6 +12,7 @@ export interface config {
   need_inv_code: boolean
   need_password: boolean
   show_copyright: boolean
+  custom_copyright: string
 }
 
 export const getConfig = () => axios.get<config>('/parse/config')

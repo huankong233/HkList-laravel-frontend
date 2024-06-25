@@ -6,10 +6,8 @@
       show-icon
       type="warning"
       :closable="false"
-      title="项目全部开源,开源地址: https://github.com/huankong233/94list-laravel"
+      :title="config.custom_copyright"
       v-if="config.show_copyright"
-      @click="openWindow()"
-      class="cursor"
     />
 
     <el-alert
@@ -209,10 +207,6 @@ const router = useRouter()
 const goLogin = () => router.push('/login')
 const goAdmin = () => router.push('/admin')
 
-function openWindow() {
-  window.open('https://github.com/huankong233/94list-laravel')
-}
-
 const timestamp = ref(0)
 
 const changeTimestamp = () => (timestamp.value = Date.now())
@@ -226,9 +220,5 @@ img:hover {
 a {
   text-decoration: none;
   color: inherit;
-}
-
-.cursor {
-  cursor: pointer;
 }
 </style>

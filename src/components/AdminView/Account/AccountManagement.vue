@@ -27,7 +27,16 @@
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="id" label="ID"></el-table-column>
     <el-table-column prop="baidu_name" label="百度用户名"></el-table-column>
-    <el-table-column prop="netdisk_name" label="网盘用户名"></el-table-column>
+    <el-table-column prop="size" label="今日解析量">
+      <template #default="{ row }">
+        {{ formatBytes(row.size) }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="size" label="总解析量">
+      <template #default="{ row }">
+        {{ formatBytes(row.total_size) }}
+      </template>
+    </el-table-column>
     <el-table-column prop="cookie" label="Cookie"></el-table-column>
     <el-table-column prop="vip_type" label="会员类型"></el-table-column>
     <el-table-column prop="switch" label="状态">
@@ -82,6 +91,7 @@
 <script lang="ts" setup>
 import * as AccountApi from '@/apis/admin/account.js'
 import AddAccount from '@/components/AdminView/Account/AddAccount.vue'
+import { formatBytes } from '@/utils/format.js'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 

@@ -33,6 +33,12 @@
     <el-form-item label="批量解析时单次最大解析数量" prop="max_once">
       <el-input-number v-model="changeConfigForm.max_once"></el-input-number>
     </el-form-item>
+    <el-form-item label="单日单个账号最大解析大小(bit)" prop="max_filesize">
+      <el-input-number
+        v-model="changeConfigForm.max_filesize"
+        style="width: 200px"
+      ></el-input-number>
+    </el-form-item>
     <el-form-item label="公告内容" prop="announce">
       <el-input type="textarea" v-model="changeConfigForm.announce"></el-input>
     </el-form-item>
@@ -45,8 +51,11 @@
     <el-form-item label="授权码" prop="code">
       <el-input v-model.trim="changeConfigForm.code"></el-input>
     </el-form-item>
-    <el-form-item label="展示授权" prop="show_copyright">
+    <el-form-item label="展示版权" prop="show_copyright">
       <el-switch v-model="changeConfigForm.show_copyright" size="large" />
+    </el-form-item>
+    <el-form-item label="自定义版权" prop="custom_copyright">
+      <el-input v-model="changeConfigForm.custom_copyright" />
     </el-form-item>
     <el-form-item label="解析模式" prop="parse_mode">
       <el-select v-model="changeConfigForm.parse_mode">
@@ -84,15 +93,17 @@ const changeConfigForm = ref<mainConfigApi.config>({
   code: '',
   main_server: '',
   show_copyright: false,
-  parse_mode: 1
+  parse_mode: 1,
+  custom_copyright: '本项目半开源, 项目地址: https://github.com/huankong233/94list-laravel',
+  max_filesize: 0
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {
+  name: [{ required: true, message: '请输入站点名称', trigger: 'blur' }],
   sleep: [{ required: true, message: '请输入批量解析时休眠时间(秒)', trigger: 'blur' }],
   max_once: [{ required: true, message: '请输入批量解析时单次最大解析数量', trigger: 'blur' }],
-  user_agent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }],
-  code: [{ required: true, message: '请输入授权码', trigger: 'blur' }],
-  main_server: [{ required: true, message: '请输入授权服务器地址', trigger: 'blur' }]
+  max_filesize: [{ required: true, message: '请输入单日单个账号最大解析大小', trigger: 'blur' }],
+  user_agent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }]
 }
 
 const getConfig = async () => {
