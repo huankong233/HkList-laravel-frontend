@@ -140,7 +140,9 @@ export const useFileListStore = defineStore('fileListStore', () => {
     } catch (error) {
       const { code, message } = error as { code?: number; message?: string }
       if (code && message && message.includes('验证码')) {
-        const res = await ParseApi.getVcode()
+        const res = await ParseApi.getVcode({
+          password: getFileListForm.value.password
+        })
 
         vcode.value = {
           hit_captcha: true,

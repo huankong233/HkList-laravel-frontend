@@ -63,12 +63,16 @@ export const getFileList = async (data: getFileList) => {
   return res
 }
 
+export interface getVcode {
+  password?: string
+}
+
 export interface vcode {
   vcode: string
   img: string
 }
 
-export const getVcode = () => axios.post<vcode>('/parse/get_vcode')
+export const getVcode = (data: getVcode) => axios.post<vcode>('/parse/get_vcode', data)
 
 export interface getDownloadLinks {
   fs_ids: number[]
