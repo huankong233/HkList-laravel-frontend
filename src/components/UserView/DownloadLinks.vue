@@ -109,6 +109,17 @@ const sendDownloadFile = async (row: ParseApi.link) => {
     await axios.post(`${aria2ConfigForm.value.host}:${aria2ConfigForm.value.port}/jsonrpc`, {
       jsonrpc: '2.0',
       id: getAppName(),
+      method: 'aria2.getVersion',
+      params: [`token:${aria2ConfigForm.value.token}`]
+    })
+  } catch (error) {
+    return ElMessage.error('检查 Aria2 服务状态失败')
+  }
+
+  try {
+    await axios.post(`${aria2ConfigForm.value.host}:${aria2ConfigForm.value.port}/jsonrpc`, {
+      jsonrpc: '2.0',
+      id: getAppName(),
       method: 'aria2.addUri',
       params: [
         `token:${aria2ConfigForm.value.token}`,
