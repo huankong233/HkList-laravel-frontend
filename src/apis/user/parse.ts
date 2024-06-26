@@ -13,6 +13,7 @@ export interface config {
   need_password: boolean
   show_copyright: boolean
   custom_copyright: string
+  min_single_file: number
 }
 
 export const getConfig = () => axios.get<config>('/parse/config')
@@ -81,8 +82,13 @@ export interface getDownloadLinks {
   uk: number
   password?: string
   url: string
+
   vcode_str?: string
   vcode_input?: string
+
+  surl: string
+  dir: string
+  pwd: string
 }
 
 export interface link {

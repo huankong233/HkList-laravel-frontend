@@ -27,16 +27,22 @@
     <el-form-item label="下载使用的 User_Agent" prop="user_agent">
       <el-input v-model.trim="changeConfigForm.user_agent"></el-input>
     </el-form-item>
-    <el-form-item label="批量解析时休眠时间(秒)" prop="sleep">
+    <el-form-item label="批量解析时休眠时间（秒）" prop="sleep">
       <el-input-number v-model="changeConfigForm.sleep"></el-input-number>
     </el-form-item>
-    <el-form-item label="批量解析时单次最大解析数量" prop="max_once">
+    <el-form-item label="批量解析时单次最大解析数量（个）" prop="max_once">
       <el-input-number v-model="changeConfigForm.max_once"></el-input-number>
     </el-form-item>
-    <el-form-item label="单日单个账号最大解析大小(bit)" prop="max_filesize">
+    <el-form-item label="单日单个账号最大解析大小（GB）" prop="max_filesize">
       <el-input-number
         v-model="changeConfigForm.max_filesize"
-        style="width: 200px"
+        style="width: 300px"
+      ></el-input-number>
+    </el-form-item>
+    <el-form-item label="可解析文件最小需要大小（GB）" prop="max_filesize">
+      <el-input-number
+        v-model="changeConfigForm.min_single_file"
+        style="width: 300px"
       ></el-input-number>
     </el-form-item>
     <el-form-item label="公告内容" prop="announce">
@@ -60,7 +66,8 @@
     <el-form-item label="解析模式" prop="parse_mode">
       <el-select v-model="changeConfigForm.parse_mode">
         <el-option :value="1" label="盘内" />
-        <el-option :value="2" label="盘外(老)" />
+        <el-option :value="2" label="盘外V1" />
+        <el-option :value="3" label="盘外V2(推荐)" />
       </el-select>
     </el-form-item>
     <el-form-item label=" ">
@@ -95,7 +102,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   show_copyright: false,
   parse_mode: 1,
   custom_copyright: '本项目半开源, 项目地址: https://github.com/huankong233/94list-laravel',
-  max_filesize: 0
+  max_filesize: 0,
+  min_single_file: 0
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {
@@ -113,6 +121,8 @@ const getConfig = async () => {
     const data = res.data
     changeConfigForm.value = {
       ...data,
+      max_filesize: data.max_filesize / 1024 ** 3,
+      min_single_file: data.min_single_file / 1024 ** 3,
       front_end_version: await getFrontEndVersion(),
       announce: data.announce.replaceAll('[NextLine]', '\n')
     }
@@ -126,7 +136,11 @@ const updateConfig = async (formEl: FormInstance | null) => {
 
   try {
     pending.value = true
-    await mainConfigApi.updateConfig(changeConfigForm.value)
+    await mainConfigApi.updateConfig({
+      ...changeConfigForm.value,
+      max_filesize: changeConfigForm.value.max_filesize * 1024 ** 3,
+      min_single_file: changeConfigForm.value.min_single_file * 1024 ** 3
+    })
     ElMessage.success('保存成功')
   } finally {
     pending.value = false

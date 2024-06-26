@@ -18,6 +18,7 @@ export interface config {
   parse_mode: number
   custom_copyright: string
   max_filesize: number
+  min_single_file: number
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')
@@ -32,6 +33,13 @@ export interface updateConfig {
   whitelist_mode: boolean
   debug: boolean
   name: string
+  main_server: string
+  code: string
+  show_copyright: boolean
+  parse_mode: number
+  max_filesize: number
+  custom_copyright: string
+  min_single_file: number
 }
 
 export const updateConfig = (data: updateConfig) => axios.patch<null>('/admin/config/main', data)

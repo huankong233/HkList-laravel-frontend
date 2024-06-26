@@ -80,16 +80,43 @@ export const useFileListStore = defineStore('fileListStore', () => {
       return
     }
 
-    const fs_ids = fs_id
-      ? [fs_id]
-      : selectedRows.value.filter((file) => file.isdir !== 1).map((row) => row.fs_id)
+    let fs_ids = fs_id ? [fs_id] : selectedRows.value.filter((file) => file.isdir !== 1)
+    const min_single_file = useMainStore().config.min_single_file
 
-    if (fs_id === undefined && fs_ids.length !== selectedRows.value.length) {
-      ElMessage.error('文件夹不会被解析!')
+    if (fs_id) {
+      const file = fileList.value.list.find((file) => file.fs_id === fs_id)
+      if (file?.size ?? 0 < min_single_file) {
+        ElMessage.error('文件过小不会被解析!')
+        return
+      }
+    } else {
+      if (fs_ids.length !== selectedRows.value.length) {
+        ElMessage.error('文件夹不会被解析!')
+      }
+
+      fs_ids = fs_ids as ParseApi.file[]
+
+      console.log(min_single_file)
+
+      fs_ids = fs_ids.filter((file) => {
+        console.log(file.size, min_single_file)
+        return file.size > min_single_file
+      })
+
+      if (fs_id === undefined && fs_ids.length !== selectedRows.value.length) {
+        ElMessage.error('文件过小不会被解析!')
+      }
+
+      fs_ids = fs_ids.map((row) => row.fs_id)
     }
 
     if (fs_ids.length > (useMainStore()?.config?.max_once ?? 20)) {
       ElMessage.error(`一次最多解析${useMainStore().config.max_once}个文件`)
+      return
+    }
+
+    if (fs_ids.length === 0) {
+      ElMessage.error('满足要求的文件数量为0')
       return
     }
 
@@ -100,18 +127,33 @@ export const useFileListStore = defineStore('fileListStore', () => {
         uk: fileList.value.uk,
         shareid: fileList.value.shareid,
         randsk: fileList.value.randsk,
-        fs_ids,
+        fs_ids: fs_ids as number[],
         password: getFileListForm.value.password,
-        url: getFileListForm.value.url
+        url: getFileListForm.value.url,
+
+        surl: getFileListForm.value.surl,
+        dir: getFileListForm.value.dir,
+        pwd: getFileListForm.value.pwd
       }
 
       if (vcode.value.hit_captcha) {
+        if (!vcode.value.vcode_str || !vcode.value.vcode_input) {
+          ElMessage.error('请先输入验证码')
+          return
+        }
         req.vcode_str = vcode.value.vcode_str
         req.vcode_input = vcode.value.vcode_input
       }
 
       res = await ParseApi.getDownloadLinks(req)
       ElMessage.success('解析成功,下载链接请下滑')
+
+      vcode.value = {
+        hit_captcha: false,
+        vcode_str: '',
+        vcode_img: '',
+        vcode_input: ''
+      }
 
       if (returnValue) {
         pending.value = false
@@ -129,13 +171,6 @@ export const useFileListStore = defineStore('fileListStore', () => {
             index: 0
           }
         })
-      }
-
-      vcode.value = {
-        hit_captcha: false,
-        vcode_str: '',
-        vcode_img: '',
-        vcode_input: ''
       }
     } catch (error) {
       const { code, message } = error as { code?: number; message?: string }
