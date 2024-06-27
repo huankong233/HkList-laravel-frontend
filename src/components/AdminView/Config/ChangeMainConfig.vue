@@ -153,7 +153,11 @@ const testAuth = async (formEl: FormInstance | null) => {
 
   try {
     pending.value = true
-    const res = await mainConfigApi.testAuth(changeConfigForm.value)
+    const res = await mainConfigApi.testAuth({
+      ...changeConfigForm.value,
+      max_filesize: changeConfigForm.value.max_filesize * 1024 ** 3,
+      min_single_file: changeConfigForm.value.min_single_file * 1024 ** 3
+    })
     if ('ip' in res.data) {
       ElMessage.error(`未知授权码,当前ip为: ${res.data.ip}`)
     } else {
