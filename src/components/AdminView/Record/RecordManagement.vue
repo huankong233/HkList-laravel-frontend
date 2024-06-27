@@ -11,6 +11,15 @@
     今日解析: {{ recordCount.today.count }} ({{ formatBytes(recordCount.today.size) }})
   </el-text>
 
+  <el-text style="margin-left: 20px">
+    按照
+    <el-select v-model="orderBy" @change="getRecords" style="width: 100px">
+      <el-option key="id" label="时间" value="id" />
+      <el-option key="size" label="文件大小" value="size" />
+    </el-select>
+    排序
+  </el-text>
+
   <el-table
     v-loading="pending"
     :data="RecordList?.data ?? []"
@@ -72,6 +81,7 @@ const pending = ref(false)
 
 const pageSize = ref(15)
 const currentPage = ref(1)
+const orderBy = ref<RecordApi.getRecordParams['orderBy']>('id')
 const RecordList = ref<RecordApi.getRecord>()
 const selectRecords = ref<RecordApi.Record[]>([])
 const recordCount = ref<RecordApi.getRecordCount>({
@@ -82,7 +92,11 @@ const recordCount = ref<RecordApi.getRecordCount>({
 const getRecords = async () => {
   try {
     pending.value = true
-    const res = await RecordApi.getRecord({ page: currentPage.value, size: pageSize.value })
+    const res = await RecordApi.getRecord({
+      page: currentPage.value,
+      size: pageSize.value,
+      orderBy: orderBy.value
+    })
     RecordList.value = res.data
   } finally {
     pending.value = false

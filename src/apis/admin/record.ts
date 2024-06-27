@@ -30,8 +30,14 @@ export interface getRecord {
   total: number
 }
 
-export const getRecord = (data: { page: number; size: number }) =>
-  axios.get<getRecord>(`/admin/record?page=${data.page}&size=${data.size}`)
+export interface getRecordParams {
+  page: number
+  size: number
+  orderBy: 'id' | 'size'
+}
+
+export const getRecord = (data: getRecordParams) =>
+  axios.get<getRecord>(`/admin/record?page=${data.page}&size=${data.size}&orderBy=${data.orderBy}`)
 
 export interface getRecordCount {
   today: {
