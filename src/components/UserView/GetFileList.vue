@@ -37,12 +37,12 @@
 
     <el-alert
       class="alert"
-      :type="hitLimit ? 'error' : 'success'"
+      :type="limitMessage === '' ? 'success' : 'error'"
       :closable="false"
       :title="
-        hitLimit
-          ? '当前用户配额已用完'
-          : `当前用户组: ${limitForm.group_name} 当前剩余解析文件数: ${limitForm.count} 当前剩余解析大小: ${formatBytes(limitForm.size)}`
+        limitMessage === ''
+          ? `当前${getFileListForm.token ? '卡密' : '用户组'}: ${limitForm.group_name} 剩余可解析文件数: ${limitForm.count} 剩余可解析大小: ${formatBytes(limitForm.size)} ${getFileListForm.token ? `到期时间: ${limitForm.expired_at ?? '未知'}` : ''}`
+          : limitMessage ?? '未知错误'
       "
     />
 
@@ -61,6 +61,9 @@
       </el-form-item>
       <el-form-item label="解析密码" prop="password" v-if="config.need_password">
         <el-input v-model.trim="getFileListForm.password"></el-input>
+      </el-form-item>
+      <el-form-item label="卡密" prop="token">
+        <el-input v-model.trim="getFileListForm.token" @blur="fileListStore.getLimit"></el-input>
       </el-form-item>
       <el-form-item label="当前路径" prop="dir">
         <el-input v-model="getFileListForm.dir" disabled></el-input>
@@ -115,8 +118,15 @@ import { nextTick, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const fileListStore = useFileListStore()
-const { pending, getFileListForm, getFileListFormRef, selectedRows, limitForm, hitLimit, vcode } =
-  storeToRefs(fileListStore)
+const {
+  pending,
+  getFileListForm,
+  getFileListFormRef,
+  selectedRows,
+  limitForm,
+  limitMessage,
+  vcode
+} = storeToRefs(fileListStore)
 const mainStore = useMainStore()
 const { config } = storeToRefs(mainStore)
 

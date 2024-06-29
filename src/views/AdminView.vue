@@ -21,6 +21,9 @@
       <el-tab-pane label="邀请码管理" name="invCodeManagement">
         <InvCodeManagement />
       </el-tab-pane>
+      <el-tab-pane label="卡密管理" name="tokenManagement">
+        <TokenManagement />
+      </el-tab-pane>
       <el-tab-pane label="账号管理" name="accountManagement">
         <AccountManagement />
       </el-tab-pane>
@@ -68,6 +71,10 @@ const UserManagement = defineAsyncComponent(
 
 const InvCodeManagement = defineAsyncComponent(
   () => import('@/components/AdminView/InvCode/InvCodeManagement.vue')
+)
+
+const TokenManagement = defineAsyncComponent(
+  () => import('@/components/AdminView/Token/TokenManagement.vue')
 )
 
 const GroupManagement = defineAsyncComponent(

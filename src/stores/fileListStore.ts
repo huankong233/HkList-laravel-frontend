@@ -12,7 +12,8 @@ export const useFileListStore = defineStore('fileListStore', () => {
     url: '',
     pwd: '',
     dir: '/',
-    password: ''
+    password: '',
+    token: ''
   })
   const getFileListFormRef = ref<FormInstance | null>(null)
 
@@ -80,8 +81,8 @@ export const useFileListStore = defineStore('fileListStore', () => {
       return
     }
 
-    let fs_ids = fs_id ? [fs_id] : selectedRows.value.filter((file) => file.isdir !== 1)
     const min_single_file = useMainStore().config.min_single_file
+    let fs_ids: number[] = []
 
     if (fs_id) {
       const file = fileList.value.list.find((file) => file.fs_id === fs_id)
@@ -94,22 +95,22 @@ export const useFileListStore = defineStore('fileListStore', () => {
         ElMessage.error('文件过小不会被解析!')
         return
       }
+
+      fs_ids = [fs_id]
     } else {
-      if (fs_ids.length !== selectedRows.value.length) {
+      let temp = selectedRows.value.filter((file) => file.isdir !== 1)
+
+      if (temp.length !== selectedRows.value.length) {
         ElMessage.error('文件夹不会被解析!')
       }
 
-      fs_ids = fs_ids as ParseApi.file[]
+      temp = temp.filter((file) => file.size > min_single_file)
 
-      fs_ids = fs_ids.filter((file) => {
-        return file.size > min_single_file
-      })
-
-      if (fs_id === undefined && fs_ids.length !== selectedRows.value.length) {
+      if (temp.length !== selectedRows.value.length) {
         ElMessage.error('文件过小不会被解析!')
       }
 
-      fs_ids = fs_ids.map((row) => row.fs_id)
+      fs_ids = temp.map((row) => row.fs_id)
     }
 
     if (fs_ids.length > (useMainStore()?.config?.max_once ?? 20)) {
@@ -129,8 +130,9 @@ export const useFileListStore = defineStore('fileListStore', () => {
         uk: fileList.value.uk,
         shareid: fileList.value.shareid,
         randsk: fileList.value.randsk,
-        fs_ids: fs_ids as number[],
+        fs_ids,
         password: getFileListForm.value.password,
+        token: getFileListForm.value.token,
         url: getFileListForm.value.url,
 
         surl: getFileListForm.value.surl,
@@ -200,16 +202,18 @@ export const useFileListStore = defineStore('fileListStore', () => {
     size: 0
   })
 
-  const hitLimit = ref(false)
+  const limitMessage = ref('')
 
   const getLimit = async () => {
     try {
       pending.value = true
-      const res = await ParseApi.getLimit()
+      const res = await ParseApi.getLimit({
+        token: getFileListForm.value.token
+      })
       limitForm.value = res.data
-      hitLimit.value = false
-    } catch {
-      hitLimit.value = true
+      limitMessage.value = ''
+    } catch (error) {
+      limitMessage.value = (error as { code: number; message: string }).message
     } finally {
       pending.value = false
     }
@@ -226,7 +230,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
     getDownloadLinks,
     limitForm,
     getLimit,
-    hitLimit,
+    limitMessage,
 
     vcode
   }

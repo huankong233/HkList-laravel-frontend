@@ -24,6 +24,7 @@ export interface getFileList {
   dir: string
   pwd: string
   password?: string
+  token?: string
 }
 
 export interface file {
@@ -81,6 +82,8 @@ export interface getDownloadLinks {
   shareid: number
   uk: number
   password?: string
+  token?: string
+
   url: string
 
   vcode_str?: string
@@ -104,10 +107,15 @@ export type downloadLinks = link[]
 export const getDownloadLinks = (data: getDownloadLinks) =>
   axios.post<downloadLinks>('/parse/get_download_links', data)
 
+export interface getLimit {
+  token?: string
+}
+
 export interface limit {
   group_name: string
   count: number
   size: number
+  expired_at?: string
 }
 
-export const getLimit = () => axios.get<limit>('/parse/limit')
+export const getLimit = (data: getLimit) => axios.get<limit>(`/parse/limit?token=${data.token}`)
