@@ -3,6 +3,7 @@
 
   <el-button type="primary" @click="getTokens()">刷新列表</el-button>
   <el-button type="primary" @click="switchAddToken()">添加卡密</el-button>
+  <el-button type="primary" @click="copyTokens()">批量复制</el-button>
   <el-button type="danger" :disabled="selectTokens.length <= 0" @click="deleteSelectTokens()">
     批量删除
   </el-button>
@@ -64,7 +65,7 @@
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column width="150" label="操作" fixed="right">
+    <el-table-column width="200" label="操作" fixed="right">
       <template #default="{ row }">
         <el-button size="small" type="primary" @click="turnOnEditMode(row)" v-if="!row.edit">
           编辑
@@ -72,6 +73,7 @@
         <el-button size="small" type="primary" @click="turnOffEditMode(row)" v-if="row.edit">
           保存
         </el-button>
+        <el-button size="small" type="primary" @click="copyTokens(row)">复制</el-button>
         <el-button size="small" type="danger" @click="deleteToken(row)">删除</el-button>
       </template>
     </el-table-column>
@@ -91,6 +93,7 @@
 <script lang="ts" setup>
 import * as TokenApi from '@/apis/admin/token.js'
 import AddToken from '@/components/AdminView/Token/AddToken.vue'
+import { copy } from '@/utils/copy.js'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
@@ -160,6 +163,13 @@ onMounted(getTokens)
 
 const isAddToken = ref(false)
 const switchAddToken = () => (isAddToken.value = !isAddToken.value)
+
+const copyTokens = (token?: TokenApi.Token) => {
+  let tokens = token ? [token] : selectTokens.value
+  const text = tokens.map((token) => [token.name, token.count, token.size, token.day].join(' | '))
+  text.unshift(['卡密', '可用次数', '可下载量', '可用天数'].join(' | '))
+  copy(text.join('\n'))
+}
 </script>
 
 <style lang="scss" scoped>

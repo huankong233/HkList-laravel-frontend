@@ -62,7 +62,7 @@
       <el-form-item label="解析密码" prop="password" v-if="config.need_password">
         <el-input v-model.trim="getFileListForm.password"></el-input>
       </el-form-item>
-      <el-form-item label="卡密" prop="token">
+      <el-form-item label="卡密(不用留空即可)" prop="token">
         <el-input v-model.trim="getFileListForm.token" @blur="fileListStore.getLimit"></el-input>
       </el-form-item>
       <el-form-item label="当前路径" prop="dir">
