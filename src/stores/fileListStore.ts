@@ -86,13 +86,11 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
     if (fs_id) {
       const file = fileList.value.list.find((file) => file.fs_id === fs_id)
-      if (file) {
+      if (!file) {
         ElMessage.error('获取文件信息失败')
-
-        if (file.size < min_single_file) {
-          ElMessage.error('文件过小不会被解析!')
-          return
-        }
+      } else if (file.size < min_single_file) {
+        ElMessage.error('文件过小不会被解析!')
+        return
       }
 
       fs_ids = [fs_id]
