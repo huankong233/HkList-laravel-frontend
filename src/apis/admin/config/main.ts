@@ -19,6 +19,8 @@ export interface config {
   custom_copyright: string
   max_filesize: number
   min_single_file: number
+  token_mode: boolean
+  button_link: string
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')
@@ -40,6 +42,7 @@ export interface updateConfig {
   max_filesize: number
   custom_copyright: string
   min_single_file: number
+  token_mode: boolean
 }
 
 export const updateConfig = (data: updateConfig) => axios.patch<null>('/admin/config/main', data)

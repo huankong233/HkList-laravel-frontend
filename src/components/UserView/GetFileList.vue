@@ -52,17 +52,22 @@
       :rules="getFileListFormRule"
       label-width="auto"
       class="form"
+      :label-position="position"
     >
       <el-form-item label="链接" prop="url">
-        <el-input v-model.trim="getFileListForm.url" @blur="checkLink()"></el-input>
+        <el-input
+          v-model.trim="getFileListForm.url"
+          @change="clearLinks()"
+          @blur="checkLink()"
+        ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="pwd">
-        <el-input v-model.trim="getFileListForm.pwd"></el-input>
+        <el-input v-model.trim="getFileListForm.pwd" @change="clearLinks()"></el-input>
       </el-form-item>
       <el-form-item label="解析密码" prop="password" v-if="config.need_password">
         <el-input v-model.trim="getFileListForm.password"></el-input>
       </el-form-item>
-      <el-form-item label="卡密(不用留空即可)" prop="token">
+      <el-form-item label="卡密(不用留空即可)" prop="token" v-if="config.token_mode">
         <el-input v-model.trim="getFileListForm.token" @blur="fileListStore.getLimit"></el-input>
       </el-form-item>
       <el-form-item label="当前路径" prop="dir">
@@ -83,7 +88,7 @@
           <el-input v-model="vcode.vcode_input"></el-input>
         </el-form-item>
       </template>
-      <el-form-item label=" ">
+      <el-form-item label=" " class="buttons">
         <el-button type="primary" @click="fileListStore.getFileList()">获取/刷新列表</el-button>
         <el-button
           type="primary"
@@ -93,6 +98,9 @@
           批量解析
         </el-button>
         <el-button type="primary" @click="copyLink(getFileListFormRef)">复制当前地址</el-button>
+        <el-button type="primary" v-if="config.button_link !== ''" @click="go(config.button_link)">
+          前往购买卡密
+        </el-button>
         <el-button type="primary" @click="goLogin()" v-if="getLoginState() === '0'">登陆</el-button>
         <template v-if="getLoginState() === '1'">
           <el-button type="primary" @click="goAdmin()" v-if="getLoginRole() === 'admin'">
@@ -111,11 +119,15 @@ import { useMainStore } from '@/stores/mainStore.js'
 import { copy } from '@/utils/copy.js'
 import { getAppName, getLoginRole, getLoginState } from '@/utils/env.js'
 import { formatBytes } from '@/utils/format.js'
+import { isMobile } from '@/utils/isMobile.js'
 import type { RuleItem } from 'async-validator'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { nextTick, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+const position = ref('right')
+if (isMobile()) position.value = 'top'
 
 const fileListStore = useFileListStore()
 const {
@@ -125,7 +137,8 @@ const {
   selectedRows,
   limitForm,
   limitMessage,
-  vcode
+  vcode,
+  downloadLinks
 } = storeToRefs(fileListStore)
 const mainStore = useMainStore()
 const { config } = storeToRefs(mainStore)
@@ -216,10 +229,12 @@ onMounted(() => {
 const router = useRouter()
 const goLogin = () => router.push('/login')
 const goAdmin = () => router.push('/admin')
+const go = (link: string) => window.open(link)
 
 const timestamp = ref(0)
 
 const changeTimestamp = () => (timestamp.value = Date.now())
+const clearLinks = () => (downloadLinks.value = [])
 </script>
 
 <style lang="scss" scoped>
@@ -230,5 +245,15 @@ img:hover {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+.el-button + .el-button {
+  margin-left: 0;
+}
+</style>
+
+<style lang="scss">
+.buttons .el-form-item__content {
+  gap: 10px;
 }
 </style>

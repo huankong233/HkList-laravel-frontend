@@ -7,7 +7,10 @@
     </h2>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基础配置" name="changeMainConfig">
-        <ChangeMainConfig />
+        <ChangeMainConfig Mode="main" />
+      </el-tab-pane>
+      <el-tab-pane label="解析配置" name="changeParseConfig">
+        <ChangeMainConfig Mode="parse" />
       </el-tab-pane>
       <el-tab-pane label="邮件配置" name="changeMailConfig">
         <ChangeMailConfig />
