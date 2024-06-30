@@ -119,7 +119,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   custom_copyright: '本项目半开源, 项目地址: https://github.com/huankong233/94list-laravel',
   max_filesize: 0,
   min_single_file: 0,
-  token_mode: true
+  token_mode: true,
+  button_link: ''
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {

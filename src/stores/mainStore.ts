@@ -21,7 +21,8 @@ export const useMainStore = defineStore('mainStore', () => {
     show_copyright: false,
     custom_copyright: '本项目半开源, 项目地址: https://github.com/huankong233/94list-laravel',
     min_single_file: 0,
-    token_mode: false
+    token_mode: false,
+    button_link: ''
   })
 
   const router = useRouter()
