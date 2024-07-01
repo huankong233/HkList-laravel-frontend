@@ -16,6 +16,9 @@
       <el-form-item label="DEBUG模式开关" prop="debug">
         <el-switch v-model="changeConfigForm.debug" size="large" />
       </el-form-item>
+      <el-form-item label="仅限中国用户使用" prop="limit_cn">
+        <el-switch v-model="changeConfigForm.limit_cn" size="large" />
+      </el-form-item>
       <el-form-item label="邀请码开关" prop="need_inv_code">
         <el-switch v-model="changeConfigForm.need_inv_code" size="large" />
       </el-form-item>
@@ -121,7 +124,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   max_filesize: 0,
   min_single_file: 0,
   token_mode: true,
-  button_link: ''
+  button_link: '',
+  limit_cn: true
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {

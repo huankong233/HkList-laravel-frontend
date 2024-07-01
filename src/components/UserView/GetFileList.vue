@@ -13,11 +13,17 @@
     <el-alert
       :closable="false"
       class="alert"
-      title="当前中转账号充足"
+      :title="`当前中转账号充足 当前省份:${config.prov ?? '未知'}`"
       type="success"
       v-if="config.have_account"
     />
-    <el-alert :closable="false" class="alert" title="当前中转账号不足" type="error" v-else />
+    <el-alert
+      :closable="false"
+      class="alert"
+      :title="`当前中转账号不足 当前省份:${config.prov ?? '未知'}`"
+      type="error"
+      v-else
+    />
 
     <el-alert
       class="alert"

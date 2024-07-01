@@ -21,6 +21,7 @@ export interface config {
   min_single_file: number
   token_mode: boolean
   button_link: string
+  limit_cn: boolean
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')

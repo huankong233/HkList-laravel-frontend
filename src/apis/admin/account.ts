@@ -15,6 +15,7 @@ export interface Account {
   vip_type: string
   switch: 0 | 1
   reason: string
+  prov: string | null
   svip_end_at: string
   last_use_at: string
   created_at: string

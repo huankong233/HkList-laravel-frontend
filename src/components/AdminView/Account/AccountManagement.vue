@@ -41,7 +41,12 @@
     <el-table-column prop="vip_type" label="会员类型"></el-table-column>
     <el-table-column prop="switch" label="状态">
       <template #default="{ row }">
-        <span v-show="!row.edit">{{ row.switch ? '启用' : '禁用' }}</span>
+        <span>{{ row.switch ? '启用' : '禁用' }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="prov" label="省份">
+      <template #default="{ row }">
+        <span>{{ row.prov ?? '未使用' }}</span>
       </template>
     </el-table-column>
     <el-table-column prop="reason" label="禁用原因"></el-table-column>
