@@ -189,7 +189,7 @@ const testAuth = async (formEl: FormInstance | null) => {
 
 onMounted(getConfig)
 
-const checkAlert = (value: string) => {
+const checkAlert = (value: number) => {
   if (value === 4) {
     ElMessageBox.confirm('使用V3需要強制使用安卓手機APP抓取的COOKIE以及固定UA!!!', 'Warning', {
       title: '注意:',
