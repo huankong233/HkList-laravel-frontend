@@ -1,6 +1,7 @@
 import '@/assets/css/default.css'
 // import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
+import 'element-plus/theme-chalk/el-message-box.css'
 import 'element-plus/theme-chalk/el-message.css'
 
 import { createPinia } from 'pinia'

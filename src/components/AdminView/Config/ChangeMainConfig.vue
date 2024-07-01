@@ -74,10 +74,11 @@
         <el-input v-model.trim="changeConfigForm.code"></el-input>
       </el-form-item>
       <el-form-item label="解析模式" prop="parse_mode">
-        <el-select v-model="changeConfigForm.parse_mode">
+        <el-select v-model="changeConfigForm.parse_mode" @change="checkAlert">
           <el-option :value="1" label="盘内" />
           <el-option :value="2" label="盘外V1" />
           <el-option :value="3" label="盘外V2(推荐)" />
+          <el-option :value="4" label="盘外V3" />
         </el-select>
       </el-form-item>
     </template>
@@ -93,7 +94,7 @@
 <script lang="ts" setup>
 import * as mainConfigApi from '@/apis/admin/config/main.js'
 import { getFrontEndVersion } from '@/utils/env.js'
-import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
 const { Mode } = defineProps(['Mode'])
@@ -187,6 +188,22 @@ const testAuth = async (formEl: FormInstance | null) => {
 }
 
 onMounted(getConfig)
+
+const checkAlert = (value: string) => {
+  if (value === 4) {
+    ElMessageBox.confirm('使用V3需要強制使用安卓手機APP抓取的COOKIE以及固定UA!!!', 'Warning', {
+      title: '注意:',
+      type: 'warning'
+    })
+      .then(() => {
+        changeConfigForm.value.parse_mode = 4
+        changeConfigForm.value.user_agent = 'netdisk;P2SP;3.0.10.22'
+      })
+      .catch(() => {
+        changeConfigForm.value.parse_mode = 3
+      })
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>
