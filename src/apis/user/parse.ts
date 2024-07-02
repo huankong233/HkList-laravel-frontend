@@ -16,7 +16,6 @@ export interface config {
   min_single_file: number
   token_mode: boolean
   button_link: string
-  prov: string | null
 }
 
 export const getConfig = () => axios.get<config>('/parse/config')
