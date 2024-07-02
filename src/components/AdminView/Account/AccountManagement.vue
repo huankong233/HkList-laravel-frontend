@@ -46,7 +46,51 @@
     </el-table-column>
     <el-table-column prop="prov" label="省份">
       <template #default="{ row }">
-        <span>{{ row.prov ?? '未使用' }}</span>
+        <span v-if="!row.edit">{{ row.prov ?? '未使用' }}</span>
+        <el-select v-if="row.edit" v-model="row.prov">
+          <el-option :key="null" :value="nul">未使用</el-option>
+          <el-option
+            v-for="item in [
+              '北京市',
+              '天津市',
+              '上海市',
+              '重庆市',
+              '河北省',
+              '山西省',
+              '内蒙古自治区',
+              '辽宁省',
+              '吉林省',
+              '黑龙江省',
+              '江苏省',
+              '浙江省',
+              '安徽省',
+              '福建省',
+              '江西省',
+              '山东省',
+              '河南省',
+              '湖北省',
+              '湖南省',
+              '广东省',
+              '广西壮族自治区',
+              '海南省',
+              '四川省',
+              '贵州省',
+              '云南省',
+              '西藏自治区',
+              '陕西省',
+              '甘肃省',
+              '青海省',
+              '宁夏回族自治区',
+              '新疆维吾尔自治区',
+              '香港特别行政区',
+              '澳门特别行政区',
+              '台湾省'
+            ]"
+            :key="item"
+            :label="item"
+            :value="item"
+          ></el-option>
+        </el-select>
       </template>
     </el-table-column>
     <el-table-column prop="reason" label="禁用原因"></el-table-column>
@@ -70,13 +114,19 @@
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column width="220" label="操作" fixed="right">
+    <el-table-column width="300" label="操作" fixed="right">
       <template #default="{ row }">
         <el-button size="small" type="primary" @click="updateAccountInfo(row)">更新信息</el-button>
         <el-button size="small" type="primary" @click="enableAccount(row)" v-if="row.switch === 0">
           启用
         </el-button>
         <el-button size="small" type="primary" @click="disableAccount(row)" v-else>禁用</el-button>
+        <el-button size="small" type="primary" v-if="!row.edit" @click="switchAccount(row)">
+          編輯
+        </el-button>
+        <el-button size="small" type="primary" v-if="row.edit" @click="switchAccount(row)">
+          完成
+        </el-button>
         <el-button size="small" type="danger" @click="deleteAccount(row)">删除</el-button>
       </template>
     </el-table-column>
@@ -227,6 +277,20 @@ onMounted(getAccounts)
 
 const isAddAccount = ref(false)
 const switchAddAccount = () => (isAddAccount.value = !isAddAccount.value)
+
+const switchAccount = async (row: AccountApi.Account) => {
+  row.edit = !row.edit
+  if (row.edit === false) {
+    try {
+      pending.value = true
+      await AccountApi.updateAccount(row)
+      ElMessage.success('修改賬號成功')
+    } finally {
+      pending.value = false
+      await getAccounts()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -41,6 +41,9 @@ export interface getAccount {
 export const getAccount = (data: { page: number; size: number }) =>
   axios.get<getAccount>(`/admin/account?page=${data.page}&size=${data.size}`)
 
+export const updateAccount = (account: Account) =>
+  axios.patch<null>(`/admin/account/${account.id}`, account)
+
 export const updateAccountInfo = (account: Account) =>
   axios.patch<null>(`/admin/account/info`, { account_ids: [account.id] })
 
