@@ -72,7 +72,7 @@
     </el-table-column>
     <el-table-column width="220" label="操作" fixed="right">
       <template #default="{ row }">
-        <el-button size="small" type="primary" @click="updateAccount(row)">更新信息</el-button>
+        <el-button size="small" type="primary" @click="updateAccountInfo(row)">更新信息</el-button>
         <el-button size="small" type="primary" @click="enableAccount(row)" v-if="row.switch === 0">
           启用
         </el-button>
@@ -117,10 +117,10 @@ const getAccounts = async () => {
   }
 }
 
-const updateAccount = async (Account: AccountApi.Account) => {
+const updateAccountInfo = async (Account: AccountApi.Account) => {
   try {
     pending.value = true
-    await AccountApi.updateAccount(Account)
+    await AccountApi.updateAccountInfo(Account)
     ElMessage.success('更新账户信息成功')
   } finally {
     pending.value = false
@@ -132,7 +132,7 @@ const updateSelectAccounts = async () => {
   try {
     pending.value = true
     const Account_ids = selectAccounts.value.map((account) => account.id)
-    await AccountApi.updateAccounts(Account_ids)
+    await AccountApi.updateAccountsInfo(Account_ids)
     ElMessage.success('批量更新账户成功')
   } finally {
     pending.value = false
