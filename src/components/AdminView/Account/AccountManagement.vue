@@ -48,7 +48,7 @@
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.prov ?? '未使用' }}</span>
         <el-select v-if="row.edit" v-model="row.prov">
-          <el-option :key="null" :value="nul">未使用</el-option>
+          <el-option :key="null" :value="null">未使用</el-option>
           <el-option
             v-for="item in [
               '北京市',
@@ -278,7 +278,7 @@ onMounted(getAccounts)
 const isAddAccount = ref(false)
 const switchAddAccount = () => (isAddAccount.value = !isAddAccount.value)
 
-const switchAccount = async (row: AccountApi.Account) => {
+const switchAccount = async (row: any) => {
   row.edit = !row.edit
   if (row.edit === false) {
     try {
