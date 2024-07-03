@@ -43,6 +43,9 @@
       <el-form-item label="卡网跳转链接" prop="button_link">
         <el-input v-model="changeConfigForm.button_link"></el-input>
       </el-form-item>
+      <el-form-item label="省份模式开关" prop="limit_prov">
+        <el-switch v-model="changeConfigForm.limit_prov" size="large" />
+      </el-form-item>
     </template>
 
     <template v-if="Mode === 'parse'">
@@ -125,7 +128,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   min_single_file: 0,
   token_mode: true,
   button_link: '',
-  limit_cn: true
+  limit_cn: true,
+  limit_prov: true
 })
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {
