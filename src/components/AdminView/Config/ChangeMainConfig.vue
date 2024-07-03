@@ -177,6 +177,9 @@ const updateConfig = async (formEl: FormInstance | null) => {
 const testAuth = async (formEl: FormInstance | null) => {
   if (!formEl || !(await formEl.validate())) return
 
+  const res = checkAlert(changeConfigForm.value.parse_mode)
+  if (!res) return
+
   try {
     pending.value = true
     const res = await mainConfigApi.testAuth({
@@ -198,6 +201,7 @@ const testAuth = async (formEl: FormInstance | null) => {
 onMounted(getConfig)
 
 const checkAlert = (value: number) => {
+  let res = true
   if (value === 4) {
     ElMessageBox.confirm('使用V3需要強制使用安卓手機APP抓取的COOKIE以及固定UA!!!', 'Warning', {
       title: '注意:',
@@ -209,8 +213,10 @@ const checkAlert = (value: number) => {
       })
       .catch(() => {
         changeConfigForm.value.parse_mode = 3
+        res = false
       })
   }
+  return res
 }
 </script>
 
