@@ -209,7 +209,8 @@ const checkAlert = (value: number) => {
     })
       .then(() => {
         changeConfigForm.value.parse_mode = 4
-        changeConfigForm.value.user_agent = 'netdisk;P2SP;3.0.10.22'
+        changeConfigForm.value.user_agent =
+          'netdisk;P2SP;2.2.101.161;netdisk;12.11.9;V2156A;android-android;11;JSbridge4.4.0;jointBridge;1.1.0;'
       })
       .catch(() => {
         changeConfigForm.value.parse_mode = 3
