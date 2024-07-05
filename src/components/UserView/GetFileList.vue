@@ -175,7 +175,7 @@ const getUrlId = (url: string) => {
   const fullMatch2 = url.match(/surl=([a-zA-Z0-9_-]+)/)
   const pwdMatch = url.match(/\?pwd=([a-zA-Z0-9_-]+)/)
   const pwdMatch2 = url.match(/&pwd=([a-zA-Z0-9_-]+)/)
-  const pwdMatch3 = url.match(/提取码:\s?([a-zA-Z0-9_-]+)/)
+  const pwdMatch3 = url.match(/提取码[:：]\s?([a-zA-Z0-9_-]+)/)
 
   let id: string
   if (fullMatch2) {
