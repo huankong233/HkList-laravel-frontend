@@ -29,7 +29,7 @@
     <el-table-column prop="baidu_name" label="百度用户名"></el-table-column>
     <el-table-column prop="size" label="今日解析量">
       <template #default="{ row }">
-        {{ formatBytes(row.size) }}
+        {{ formatBytes(row.today_size) }}
       </template>
     </el-table-column>
     <el-table-column prop="size" label="总解析量">
@@ -93,7 +93,11 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column prop="reason" label="禁用原因"></el-table-column>
+    <el-table-column prop="reason" label="禁用原因">
+      <template #default="{ row }">
+        {{ row.reason ?? '未禁用' }}
+      </template>
+    </el-table-column>
     <el-table-column prop="svip_end_at" label="超级会员结束时间">
       <template #default="{ row }">
         {{ new Date(row.svip_end_at).toLocaleString() }}

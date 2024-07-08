@@ -18,7 +18,7 @@
       <el-form-item label="可用天数" prop="day">
         <el-input-number v-model="addTokenForm.day"></el-input-number>
       </el-form-item>
-      <el-form-item label="可下大小(GB)" prop="size">
+      <el-form-item label="可用大小(GB)" prop="size">
         <el-input-number v-model="addTokenForm.size"></el-input-number>
       </el-form-item>
       <el-form-item label="卡密名称" prop="name" v-if="addTokenForm.type === 'single'">
@@ -48,9 +48,9 @@ const pending = ref(false)
 const addTokenForm = ref<TokenApi.addToken>({
   type: 'single',
   name: '',
-  count: 0,
-  size: 0,
-  day: 0
+  count: 1,
+  size: 1,
+  day: 1
 })
 const addTokenFormRef = ref<FormInstance | null>(null)
 const addTokenFormRule: FormRules = {

@@ -25,9 +25,9 @@
     >
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column prop="ua" label="UA">
-        <template #default="{}">
-          <el-link type="danger" @click="copy(config.user_agent, '已复制UA')">
-            {{ config.user_agent }}
+        <template #default="{ row }">
+          <el-link type="danger" @click="copy(row.ua, '已复制UA')">
+            {{ row.ua ?? row.url }}
           </el-link>
         </template>
       </el-table-column>
@@ -82,7 +82,6 @@
 import * as ParseApi from '@/apis/user/parse.js'
 import { useAria2Store } from '@/stores/aria2Store.js'
 import { useFileListStore } from '@/stores/fileListStore.js'
-import { useMainStore } from '@/stores/mainStore.js'
 import { copy } from '@/utils/copy.js'
 import { getAppName } from '@/utils/env.js'
 import axios from '@/utils/request.js'
@@ -90,9 +89,6 @@ import { sleep } from '@/utils/sleep.js'
 import { ElMessage } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-
-const mainStore = useMainStore()
-const { config } = storeToRefs(mainStore)
 
 const fileListStore = useFileListStore()
 const { downloadLinks } = storeToRefs(fileListStore)
@@ -126,7 +122,7 @@ const sendDownloadFile = async (row: ParseApi.link) => {
         [row.urls ? row.urls[row.index] : row.url],
         {
           out: row.filename,
-          header: [`User-Agent: ${config.value.user_agent}`]
+          header: [`User-Agent: ${row.ua}`]
         }
       ]
     })

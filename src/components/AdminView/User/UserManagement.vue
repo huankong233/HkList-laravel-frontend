@@ -17,13 +17,13 @@
   >
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="id" label="ID"></el-table-column>
-    <el-table-column prop="group_id" label="用户组ID">
+    <el-table-column prop="group.id" label="用户组ID"></el-table-column>
+    <el-table-column prop="inv_code_id" label="邀请码ID">
       <template #default="{ row }">
-        <span v-show="!row.edit">{{ row.group_id }}</span>
-        <el-input v-show="row.edit" v-model="row.group_id"></el-input>
+        <span v-show="!row.edit">{{ row.inv_code_id }}</span>
+        <el-input-number v-show="row.edit" v-model="row.inv_code_id"></el-input-number>
       </template>
     </el-table-column>
-    <el-table-column prop="inv_code_id" label="邀请码ID"></el-table-column>
     <el-table-column prop="username" label="用户名">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.username }}</span>

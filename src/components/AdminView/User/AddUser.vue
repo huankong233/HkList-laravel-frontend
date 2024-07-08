@@ -18,8 +18,8 @@
           <el-option v-for="item in ['user', 'admin']" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
-      <el-form-item label="用户组ID" prop="group_id">
-        <el-input v-model="addUserForm.group_id"></el-input>
+      <el-form-item label="邀请码ID" prop="inv_code_id">
+        <el-input v-model="addUserForm.inv_code_id"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -44,7 +44,7 @@ const addUserForm = ref<UserApi.addUser>({
   username: '',
   password: '',
   role: 'user',
-  group_id: undefined
+  inv_code_id: 1
 })
 const addUserFormRef = ref<FormInstance | null>(null)
 const addUserFormRule: FormRules = {

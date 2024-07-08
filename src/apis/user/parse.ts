@@ -4,7 +4,6 @@ import { string2number } from '@/utils/string2number.js'
 export interface config {
   show_announce: boolean
   announce: string
-  user_agent: string
   debug: boolean
   max_once: number
   have_account: boolean
@@ -102,6 +101,7 @@ export interface link {
   index: number
   filename: string
   fs_id: number
+  ua: string
 }
 
 export type downloadLinks = link[]

@@ -1,4 +1,5 @@
 import axios from '@/utils/request.js'
+import type { Group } from './group'
 
 export interface addInvCodeSingle {
   type: 'single'
@@ -27,6 +28,8 @@ export interface InvCode {
   name: string
   use_count: number
   can_count: string
+  group: Group
+  group_id: number
   created_at: string
   updated_at: string
   deleted_at: string

@@ -35,12 +35,7 @@
         <el-input-number v-show="row.edit" v-model="row.can_count"></el-input-number>
       </template>
     </el-table-column>
-    <el-table-column prop="use_count" label="已使用次数">
-      <template #default="{ row }">
-        <span v-show="!row.edit">{{ row.use_count }}</span>
-        <el-input-number v-show="row.edit" v-model="row.use_count"></el-input-number>
-      </template>
-    </el-table-column>
+    <el-table-column prop="use_count" label="已使用次数"></el-table-column>
     <el-table-column prop="created_at" label="创建时间">
       <template #default="{ row }">
         {{ new Date(row.created_at).toLocaleString() }}
