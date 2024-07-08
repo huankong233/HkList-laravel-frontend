@@ -192,7 +192,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
     } finally {
       pending.value = false
       await getLimit()
-      await mainStore.getConfig()
+      await mainStore.getConfig(false)
     }
   }
 

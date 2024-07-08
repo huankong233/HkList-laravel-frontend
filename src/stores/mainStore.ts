@@ -34,12 +34,13 @@ export const useMainStore = defineStore('mainStore', () => {
     }
   }
 
-  const getConfig = async () => {
+  const getConfig = async (show = true) => {
     const configRes = await ParseApi.getConfig()
     const data = configRes.data
 
     data.announce = data.announce.replaceAll('[NextLine]', '<br>')
     if (data.announce === getRemberAnnounce()) data.show_announce = false
+    if (!show) data.show_announce = false
 
     config.value = {
       ...data,
