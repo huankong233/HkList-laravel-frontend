@@ -6,8 +6,6 @@
 import { useMainStore } from '@/stores/mainStore.js'
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
-import * as ParseApi from './apis/user/parse.js'
-import { getRemberAnnounce, setLoginState } from './utils/env.js'
 const mainStore = useMainStore()
 
 function getRandomColor() {
@@ -43,18 +41,7 @@ onMounted(async () => {
     }
   }
 
-  const configRes = await ParseApi.getConfig()
-  const data = configRes.data
-
-  data.announce = data.announce.replaceAll('[NextLine]', '<br>')
-  if (data.announce === getRemberAnnounce()) data.show_announce = false
-
-  mainStore.config = {
-    ...data,
-    is_https: document.location.protocol === 'https:'
-  }
-
-  setLoginState(data.have_login ? '1' : '0')
+  await mainStore.getConfig()
 })
 </script>
 

@@ -1,6 +1,6 @@
 import * as ParseApi from '@/apis/user/parse.js'
 import * as UserApi from '@/apis/user/user.js'
-import { setLoginRole, setLoginState } from '@/utils/env.js'
+import { getRemberAnnounce, setLoginRole, setLoginState } from '@/utils/env.js'
 import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -34,8 +34,24 @@ export const useMainStore = defineStore('mainStore', () => {
     }
   }
 
+  const getConfig = async () => {
+    const configRes = await ParseApi.getConfig()
+    const data = configRes.data
+
+    data.announce = data.announce.replaceAll('[NextLine]', '<br>')
+    if (data.announce === getRemberAnnounce()) data.show_announce = false
+
+    config.value = {
+      ...data,
+      is_https: document.location.protocol === 'https:'
+    }
+
+    setLoginState(data.have_login ? '1' : '0')
+  }
+
   return {
     config,
-    logout
+    logout,
+    getConfig
   }
 })

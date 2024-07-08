@@ -4,6 +4,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useMainStore } from './mainStore'
 
+const mainStore = useMainStore()
+
 export const useFileListStore = defineStore('fileListStore', () => {
   const pending = ref(false)
 
@@ -190,6 +192,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
     } finally {
       pending.value = false
       await getLimit()
+      await mainStore.getConfig()
     }
   }
 

@@ -17,4 +17,4 @@ export const getConfig = () => axios.get<config>('/admin/config/mail')
 
 export const updateConfig = (data: config) => axios.patch<null>('/admin/config/mail', data)
 
-export const sendTestMail = () => axios.post<null>('/admin/config/mail')
+export const sendTestMail = (data: config) => axios.post<null>('/admin/config/mail', data)
