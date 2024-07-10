@@ -5,10 +5,10 @@
   </el-button>
 
   <el-text style="margin-left: 20px">
-    累计解析: {{ recordCount.total.count }} ({{ formatBytes(recordCount.total.size) }})
+    累计解析: {{ recordCount.total.count }} ({{ formatBytes(recordCount.total.size ?? 0) }})
   </el-text>
   <el-text>
-    今日解析: {{ recordCount.today.count }} ({{ formatBytes(recordCount.today.size) }})
+    今日解析: {{ recordCount.today.count }} ({{ formatBytes(recordCount.today.size ?? 0) }})
   </el-text>
 
   <el-text style="margin-left: 20px">
