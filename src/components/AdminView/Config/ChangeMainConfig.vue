@@ -70,6 +70,9 @@
       <el-form-item label="解析密码" prop="password">
         <el-input v-model.trim="changeConfigForm.password"></el-input>
       </el-form-item>
+      <el-form-item label="购买授权联系TG:">
+        <el-input disabled value="t.me/huan_kong"></el-input>
+      </el-form-item>
       <el-form-item label="授权服务器" prop="main_server">
         <el-input v-model.trim="changeConfigForm.main_server"></el-input>
       </el-form-item>
