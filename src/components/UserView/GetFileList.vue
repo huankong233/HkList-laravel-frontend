@@ -224,12 +224,14 @@ onMounted(() => {
     const searchParams = new URLSearchParams(location.search)
     if (searchParams.size < 4) return
 
-    getFileListForm.value = {
-      url: searchParams.get('url') ?? '',
-      pwd: searchParams.get('pwd') ?? '',
-      dir: searchParams.get('dir') ?? '/',
-      surl: searchParams.get('surl') ?? ''
-    }
+    const url = searchParams.get('url')
+    const pwd = searchParams.get('pwd')
+    const dir = searchParams.get('dir')
+    const surl = searchParams.get('surl')
+
+    if (!url || !pwd || !dir || !surl) return
+
+    getFileListForm.value = { url, pwd, dir, surl }
 
     ElMessage.success('已读取到参数,正在加载')
 
