@@ -15,8 +15,10 @@ export interface Account {
   switch: 0 | 1
   reason: string | null
   prov: string | null
-  today_size: number
-  total_size: number
+  today_size: null | number
+  today_count: number
+  total_size: null | number
+  total_count: number
   svip_end_at: string
   last_use_at: string | null
   created_at: string

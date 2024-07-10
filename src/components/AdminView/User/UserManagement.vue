@@ -17,11 +17,24 @@
   >
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="id" label="ID"></el-table-column>
-    <el-table-column prop="group.id" label="用户组ID"></el-table-column>
-    <el-table-column prop="inv_code_id" label="邀请码ID">
+    <el-table-column prop="" label="用户组">
       <template #default="{ row }">
-        <span v-show="!row.edit">{{ row.inv_code_id }}</span>
-        <el-input-number v-show="row.edit" v-model="row.inv_code_id"></el-input-number>
+        <span>{{ row.group.id }} ({{ row.group.name }})</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="inv_code.name" label="邀请码">
+      <template #default="{ row }">
+        <span>{{ row.inv_code.id }} ({{ row.inv_code.name }})</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="today_size" label="今日解析">
+      <template #default="{ row }">
+        <span>{{ row.today_count }} ({{ formatBytes(row.today_size ?? 0) }})</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="today_size" label="縂共解析">
+      <template #default="{ row }">
+        <span>{{ row.total_count }} ({{ formatBytes(row.total_size ?? 0) }})</span>
       </template>
     </el-table-column>
     <el-table-column prop="username" label="用户名">
@@ -83,6 +96,7 @@ import * as UserApi from '@/apis/admin/user.js'
 import AddUser from '@/components/AdminView/User/AddUser.vue'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
+import { formatBytes } from '@/utils/format.js'
 
 const pending = ref(false)
 

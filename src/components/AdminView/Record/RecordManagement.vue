@@ -32,6 +32,12 @@
     <el-table-column prop="id" label="ID"></el-table-column>
     <el-table-column prop="ip" label="IP"></el-table-column>
     <el-table-column prop="fs_id" label="文件ID"></el-table-column>
+    <el-table-column prop="file.filename" label="文件名"></el-table-column>
+    <el-table-column prop="fs_id" label="文件大小">
+      <template #default="{ row }">
+        <span>{{ formatBytes(row.file.size) }}</span>
+      </template>
+    </el-table-column>
     <el-table-column prop="url" label="下载链接"></el-table-column>
     <el-table-column prop="ua" label="UA"></el-table-column>
     <el-table-column prop="user_id" label="用户ID">
@@ -67,7 +73,7 @@
     v-model:page-size="pageSize"
     :page-sizes="[15, 50, 100, 500, RecordList?.total ?? 100]"
     :total="RecordList?.total ?? 100"
-    layout="sizes, prev, pager, next"
+    layout="total, sizes, prev, pager, next, jumper"
     @size-change="getRecords"
     @current-change="getRecords"
   />

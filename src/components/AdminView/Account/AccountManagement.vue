@@ -27,14 +27,14 @@
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="id" label="ID"></el-table-column>
     <el-table-column prop="baidu_name" label="百度用户名"></el-table-column>
-    <el-table-column prop="size" label="今日解析量">
+    <el-table-column prop="today_size" label="今日解析">
       <template #default="{ row }">
-        {{ formatBytes(row.today_size) }}
+        <span>{{ row.today_count }} ({{ formatBytes(row.today_size ?? 0) }})</span>
       </template>
     </el-table-column>
-    <el-table-column prop="size" label="总解析量">
+    <el-table-column prop="today_size" label="縂共解析">
       <template #default="{ row }">
-        {{ formatBytes(row.total_size) }}
+        <span>{{ row.total_count }} ({{ formatBytes(row.total_size ?? 0) }})</span>
       </template>
     </el-table-column>
     <el-table-column prop="cookie" label="Cookie"></el-table-column>
@@ -141,7 +141,7 @@
     v-model:page-size="pageSize"
     :page-sizes="[15, 50, 100, 500, accountList?.total ?? 100]"
     :total="accountList?.total ?? 100"
-    layout="sizes, prev, pager, next"
+    layout="total, sizes, prev, pager, next, jumper"
     @size-change="getAccounts"
     @current-change="getAccounts"
   />

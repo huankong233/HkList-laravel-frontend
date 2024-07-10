@@ -16,6 +16,10 @@ export interface User {
   group: Group
   inv_code: InvCode
   inv_code_id: number
+  today_size: null | string
+  today_count: number
+  total_size: null | string
+  total_count: number
   username: string
   password: string
   role: 'user' | 'admin'

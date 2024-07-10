@@ -64,7 +64,7 @@
     v-model:page-size="pageSize"
     :page-sizes="[15, 50, 100, 500, ipList?.total ?? 100]"
     :total="ipList?.total ?? 100"
-    layout="sizes, prev, pager, next"
+    layout="total, sizes, prev, pager, next, jumper"
     @size-change="getIps"
     @current-change="getIps"
   />

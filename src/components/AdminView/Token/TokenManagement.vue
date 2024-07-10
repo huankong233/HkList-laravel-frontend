@@ -24,6 +24,16 @@
         <el-input v-show="row.edit" v-model="row.name"></el-input>
       </template>
     </el-table-column>
+    <el-table-column prop="today_size" label="今日解析">
+      <template #default="{ row }">
+        <span>{{ row.today_count }} ({{ formatBytes(row.today_size ?? 0) }})</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="today_size" label="縂共解析">
+      <template #default="{ row }">
+        <span>{{ row.total_count }} ({{ formatBytes(row.total_size ?? 0) }})</span>
+      </template>
+    </el-table-column>
     <el-table-column prop="count" label="可用次数">
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.count }}</span>
@@ -84,7 +94,7 @@
     v-model:page-size="pageSize"
     :page-sizes="[15, 50, 100, 500, tokenList?.total ?? 100]"
     :total="tokenList?.total ?? 100"
-    layout="sizes, prev, pager, next"
+    layout="total, sizes, prev, pager, next, jumper"
     @size-change="getTokens"
     @current-change="getTokens"
   />
@@ -94,6 +104,7 @@
 import * as TokenApi from '@/apis/admin/token.js'
 import AddToken from '@/components/AdminView/Token/AddToken.vue'
 import { copy } from '@/utils/copy.js'
+import { formatBytes } from '@/utils/format.js'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
