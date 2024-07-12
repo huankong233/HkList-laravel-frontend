@@ -3,9 +3,11 @@ import { fileURLToPath, URL } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 
-import AutoImport from 'unplugin-auto-import/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import Components from 'unplugin-vue-components/vite'
+import { visualizer } from 'rollup-plugin-visualizer'
+// import AutoImport from 'unplugin-auto-import/vite'
+// import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+// import Components from 'unplugin-vue-components/vite'
+import importFromCDN from 'vite-plugin-cdn-import'
 import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
@@ -16,6 +18,7 @@ export default defineConfig({
     //   关闭生成map文件 可以达到缩小打包体积
     sourcemap: false, // 这个生产环境一定要关闭，不然打包的产物会很大
     rollupOptions: {
+      external: (id: string) => id.includes('element-plus/dist/index.css'),
       output: {
         chunkFileNames: 'assets/js/[name]-[hash].js', // 产生的 chunk 自定义命名
         entryFileNames: 'assets/js/[name]-[hash].js', // 指定 chunks 的入口文件匹配模式
@@ -30,18 +33,60 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    AutoImport({
-      resolvers: [ElementPlusResolver()]
-    }),
-    Components({
-      dirs: ['public'],
-      resolvers: [ElementPlusResolver()]
-    }),
+    // AutoImport({
+    //   resolvers: [ElementPlusResolver()]
+    // }),
+    // Components({
+    //   dirs: ['public'],
+    //   resolvers: [ElementPlusResolver()]
+    // }),
     viteCompression({
       verbose: true,
       disable: false,
       algorithm: 'brotliCompress',
       ext: '.gz'
+    }),
+    visualizer({
+      open: false,
+      filename: 'stats.html',
+      gzipSize: true,
+      brotliSize: true
+    }),
+    importFromCDN({
+      prodUrl: 'https://cdnjs.loli.net/ajax/libs/{name}/{version}/{path}',
+      modules: [
+        {
+          name: 'vue',
+          var: 'Vue',
+          path: 'vue.global.prod.min.js'
+        },
+        {
+          name: 'vue-router',
+          var: 'VueRouter',
+          path: 'vue-router.global.prod.min.js'
+        },
+        {
+          name: 'vue-demi',
+          var: 'VueDemi',
+          path: 'index.iife.min.js'
+        },
+        {
+          name: 'pinia',
+          var: 'Pinia',
+          path: 'pinia.iife.prod.min.js'
+        },
+        {
+          name: 'element-plus',
+          var: 'ElementPlus',
+          path: 'index.full.min.js',
+          css: 'index.min.css'
+        },
+        {
+          name: 'axios',
+          var: 'axios',
+          path: 'axios.min.js'
+        }
+      ]
     })
   ],
   resolve: {
