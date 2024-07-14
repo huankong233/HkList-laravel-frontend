@@ -101,6 +101,13 @@
           <el-input v-model="vcode.vcode_input"></el-input>
         </el-form-item>
       </template>
+      <el-form-item
+        label="解析账号id,多个使用,分割"
+        prop="account_ids"
+        v-if="getLoginRole() === 'admin'"
+      >
+        <el-input v-model="getFileListForm.account_ids"></el-input>
+      </el-form-item>
       <el-form-item label=" " class="buttons">
         <el-button type="primary" @click="fileListStore.getFileList()">获取/刷新列表</el-button>
         <el-button
@@ -114,12 +121,16 @@
         <el-button type="primary" v-if="config.button_link !== ''" @click="go(config.button_link)">
           前往购买卡密
         </el-button>
-        <el-button type="primary" @click="goLogin()" v-if="getLoginState() === '0'">登陆</el-button>
-        <template v-if="getLoginState() === '1'">
-          <el-button type="primary" @click="goAdmin()" v-if="getLoginRole() === 'admin'">
-            进入后台
-          </el-button>
-          <el-button type="danger" @click="mainStore.logout()"> 注销 </el-button>
+        <template v-if="config.show_login_button">
+          <el-button type="primary" @click="goLogin()" v-if="getLoginState() === '0'"
+            >登陆</el-button
+          >
+          <template v-if="getLoginState() === '1'">
+            <el-button type="primary" @click="goAdmin()" v-if="getLoginRole() === 'admin'">
+              进入后台
+            </el-button>
+            <el-button type="danger" @click="mainStore.logout()"> 注销 </el-button>
+          </template>
         </template>
       </el-form-item>
     </el-form>

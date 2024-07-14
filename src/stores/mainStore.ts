@@ -20,7 +20,8 @@ export const useMainStore = defineStore('mainStore', () => {
     custom_copyright: '',
     min_single_file: 0,
     token_mode: false,
-    button_link: ''
+    button_link: '',
+    show_login_button: false
   })
 
   const logout = async () => {

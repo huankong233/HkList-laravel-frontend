@@ -1,7 +1,7 @@
 <template>
   <el-card class="card" v-if="downloadLinks.length !== 0">
     <h2>链接列表</h2>
-    <h3>下载请推荐使用Aria2下载器,如 <a href="https://motrix.app/">Motrix</a></h3>
+    <h3>下载请推荐使用Aria2下载器,如 <a href="https://motrix.app/" target="_blank">Motrix</a></h3>
     <h3>IDM下载需要手动指定UA,点击即可复制</h3>
     <h3>如果当前链接下载失败,请尝试更换链接,如果全部不可用可以单独重新解析单个文件</h3>
 

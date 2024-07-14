@@ -23,6 +23,7 @@ export interface config {
   limit_prov: boolean
   debug: boolean
   name: string
+  show_login_button: boolean
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')

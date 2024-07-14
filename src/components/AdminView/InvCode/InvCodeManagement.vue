@@ -3,6 +3,12 @@
 
   <el-button type="primary" @click="getInvCodes()">刷新列表</el-button>
   <el-button type="primary" @click="switchAddInvCode()">添加邀请码</el-button>
+  <el-button type="primary" :disabled="selectInvCodes.length <= 0" @click="copyInvCodes()">
+    批量复制
+  </el-button>
+  <el-button type="primary" :disabled="selectInvCodes.length <= 0" @click="copyInvCodes()">
+    批量复制(无格式)
+  </el-button>
   <el-button type="danger" :disabled="selectInvCodes.length <= 0" @click="deleteSelectInvCodes()">
     批量删除
   </el-button>
@@ -54,6 +60,7 @@
         <el-button size="small" type="primary" @click="turnOffEditMode(row)" v-if="row.edit">
           保存
         </el-button>
+        <el-button size="small" type="primary" @click="copy(row.name)"> 复制 </el-button>
         <el-button size="small" type="danger" @click="deleteInvCode(row)">删除</el-button>
       </template>
     </el-table-column>
@@ -73,6 +80,7 @@
 <script lang="ts" setup>
 import * as InvCodeApi from '@/apis/admin/invCode.js'
 import AddInvCode from '@/components/AdminView/InvCode/AddInvCode.vue'
+import { copy } from '@/utils/copy.js'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
@@ -142,6 +150,19 @@ onMounted(getInvCodes)
 
 const isAddInvCode = ref(false)
 const switchAddInvCode = () => (isAddInvCode.value = !isAddInvCode.value)
+
+const copyInvCodes = (format = true) => {
+  if (!format) {
+    copy(selectInvCodes.value.map((v) => v.name).join('\n'))
+    return
+  }
+
+  const text = selectInvCodes.value.map((invCode) =>
+    [invCode.name, invCode.group.count, invCode.group.size].join(' | ')
+  )
+  text.unshift(['邀请码', '可用次数', '可下载量'].join(' | '))
+  copy(text.join('\n'))
+}
 </script>
 
 <style lang="scss" scoped>

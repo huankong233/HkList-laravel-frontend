@@ -15,6 +15,7 @@ export interface config {
   min_single_file: number
   token_mode: boolean
   button_link: string
+  show_login_button: boolean
 }
 
 export const getConfig = () => axios.get<config>('/parse/config')
@@ -26,6 +27,7 @@ export interface getFileList {
   pwd: string
   password?: string
   token?: string
+  account_ids?: string
 }
 
 export interface file {
@@ -93,6 +95,8 @@ export interface getDownloadLinks {
   surl: string
   dir: string
   pwd: string
+
+  account_ids?: string
 }
 
 export interface link {

@@ -13,11 +13,14 @@
       <el-form-item label="后端版本号" prop="version">
         <el-input disabled v-model="changeConfigForm.version"></el-input>
       </el-form-item>
+      <el-form-item label="站点名称" prop="name">
+        <el-input v-model.trim="changeConfigForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="公告内容" prop="announce">
+        <el-input type="textarea" v-model="changeConfigForm.announce"></el-input>
+      </el-form-item>
       <el-form-item label="DEBUG模式开关" prop="debug">
         <el-switch v-model="changeConfigForm.debug" size="large" />
-      </el-form-item>
-      <el-form-item label="仅限中国用户使用" prop="limit_cn">
-        <el-switch v-model="changeConfigForm.limit_cn" size="large" />
       </el-form-item>
       <el-form-item label="邀请码开关" prop="need_inv_code">
         <el-switch v-model="changeConfigForm.need_inv_code" size="large" />
@@ -25,13 +28,7 @@
       <el-form-item label="白名单模式开关" prop="whitelist_mode">
         <el-switch v-model="changeConfigForm.whitelist_mode" size="large" />
       </el-form-item>
-      <el-form-item label="站点名称" prop="name">
-        <el-input v-model.trim="changeConfigForm.name"></el-input>
-      </el-form-item>
-      <el-form-item label="公告内容" prop="announce">
-        <el-input type="textarea" v-model="changeConfigForm.announce"></el-input>
-      </el-form-item>
-      <el-form-item label="展示版权" prop="show_copyright">
+      <el-form-item label="展示版权信息" prop="show_copyright">
         <el-switch v-model="changeConfigForm.show_copyright" size="large" />
       </el-form-item>
       <el-form-item label="自定义版权" prop="custom_copyright">
@@ -42,6 +39,9 @@
       </el-form-item>
       <el-form-item label="卡网跳转链接" prop="button_link">
         <el-input v-model="changeConfigForm.button_link"></el-input>
+      </el-form-item>
+      <el-form-item label="显示登陆按钮" prop="show_login_button">
+        <el-switch v-model="changeConfigForm.show_login_button" size="large" />
       </el-form-item>
     </template>
 
@@ -81,14 +81,16 @@
       </el-form-item>
       <el-form-item label="解析模式" prop="parse_mode">
         <el-select v-model="changeConfigForm.parse_mode" @change="checkAlert">
-          <el-option :value="1" label="盘内" />
           <el-option :value="2" label="盘外V1" />
-          <el-option :value="3" label="盘外V2(推荐)" />
-          <el-option :value="4" label="盘外V3" />
+          <el-option :value="3" label="盘外V2" />
+          <el-option :value="4" label="盘外V3(推荐)" />
         </el-select>
       </el-form-item>
       <el-form-item label="省份模式开关" prop="limit_prov">
         <el-switch v-model="changeConfigForm.limit_prov" size="large" />
+      </el-form-item>
+      <el-form-item label="仅限中国用户使用" prop="limit_cn">
+        <el-switch v-model="changeConfigForm.limit_cn" size="large" />
       </el-form-item>
     </template>
     <el-form-item label=" ">
@@ -132,7 +134,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   limit_cn: false,
   limit_prov: false,
   debug: false,
-  name: ''
+  name: '',
+  show_login_button: false
 })
 
 const changeConfigFormRef = ref<FormInstance | null>(null)
