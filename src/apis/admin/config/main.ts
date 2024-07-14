@@ -24,6 +24,7 @@ export interface config {
   debug: boolean
   name: string
   show_login_button: boolean
+  token_bind_ip: boolean
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')
