@@ -29,6 +29,7 @@ export interface Token {
   count: number
   size: number
   day: number
+  ip: null | string
   today_size: null | string
   today_count: number
   total_size: null | string
