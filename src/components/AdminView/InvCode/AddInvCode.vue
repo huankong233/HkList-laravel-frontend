@@ -44,7 +44,7 @@ const isAddInvCode = defineModel()
 const pending = ref(false)
 const addInvCodeForm = ref<InvCodeApi.addInvCode>({
   type: 'single',
-  group_id: 0,
+  group_id: 2,
   name: '',
   can_count: 10
 })

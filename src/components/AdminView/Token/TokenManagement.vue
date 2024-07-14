@@ -3,7 +3,12 @@
 
   <el-button type="primary" @click="getTokens()">刷新列表</el-button>
   <el-button type="primary" @click="switchAddToken()">添加卡密</el-button>
-  <el-button type="primary" @click="copyTokens()">批量复制</el-button>
+  <el-button type="primary" :disabled="selectTokens.length <= 0" @click="copyTokens()">
+    批量复制
+  </el-button>
+  <el-button type="primary" :disabled="selectTokens.length <= 0" @click="copyTokens(false)">
+    批量复制(无格式)
+  </el-button>
   <el-button type="danger" :disabled="selectTokens.length <= 0" @click="deleteSelectTokens()">
     批量删除
   </el-button>
@@ -22,6 +27,16 @@
       <template #default="{ row }">
         <span v-show="!row.edit">{{ row.name }}</span>
         <el-input v-show="row.edit" v-model="row.name"></el-input>
+      </template>
+    </el-table-column>
+    <el-table-column prop="today_size" label="今日解析">
+      <template #default="{ row }">
+        <span>{{ row.today_count }} ({{ formatBytes(row.today_size ?? 0) }})</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="today_size" label="縂共解析">
+      <template #default="{ row }">
+        <span>{{ row.total_count }} ({{ formatBytes(row.total_size ?? 0) }})</span>
       </template>
     </el-table-column>
     <el-table-column prop="count" label="可用次数">
@@ -73,7 +88,7 @@
         <el-button size="small" type="primary" @click="turnOffEditMode(row)" v-if="row.edit">
           保存
         </el-button>
-        <el-button size="small" type="primary" @click="copyTokens(row)">复制</el-button>
+        <el-button size="small" type="primary" @click="copy(row.name)">复制</el-button>
         <el-button size="small" type="danger" @click="deleteToken(row)">删除</el-button>
       </template>
     </el-table-column>
@@ -84,7 +99,7 @@
     v-model:page-size="pageSize"
     :page-sizes="[15, 50, 100, 500, tokenList?.total ?? 100]"
     :total="tokenList?.total ?? 100"
-    layout="sizes, prev, pager, next"
+    layout="total, sizes, prev, pager, next, jumper"
     @size-change="getTokens"
     @current-change="getTokens"
   />
@@ -94,6 +109,7 @@
 import * as TokenApi from '@/apis/admin/token.js'
 import AddToken from '@/components/AdminView/Token/AddToken.vue'
 import { copy } from '@/utils/copy.js'
+import { formatBytes } from '@/utils/format.js'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
@@ -164,9 +180,15 @@ onMounted(getTokens)
 const isAddToken = ref(false)
 const switchAddToken = () => (isAddToken.value = !isAddToken.value)
 
-const copyTokens = (token?: TokenApi.Token) => {
-  let tokens = token ? [token] : selectTokens.value
-  const text = tokens.map((token) => [token.name, token.count, token.size, token.day].join(' | '))
+const copyTokens = (format = true) => {
+  if (!format) {
+    copy(selectTokens.value.map((v) => v.name).join('\n'))
+    return
+  }
+
+  const text = selectTokens.value.map((token) =>
+    [token.name, token.count, token.size, token.day].join(' | ')
+  )
   text.unshift(['卡密', '可用次数', '可下载量', '可用天数'].join(' | '))
   copy(text.join('\n'))
 }

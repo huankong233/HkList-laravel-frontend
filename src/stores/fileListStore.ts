@@ -4,6 +4,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useMainStore } from './mainStore'
 
+const mainStore = useMainStore()
+
 export const useFileListStore = defineStore('fileListStore', () => {
   const pending = ref(false)
 
@@ -13,7 +15,8 @@ export const useFileListStore = defineStore('fileListStore', () => {
     pwd: '',
     dir: '/',
     password: '',
-    token: ''
+    token: '',
+    account_ids: ''
   })
   const getFileListFormRef = ref<FormInstance | null>(null)
 
@@ -134,7 +137,9 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
         surl: getFileListForm.value.surl,
         dir: getFileListForm.value.dir,
-        pwd: getFileListForm.value.pwd
+        pwd: getFileListForm.value.pwd,
+
+        account_ids: getFileListForm.value.account_ids
       }
 
       if (vcode.value.hit_captcha) {
@@ -190,6 +195,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
     } finally {
       pending.value = false
       await getLimit()
+      await mainStore.getConfig(false)
     }
   }
 

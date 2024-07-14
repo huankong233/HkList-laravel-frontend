@@ -10,14 +10,17 @@ export const addAccount = (data: addAccount) =>
 export interface Account {
   id: number
   baidu_name: string
-  netdisk_name: string
   cookie: string
   vip_type: string
   switch: 0 | 1
-  reason: string
+  reason: string | null
   prov: string | null
+  today_size: null | number
+  today_count: number
+  total_size: null | number
+  total_count: number
   svip_end_at: string
-  last_use_at: string
+  last_use_at: string | null
   created_at: string
   updated_at: string
   deleted_at: string

@@ -5,10 +5,10 @@
   </el-button>
 
   <el-text style="margin-left: 20px">
-    累计解析: {{ recordCount.total.count }} ({{ formatBytes(recordCount.total.size) }})
+    累计解析: {{ recordCount.total.count }} ({{ formatBytes(recordCount.total.size ?? 0) }})
   </el-text>
   <el-text>
-    今日解析: {{ recordCount.today.count }} ({{ formatBytes(recordCount.today.size) }})
+    今日解析: {{ recordCount.today.count }} ({{ formatBytes(recordCount.today.size ?? 0) }})
   </el-text>
 
   <el-text style="margin-left: 20px">
@@ -32,17 +32,25 @@
     <el-table-column prop="id" label="ID"></el-table-column>
     <el-table-column prop="ip" label="IP"></el-table-column>
     <el-table-column prop="fs_id" label="文件ID"></el-table-column>
-    <el-table-column prop="filename" label="文件名"></el-table-column>
-    <el-table-column prop="size" label="文件大小">
+    <el-table-column prop="file.filename" label="文件名"></el-table-column>
+    <el-table-column prop="fs_id" label="文件大小">
       <template #default="{ row }">
-        {{ formatBytes(row.size) }}
+        <span>{{ formatBytes(row.file.size) }}</span>
       </template>
     </el-table-column>
     <el-table-column prop="url" label="下载链接"></el-table-column>
     <el-table-column prop="ua" label="UA"></el-table-column>
-    <el-table-column prop="user_id" label="用户ID"></el-table-column>
-    <el-table-column prop="normal_account_id" label="dlink账号ID"></el-table-column>
-    <el-table-column prop="account_id" label="reallink账号ID"></el-table-column>
+    <el-table-column prop="user_id" label="用户ID">
+      <template #default="{ row }">
+        {{ row.user_id ?? '非用戶解析' }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="token_id" label="卡密ID">
+      <template #default="{ row }">
+        {{ row.token_id ?? '非卡密解析' }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="account_id" label="解析账号ID"></el-table-column>
     <el-table-column prop="created_at" label="创建时间">
       <template #default="{ row }">
         {{ new Date(row.created_at).toLocaleString() }}
@@ -65,7 +73,7 @@
     v-model:page-size="pageSize"
     :page-sizes="[15, 50, 100, 500, RecordList?.total ?? 100]"
     :total="RecordList?.total ?? 100"
-    layout="sizes, prev, pager, next"
+    layout="total, sizes, prev, pager, next, jumper"
     @size-change="getRecords"
     @current-change="getRecords"
   />

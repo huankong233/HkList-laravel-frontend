@@ -1,16 +1,14 @@
 import * as ParseApi from '@/apis/user/parse.js'
 import * as UserApi from '@/apis/user/user.js'
-import { setLoginRole, setLoginState } from '@/utils/env.js'
+import { getRemberAnnounce, setLoginRole, setLoginState } from '@/utils/env.js'
 import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 export const useMainStore = defineStore('mainStore', () => {
   const config = ref<ParseApi.config & { is_https: boolean }>({
     show_announce: false,
     announce: '',
-    user_agent: '',
     debug: false,
     max_once: 0,
     have_account: false,
@@ -19,13 +17,12 @@ export const useMainStore = defineStore('mainStore', () => {
     need_password: false,
     is_https: false,
     show_copyright: false,
-    custom_copyright: '本项目半开源, 项目地址: https://github.com/huankong233/94list-laravel',
+    custom_copyright: '',
     min_single_file: 0,
     token_mode: false,
-    button_link: ''
+    button_link: '',
+    show_login_button: false
   })
-
-  const router = useRouter()
 
   const logout = async () => {
     try {
@@ -33,13 +30,30 @@ export const useMainStore = defineStore('mainStore', () => {
     } finally {
       setLoginState('0')
       setLoginRole('user')
-      router.push('/')
+      location.reload()
       ElMessage.success('退出登陆成功~')
     }
   }
 
+  const getConfig = async (show = true) => {
+    const configRes = await ParseApi.getConfig()
+    const data = configRes.data
+
+    data.announce = data.announce.replaceAll('[NextLine]', '<br>')
+    if (data.announce === getRemberAnnounce()) data.show_announce = false
+    if (!show) data.show_announce = false
+
+    config.value = {
+      ...data,
+      is_https: document.location.protocol === 'https:'
+    }
+
+    setLoginState(data.have_login ? '1' : '0')
+  }
+
   return {
     config,
-    logout
+    logout,
+    getConfig
   }
 })

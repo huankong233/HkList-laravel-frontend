@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 const instance = axios.create({
-  baseURL: '/api/v1',
+  baseURL: '/api',
   timeout: Infinity,
   headers: {
     Accept: 'application/json',
@@ -33,6 +33,7 @@ instance.interceptors.response.use(
       }
     } else {
       ElMessage.error('服务器异常, 请稍后再试')
+      console.log(error)
     }
 
     return Promise.reject(error.response.data)

@@ -1,7 +1,7 @@
 <template>
   <el-card class="card" v-if="downloadLinks.length !== 0">
     <h2>链接列表</h2>
-    <h3>下载请推荐使用Aria2下载器,如 <a href="https://motrix.app/">Motrix</a></h3>
+    <h3>下载请推荐使用Aria2下载器,如 <a href="https://motrix.app/" target="_blank">Motrix</a></h3>
     <h3>IDM下载需要手动指定UA,点击即可复制</h3>
     <h3>如果当前链接下载失败,请尝试更换链接,如果全部不可用可以单独重新解析单个文件</h3>
 
@@ -25,9 +25,9 @@
     >
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column prop="ua" label="UA">
-        <template #default="{}">
-          <el-link type="danger" @click="copy(config.user_agent, '已复制UA')">
-            {{ config.user_agent }}
+        <template #default="{ row }">
+          <el-link type="danger" @click="copy(row.ua, '已复制UA')">
+            {{ row.ua ?? row.url }}
           </el-link>
         </template>
       </el-table-column>
@@ -82,7 +82,6 @@
 import * as ParseApi from '@/apis/user/parse.js'
 import { useAria2Store } from '@/stores/aria2Store.js'
 import { useFileListStore } from '@/stores/fileListStore.js'
-import { useMainStore } from '@/stores/mainStore.js'
 import { copy } from '@/utils/copy.js'
 import { getAppName } from '@/utils/env.js'
 import axios from '@/utils/request.js'
@@ -90,9 +89,6 @@ import { sleep } from '@/utils/sleep.js'
 import { ElMessage } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-
-const mainStore = useMainStore()
-const { config } = storeToRefs(mainStore)
 
 const fileListStore = useFileListStore()
 const { downloadLinks } = storeToRefs(fileListStore)
@@ -126,7 +122,7 @@ const sendDownloadFile = async (row: ParseApi.link) => {
         [row.urls ? row.urls[row.index] : row.url],
         {
           out: row.filename,
-          header: [`User-Agent: ${config.value.user_agent}`]
+          header: [`User-Agent: ${row.ua}`]
         }
       ]
     })

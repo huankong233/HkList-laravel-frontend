@@ -4,11 +4,10 @@ export interface Record {
   id: number
   ip: string
   fs_id: string
-  filename: string
-  size: number
   url: string
   ua: string
   user_id: number
+  token_id: number
   account_id: number
   created_at: string
   updated_at: string

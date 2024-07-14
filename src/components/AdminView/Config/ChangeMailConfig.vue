@@ -107,8 +107,7 @@ const sendTestMsg = async (formEl: FormInstance | null) => {
 
   try {
     pending.value = true
-    await changeConfig(formEl)
-    await MailConfigApi.sendTestMail()
+    await MailConfigApi.sendTestMail(changeMailConfigForm.value)
     ElMessage.success('发送成功,请检查邮箱是否收到')
   } finally {
     pending.value = false

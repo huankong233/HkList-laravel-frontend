@@ -27,14 +27,14 @@
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="id" label="ID"></el-table-column>
     <el-table-column prop="baidu_name" label="百度用户名"></el-table-column>
-    <el-table-column prop="size" label="今日解析量">
+    <el-table-column prop="today_size" label="今日解析">
       <template #default="{ row }">
-        {{ formatBytes(row.size) }}
+        <span>{{ row.today_count }} ({{ formatBytes(row.today_size ?? 0) }})</span>
       </template>
     </el-table-column>
-    <el-table-column prop="size" label="总解析量">
+    <el-table-column prop="today_size" label="縂共解析">
       <template #default="{ row }">
-        {{ formatBytes(row.total_size) }}
+        <span>{{ row.total_count }} ({{ formatBytes(row.total_size ?? 0) }})</span>
       </template>
     </el-table-column>
     <el-table-column prop="cookie" label="Cookie"></el-table-column>
@@ -93,7 +93,11 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column prop="reason" label="禁用原因"></el-table-column>
+    <el-table-column prop="reason" label="禁用原因">
+      <template #default="{ row }">
+        {{ row.reason ?? '未禁用' }}
+      </template>
+    </el-table-column>
     <el-table-column prop="svip_end_at" label="超级会员结束时间">
       <template #default="{ row }">
         {{ new Date(row.svip_end_at).toLocaleString() }}
@@ -137,7 +141,7 @@
     v-model:page-size="pageSize"
     :page-sizes="[15, 50, 100, 500, accountList?.total ?? 100]"
     :total="accountList?.total ?? 100"
-    layout="sizes, prev, pager, next"
+    layout="total, sizes, prev, pager, next, jumper"
     @size-change="getAccounts"
     @current-change="getAccounts"
   />

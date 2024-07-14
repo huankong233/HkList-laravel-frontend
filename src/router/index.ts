@@ -33,6 +33,12 @@ const router = createRouter({
       component: () => import('@/views/AdminView.vue')
     },
     {
+      path: '/install',
+      name: 'install',
+      meta: { title: '安装' },
+      component: () => import('@/views/InstallView.vue')
+    },
+    {
       path: '/404',
       name: '404',
       meta: { title: '404页面不存在' },

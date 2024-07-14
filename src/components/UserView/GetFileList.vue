@@ -35,16 +35,29 @@
       :closable="false"
     />
 
-    <el-alert
-      class="alert"
-      :type="limitMessage === '' ? 'success' : 'error'"
-      :closable="false"
-      :title="
-        limitMessage === ''
-          ? `当前${getFileListForm.token ? '卡密' : '用户组'}: ${limitForm.group_name} 剩余可解析文件数: ${limitForm.count} 剩余可解析大小: ${formatBytes(limitForm.size)} ${getFileListForm.token ? `到期时间: ${limitForm.expired_at ? new Date(limitForm.expired_at).toLocaleString() : '未知'}` : ''}`
-          : limitMessage ?? '未知错误'
-      "
-    />
+    <el-alert v-if="limitMessage === ''" class="alert" type="success" :closable="false">
+      <span v-if="isToken">
+        <span>当前卡密: {{ limitForm.group_name }} </span>
+        <span>剩余可解析文件数: {{ limitForm.count }}</span>
+        <span>剩余可解析大小: {{ formatBytes(limitForm.size) }}</span>
+        <span>
+          到期时间:
+          {{
+            limitForm.expired_at === '未使用'
+              ? limitForm.expired_at
+              : new Date(limitForm.expired_at ?? 0).toLocaleString()
+          }}
+        </span>
+      </span>
+      <span v-else>
+        <span>当前用户组: {{ limitForm.group_name }}</span>
+        <span>剩余可解析文件数: {{ limitForm.count }}</span>
+        <span>剩余可解析大小: {{ formatBytes(limitForm.size) }}</span>
+      </span>
+    </el-alert>
+    <el-alert v-else class="alert" type="error" :closable="false">
+      {{ limitMessage ?? '未知错误' }}
+    </el-alert>
 
     <el-form
       ref="getFileListFormRef"
@@ -68,7 +81,7 @@
         <el-input v-model.trim="getFileListForm.password"></el-input>
       </el-form-item>
       <el-form-item label="卡密(不用留空即可)" prop="token" v-if="config.token_mode">
-        <el-input v-model.trim="getFileListForm.token" @blur="fileListStore.getLimit"></el-input>
+        <el-input v-model.trim="getFileListForm.token" @blur="tokenBlur"></el-input>
       </el-form-item>
       <el-form-item label="当前路径" prop="dir">
         <el-input v-model="getFileListForm.dir" disabled></el-input>
@@ -88,6 +101,13 @@
           <el-input v-model="vcode.vcode_input"></el-input>
         </el-form-item>
       </template>
+      <el-form-item
+        label="解析账号id,多个使用,分割"
+        prop="account_ids"
+        v-if="getLoginRole() === 'admin'"
+      >
+        <el-input v-model="getFileListForm.account_ids"></el-input>
+      </el-form-item>
       <el-form-item label=" " class="buttons">
         <el-button type="primary" @click="fileListStore.getFileList()">获取/刷新列表</el-button>
         <el-button
@@ -101,12 +121,16 @@
         <el-button type="primary" v-if="config.button_link !== ''" @click="go(config.button_link)">
           前往购买卡密
         </el-button>
-        <el-button type="primary" @click="goLogin()" v-if="getLoginState() === '0'">登陆</el-button>
-        <template v-if="getLoginState() === '1'">
-          <el-button type="primary" @click="goAdmin()" v-if="getLoginRole() === 'admin'">
-            进入后台
-          </el-button>
-          <el-button type="danger" @click="mainStore.logout()"> 注销 </el-button>
+        <template v-if="config.show_login_button">
+          <el-button type="primary" @click="goLogin()" v-if="getLoginState() === '0'"
+            >登陆</el-button
+          >
+          <template v-if="getLoginState() === '1'">
+            <el-button type="primary" @click="goAdmin()" v-if="getLoginRole() === 'admin'">
+              进入后台
+            </el-button>
+            <el-button type="danger" @click="mainStore.logout()"> 注销 </el-button>
+          </template>
         </template>
       </el-form-item>
     </el-form>
@@ -175,7 +199,7 @@ const getUrlId = (url: string) => {
   const fullMatch2 = url.match(/surl=([a-zA-Z0-9_-]+)/)
   const pwdMatch = url.match(/\?pwd=([a-zA-Z0-9_-]+)/)
   const pwdMatch2 = url.match(/&pwd=([a-zA-Z0-9_-]+)/)
-  const pwdMatch3 = url.match(/提取码:\s?([a-zA-Z0-9_-]+)/)
+  const pwdMatch3 = url.match(/提取码[:：]\s?([a-zA-Z0-9_-]+)/)
 
   let id: string
   if (fullMatch2) {
@@ -211,17 +235,20 @@ onMounted(() => {
     const searchParams = new URLSearchParams(location.search)
     if (searchParams.size < 4) return
 
-    getFileListForm.value = {
-      url: searchParams.get('url') ?? '',
-      pwd: searchParams.get('pwd') ?? '',
-      dir: searchParams.get('dir') ?? '/',
-      surl: searchParams.get('surl') ?? ''
-    }
+    const url = searchParams.get('url')
+    const pwd = searchParams.get('pwd')
+    const dir = searchParams.get('dir')
+    const surl = searchParams.get('surl')
+
+    if (!url || !pwd || !dir || !surl) return
+
+    getFileListForm.value = { url, pwd, dir, surl }
 
     ElMessage.success('已读取到参数,正在加载')
 
-    setTimeout(fileListStore.getFileList, 1000)
+    setTimeout(fileListStore.getFileList, 500)
   })
+
   fileListStore.getLimit()
   changeTimestamp()
 })
@@ -235,6 +262,16 @@ const timestamp = ref(0)
 
 const changeTimestamp = () => (timestamp.value = Date.now())
 const clearLinks = () => (downloadLinks.value = [])
+
+const isToken = ref(false)
+const tokenBlur = () => {
+  if (getFileListForm.value.token !== '') {
+    isToken.value = true
+  } else {
+    isToken.value = false
+  }
+  fileListStore.getLimit()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -249,6 +286,10 @@ a {
 
 .el-button + .el-button {
   margin-left: 0;
+}
+
+.alert span span + span {
+  margin-left: 10px;
 }
 </style>
 

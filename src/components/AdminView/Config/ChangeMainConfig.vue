@@ -13,11 +13,14 @@
       <el-form-item label="后端版本号" prop="version">
         <el-input disabled v-model="changeConfigForm.version"></el-input>
       </el-form-item>
+      <el-form-item label="站点名称" prop="name">
+        <el-input v-model.trim="changeConfigForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="公告内容" prop="announce">
+        <el-input type="textarea" v-model="changeConfigForm.announce"></el-input>
+      </el-form-item>
       <el-form-item label="DEBUG模式开关" prop="debug">
         <el-switch v-model="changeConfigForm.debug" size="large" />
-      </el-form-item>
-      <el-form-item label="仅限中国用户使用" prop="limit_cn">
-        <el-switch v-model="changeConfigForm.limit_cn" size="large" />
       </el-form-item>
       <el-form-item label="邀请码开关" prop="need_inv_code">
         <el-switch v-model="changeConfigForm.need_inv_code" size="large" />
@@ -25,13 +28,7 @@
       <el-form-item label="白名单模式开关" prop="whitelist_mode">
         <el-switch v-model="changeConfigForm.whitelist_mode" size="large" />
       </el-form-item>
-      <el-form-item label="站点名称" prop="name">
-        <el-input v-model.trim="changeConfigForm.name"></el-input>
-      </el-form-item>
-      <el-form-item label="公告内容" prop="announce">
-        <el-input type="textarea" v-model="changeConfigForm.announce"></el-input>
-      </el-form-item>
-      <el-form-item label="展示版权" prop="show_copyright">
+      <el-form-item label="展示版权信息" prop="show_copyright">
         <el-switch v-model="changeConfigForm.show_copyright" size="large" />
       </el-form-item>
       <el-form-item label="自定义版权" prop="custom_copyright">
@@ -43,8 +40,8 @@
       <el-form-item label="卡网跳转链接" prop="button_link">
         <el-input v-model="changeConfigForm.button_link"></el-input>
       </el-form-item>
-      <el-form-item label="省份模式开关" prop="limit_prov">
-        <el-switch v-model="changeConfigForm.limit_prov" size="large" />
+      <el-form-item label="显示登陆按钮" prop="show_login_button">
+        <el-switch v-model="changeConfigForm.show_login_button" size="large" />
       </el-form-item>
     </template>
 
@@ -70,8 +67,11 @@
           style="width: 300px"
         ></el-input-number>
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <el-form-item label="解析密码" prop="password">
         <el-input v-model.trim="changeConfigForm.password"></el-input>
+      </el-form-item>
+      <el-form-item label="购买授权联系TG:">
+        <el-input disabled value="t.me/huan_kong"></el-input>
       </el-form-item>
       <el-form-item label="授权服务器" prop="main_server">
         <el-input v-model.trim="changeConfigForm.main_server"></el-input>
@@ -81,11 +81,16 @@
       </el-form-item>
       <el-form-item label="解析模式" prop="parse_mode">
         <el-select v-model="changeConfigForm.parse_mode" @change="checkAlert">
-          <el-option :value="1" label="盘内" />
           <el-option :value="2" label="盘外V1" />
-          <el-option :value="3" label="盘外V2(推荐)" />
-          <el-option :value="4" label="盘外V3" />
+          <el-option :value="3" label="盘外V2" />
+          <el-option :value="4" label="盘外V3(推荐)" />
         </el-select>
+      </el-form-item>
+      <el-form-item label="省份模式开关" prop="limit_prov">
+        <el-switch v-model="changeConfigForm.limit_prov" size="large" />
+      </el-form-item>
+      <el-form-item label="仅限中国用户使用" prop="limit_cn">
+        <el-switch v-model="changeConfigForm.limit_cn" size="large" />
       </el-form-item>
     </template>
     <el-form-item label=" ">
@@ -108,8 +113,8 @@ const { Mode } = defineProps(['Mode'])
 const pending = ref(false)
 
 const changeConfigForm = ref<mainConfigApi.config>({
-  front_end_version: '',
   version: '',
+  front_end_version: '',
   sleep: 0,
   max_once: 0,
   password: '',
@@ -117,24 +122,26 @@ const changeConfigForm = ref<mainConfigApi.config>({
   user_agent: '',
   need_inv_code: false,
   whitelist_mode: false,
-  debug: false,
-  name: '',
-  code: '',
-  main_server: '',
   show_copyright: false,
-  parse_mode: 1,
-  custom_copyright: '本项目半开源, 项目地址: https://github.com/huankong233/94list-laravel',
+  custom_copyright: '',
+  main_server: '',
+  code: '',
+  parse_mode: 0,
   max_filesize: 0,
   min_single_file: 0,
-  token_mode: true,
+  token_mode: false,
   button_link: '',
-  limit_cn: true,
-  limit_prov: true
+  limit_cn: false,
+  limit_prov: false,
+  debug: false,
+  name: '',
+  show_login_button: false
 })
+
 const changeConfigFormRef = ref<FormInstance | null>(null)
 const changeConfigFormRule: FormRules = {
   name: [{ required: true, message: '请输入站点名称', trigger: 'blur' }],
-  sleep: [{ required: true, message: '请输入批量解析时休眠时间(秒)', trigger: 'blur' }],
+  sleep: [{ required: true, message: '请输入批量解析时休眠时间', trigger: 'blur' }],
   max_once: [{ required: true, message: '请输入批量解析时单次最大解析数量', trigger: 'blur' }],
   max_filesize: [{ required: true, message: '请输入单日单个账号最大解析大小', trigger: 'blur' }],
   user_agent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }]

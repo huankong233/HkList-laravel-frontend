@@ -1,18 +1,25 @@
 import axios from '@/utils/request.js'
+import type { Group } from './group'
+import type { InvCode } from './invCode'
 
 export interface addUser {
   username: string
   password: string
+  inv_code_id?: number
   role: 'user' | 'admin'
-  group_id?: number
 }
 
 export const addUser = (data: addUser) => axios.post<null>('/admin/user', data)
 
 export interface User {
   id: number
-  group_id: number
+  group: Group
+  inv_code: InvCode
   inv_code_id: number
+  today_size: null | string
+  today_count: number
+  total_size: null | string
+  total_count: number
   username: string
   password: string
   role: 'user' | 'admin'

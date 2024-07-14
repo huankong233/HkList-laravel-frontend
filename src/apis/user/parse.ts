@@ -4,7 +4,6 @@ import { string2number } from '@/utils/string2number.js'
 export interface config {
   show_announce: boolean
   announce: string
-  user_agent: string
   debug: boolean
   max_once: number
   have_account: boolean
@@ -16,6 +15,7 @@ export interface config {
   min_single_file: number
   token_mode: boolean
   button_link: string
+  show_login_button: boolean
 }
 
 export const getConfig = () => axios.get<config>('/parse/config')
@@ -27,6 +27,7 @@ export interface getFileList {
   pwd: string
   password?: string
   token?: string
+  account_ids?: string
 }
 
 export interface file {
@@ -94,6 +95,8 @@ export interface getDownloadLinks {
   surl: string
   dir: string
   pwd: string
+
+  account_ids?: string
 }
 
 export interface link {
@@ -102,6 +105,7 @@ export interface link {
   index: number
   filename: string
   fs_id: number
+  ua: string
 }
 
 export type downloadLinks = link[]

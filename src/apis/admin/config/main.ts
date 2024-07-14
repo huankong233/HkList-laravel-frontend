@@ -2,6 +2,7 @@ import axios from '@/utils/request.js'
 
 export interface config {
   version: string
+  front_end_version: string
   sleep: number
   max_once: number
   password: string
@@ -9,48 +10,25 @@ export interface config {
   user_agent: string
   need_inv_code: boolean
   whitelist_mode: boolean
-  debug: boolean
-  front_end_version: string
-  name: string
-  code: string
-  main_server: string
   show_copyright: boolean
-  parse_mode: number
   custom_copyright: string
+  main_server: string
+  code: string
+  parse_mode: number
   max_filesize: number
   min_single_file: number
   token_mode: boolean
   button_link: string
   limit_cn: boolean
   limit_prov: boolean
+  debug: boolean
+  name: string
+  show_login_button: boolean
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')
 
-export interface updateConfig {
-  sleep: number
-  max_once: number
-  password: string
-  announce: string
-  user_agent: string
-  need_inv_code: boolean
-  whitelist_mode: boolean
-  debug: boolean
-  name: string
-  main_server: string
-  code: string
-  show_copyright: boolean
-  parse_mode: number
-  max_filesize: number
-  custom_copyright: string
-  min_single_file: number
-  token_mode: boolean
-  button_link: string
-  limit_cn: boolean
-  limit_prov: boolean
-}
-
-export const updateConfig = (data: updateConfig) => axios.patch<null>('/admin/config/main', data)
+export const updateConfig = (data: config) => axios.patch<null>('/admin/config/main', data)
 
 export type testAuth =
   | {
@@ -59,5 +37,4 @@ export type testAuth =
     }
   | { ip: string }
 
-export const testAuth = (data: updateConfig) =>
-  axios.post<testAuth>('/admin/config/main/testAuth', data)
+export const testAuth = (data: config) => axios.post<testAuth>('/admin/config/main/testAuth', data)

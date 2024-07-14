@@ -1,5 +1,5 @@
 <template>
-  <el-card class="card" v-loading="pending">
+  <el-card class="card" v-loading="pending" v-if="fileList['list'].length > 0">
     <h2>文件列表</h2>
     <el-table
       border
