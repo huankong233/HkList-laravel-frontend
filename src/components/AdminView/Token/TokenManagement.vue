@@ -70,6 +70,12 @@
         />
       </template>
     </el-table-column>
+    <el-table-column prop="ip" label="ip">
+      <template #default="{ row }">
+        <span v-show="!row.edit">{{ row.ip ?? '未绑定ip' }}</span>
+        <el-input v-show="row.edit" v-model="row.ip"></el-input>
+      </template>
+    </el-table-column>
     <el-table-column prop="created_at" label="创建时间">
       <template #default="{ row }">
         {{ new Date(row.created_at).toLocaleString() }}
