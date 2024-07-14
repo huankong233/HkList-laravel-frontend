@@ -60,7 +60,11 @@
     <el-table-column prop="expired_at" label="到期时间" width="250">
       <template #default="{ row }">
         <span v-show="!row.edit">
-          {{ row.expired_at ? new Date(row.expired_at).toLocaleString() : '未使用' }}
+          {{
+            row.expired_at
+              ? `${new Date(row.expired_at).getTime() < Date.now() ? '(已过期) ' : ''}${new Date(row.expired_at).toLocaleString()}`
+              : '未使用'
+          }}
         </span>
         <el-date-picker
           v-if="row.edit"
