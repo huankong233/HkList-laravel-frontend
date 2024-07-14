@@ -92,6 +92,9 @@
       <el-form-item label="仅限中国用户使用" prop="limit_cn">
         <el-switch v-model="changeConfigForm.limit_cn" size="large" />
       </el-form-item>
+      <el-form-item label="卡密绑定ip" prop="token_bind_ip">
+        <el-switch v-model="changeConfigForm.token_bind_ip" size="large" />
+      </el-form-item>
     </template>
     <el-form-item label=" ">
       <el-button type="primary" @click="updateConfig(changeConfigFormRef)">保存</el-button>
@@ -135,7 +138,8 @@ const changeConfigForm = ref<mainConfigApi.config>({
   limit_prov: false,
   debug: false,
   name: '',
-  show_login_button: false
+  show_login_button: false,
+  token_bind_ip:false
 })
 
 const changeConfigFormRef = ref<FormInstance | null>(null)
