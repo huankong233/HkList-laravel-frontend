@@ -90,7 +90,7 @@
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column width="250" label="操作" fixed="right">
+    <el-table-column width="200" label="操作" fixed="right">
       <template #default="{ row }">
         <el-button size="small" type="primary" @click="turnOnEditMode(row)" v-if="!row.edit">
           编辑
