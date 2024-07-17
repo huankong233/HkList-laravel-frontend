@@ -53,38 +53,39 @@ export default defineConfig({
       brotliSize: true
     }),
     importFromCDN({
-      prodUrl: 'https://cdnjs.loli.net/ajax/libs/{name}/{version}/{path}',
+      // prodUrl: 'https://cdnjs.loli.net/ajax/libs/{name}/{version}/{path}',
+      prodUrl: 'https://npm.webcache.cn/{name}@{version}/{path}',
       modules: [
         {
           name: 'vue',
           var: 'Vue',
-          path: 'vue.global.prod.min.js'
+          path: 'dist/vue.global.prod.js'
         },
         {
           name: 'vue-router',
           var: 'VueRouter',
-          path: 'vue-router.global.prod.min.js'
+          path: 'dist/vue-router.global.prod.js'
         },
         {
           name: 'vue-demi',
           var: 'VueDemi',
-          path: 'index.iife.min.js'
+          path: 'lib/index.iife.js'
         },
         {
           name: 'pinia',
           var: 'Pinia',
-          path: 'pinia.iife.prod.min.js'
+          path: 'dist/pinia.iife.prod.js'
         },
         {
           name: 'element-plus',
           var: 'ElementPlus',
-          path: 'index.full.min.js',
-          css: 'index.min.css'
+          path: 'dist/index.full.min.js',
+          css: ['dist/index.css', 'theme-chalk/dark/css-vars.css']
         },
         {
           name: 'axios',
           var: 'axios',
-          path: 'axios.min.js'
+          path: 'dist/axios.min.js'
         }
       ]
     })
