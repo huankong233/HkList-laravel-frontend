@@ -81,9 +81,10 @@
       </el-form-item>
       <el-form-item label="解析模式" prop="parse_mode">
         <el-select v-model="changeConfigForm.parse_mode" @change="checkAlert">
-          <el-option :value="2" label="盘外V1" />
-          <el-option :value="3" label="盘外V2" />
-          <el-option :value="4" label="盘外V3(推荐)" />
+          <el-option :value="1" label="V1盘内(废弃)" disabled />
+          <el-option :value="2" label="V2盘外" />
+          <el-option :value="3" label="V3盘外" />
+          <el-option :value="4" label="V4盘外" />
         </el-select>
       </el-form-item>
       <el-form-item label="省份模式开关" prop="limit_prov">
@@ -139,7 +140,7 @@ const changeConfigForm = ref<mainConfigApi.config>({
   debug: false,
   name: '',
   show_login_button: false,
-  token_bind_ip:false
+  token_bind_ip: false
 })
 
 const changeConfigFormRef = ref<FormInstance | null>(null)
@@ -214,13 +215,13 @@ onMounted(getConfig)
 const checkAlert = (value: number) => {
   let res = true
   if (value === 4) {
-    ElMessageBox.confirm('使用V3需要強制使用安卓手機APP抓取的COOKIE以及固定UA!!!', 'Warning', {
+    ElMessageBox.confirm('使用V3推荐使用安卓手機APP抓取的COOKIE以及固定UA!!!', 'Warning', {
       title: '注意:',
       type: 'warning'
     })
       .then(() => {
         changeConfigForm.value.parse_mode = 4
-        changeConfigForm.value.user_agent = 'netdisk;P2SP;3.0.10.22'
+        changeConfigForm.value.user_agent = 'netdisk;P2SP;3.0.20.9'
       })
       .catch(() => {
         changeConfigForm.value.parse_mode = 3
