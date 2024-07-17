@@ -10,7 +10,16 @@
       <el-form-item label="提示">
         <el-text>可以使用换行来分割多个账号</el-text>
       </el-form-item>
-      <el-form-item label="Cookie" prop="cookie">
+      <el-form-item label="账号类型">
+        <el-select v-model="addAccountForm.type">
+          <el-option label="cookie" :value="1"> </el-option>
+          <el-option label="token" :value="2"> </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="Cookie" prop="cookie" v-if="addAccountForm.type === 1">
+        <el-input type="textarea" v-model="addAccountForm.cookie"></el-input>
+      </el-form-item>
+      <el-form-item label="refresh_token" prop="cookie" v-else>
         <el-input type="textarea" v-model="addAccountForm.cookie"></el-input>
       </el-form-item>
     </el-form>
@@ -32,12 +41,13 @@ const isAddAccount = defineModel()
 
 const pending = ref(false)
 
-const addAccountForm = ref<{ cookie: string }>({
+const addAccountForm = ref<AccountApi.addAccount>({
+  type: 1,
   cookie: ''
 })
 const addAccountFormRef = ref<FormInstance | null>(null)
 const addAccountFormRule: FormRules = {
-  cookie: [{ required: true, message: '请输入Cookie', trigger: 'blur' }]
+  cookie: [{ required: true, message: '请输入账户信息', trigger: 'blur' }]
 }
 
 const addAccount = async (formEl: FormInstance | null) => {
@@ -45,10 +55,8 @@ const addAccount = async (formEl: FormInstance | null) => {
 
   try {
     pending.value = true
-    const res = await AccountApi.addAccount({
-      cookie: addAccountForm.value.cookie.split('\n')
-    })
-    if (res.data.have_repeat) ElMessage.info('存在重复的cookie,已自动过滤')
+    const res = await AccountApi.addAccount(addAccountForm.value)
+    if (res.data.have_repeat) ElMessage.info('存在重复的账号,已自动过滤')
     ElMessage.success('添加成功')
   } finally {
     pending.value = false

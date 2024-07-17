@@ -23,25 +23,72 @@
     show-overflow-tooltip
     class="table"
     @selection-change="selectAccountsChange"
+    table-layout="auto"
   >
-    <el-table-column type="selection" width="40"></el-table-column>
+    <el-table-column type="selection" fixed width="40"></el-table-column>
     <el-table-column prop="id" label="ID"></el-table-column>
-    <el-table-column prop="baidu_name" label="百度用户名"></el-table-column>
+    <el-table-column prop="baidu_name" label="百度用户名">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.baidu_name }}</span>
+        <el-input v-if="row.edit" v-model="row.baidu_name"></el-input>
+      </template>
+    </el-table-column>
     <el-table-column prop="today_size" label="今日解析">
       <template #default="{ row }">
         <span>{{ row.today_count }} ({{ formatBytes(row.today_size ?? 0) }})</span>
       </template>
     </el-table-column>
-    <el-table-column prop="today_size" label="縂共解析">
+    <el-table-column prop="today_size" label="总共解析">
       <template #default="{ row }">
         <span>{{ row.total_count }} ({{ formatBytes(row.total_size ?? 0) }})</span>
       </template>
     </el-table-column>
-    <el-table-column prop="cookie" label="Cookie"></el-table-column>
-    <el-table-column prop="vip_type" label="会员类型"></el-table-column>
+    <el-table-column prop="account_type" label="账号类型">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.account_type }}</span>
+        <el-select v-if="row.edit" v-model="row.account_type">
+          <el-option :key="item" :value="item" v-for="item in ['cookie', 'access_token']">
+            {{ item }}
+          </el-option>
+        </el-select>
+      </template>
+    </el-table-column>
+    <el-table-column prop="access_token" label="access_token">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.access_token }}</span>
+        <el-input v-if="row.edit" v-model="row.access_token"></el-input>
+      </template>
+    </el-table-column>
+    <el-table-column prop="refresh_token" label="refresh_token">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.refresh_token }}</span>
+        <el-input v-if="row.edit" v-model="row.refresh_token"></el-input>
+      </template>
+    </el-table-column>
+    <el-table-column prop="cookie" label="Cookie">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.cookie }}</span>
+        <el-input v-if="row.edit" v-model="row.cookie"></el-input>
+      </template>
+    </el-table-column>
+    <el-table-column prop="vip_type" label="会员类型">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.vip_type }}</span>
+        <el-select v-if="row.edit" v-model="row.vip_type">
+          <el-option
+            :key="item"
+            :value="item"
+            v-for="item in ['超级会员', '假超级会员', '普通会员', '普通用户']"
+          >
+            {{ item }}
+          </el-option>
+        </el-select>
+      </template>
+    </el-table-column>
     <el-table-column prop="switch" label="状态">
       <template #default="{ row }">
-        <span>{{ row.switch ? '启用' : '禁用' }}</span>
+        <span v-if="!row.edit">{{ row.switch ? '启用' : '禁用' }}</span>
+        <el-switch v-if="row.edit" v-model="row.switch"></el-switch>
       </template>
     </el-table-column>
     <el-table-column prop="prov" label="省份">
@@ -95,7 +142,8 @@
     </el-table-column>
     <el-table-column prop="reason" label="禁用原因">
       <template #default="{ row }">
-        {{ row.reason ?? '未禁用' }}
+        <span v-if="!row.edit">{{ row.reason ?? '未禁用' }}</span>
+        <el-input v-if="row.edit" v-model="row.reason"></el-input>
       </template>
     </el-table-column>
     <el-table-column prop="svip_end_at" label="超级会员结束时间">
@@ -118,13 +166,9 @@
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column width="300" label="操作" fixed="right">
+    <el-table-column width="220" label="操作" fixed="right">
       <template #default="{ row }">
         <el-button size="small" type="primary" @click="updateAccountInfo(row)">更新信息</el-button>
-        <el-button size="small" type="primary" @click="enableAccount(row)" v-if="row.switch === 0">
-          启用
-        </el-button>
-        <el-button size="small" type="primary" @click="disableAccount(row)" v-else>禁用</el-button>
         <el-button size="small" type="primary" v-if="!row.edit" @click="switchAccount(row)">
           編輯
         </el-button>
@@ -211,34 +255,6 @@ const deleteSelectAccounts = async () => {
     const Account_ids = selectAccounts.value.map((account) => account.id)
     await AccountApi.deleteAccounts(Account_ids)
     ElMessage.success('批量删除账户成功')
-  } finally {
-    pending.value = false
-    await getAccounts()
-  }
-}
-
-const enableAccount = async (Account: AccountApi.Account) => {
-  try {
-    pending.value = true
-    await AccountApi.switchAccount({
-      account: Account,
-      switch: 1
-    })
-    ElMessage.success('启用账户成功')
-  } finally {
-    pending.value = false
-    await getAccounts()
-  }
-}
-
-const disableAccount = async (Account: AccountApi.Account) => {
-  try {
-    pending.value = true
-    await AccountApi.switchAccount({
-      account: Account,
-      switch: 0
-    })
-    ElMessage.success('禁用账户成功')
   } finally {
     pending.value = false
     await getAccounts()

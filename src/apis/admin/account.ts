@@ -1,7 +1,8 @@
 import axios from '@/utils/request.js'
 
 export interface addAccount {
-  cookie: string[]
+  type: 1 | 2
+  cookie: string
 }
 
 export const addAccount = (data: addAccount) =>

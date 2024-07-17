@@ -81,10 +81,11 @@
       </el-form-item>
       <el-form-item label="解析模式" prop="parse_mode">
         <el-select v-model="changeConfigForm.parse_mode" @change="checkAlert">
-          <el-option :value="1" label="V1盘内(废弃)" disabled />
+          <el-option :value="1" label="V1盘内" />
           <el-option :value="2" label="V2盘外" />
           <el-option :value="3" label="V3盘外" />
           <el-option :value="4" label="V4盘外" />
+          <el-option :value="5" label="V5盘内" />
         </el-select>
       </el-form-item>
       <el-form-item label="省份模式开关" prop="limit_prov">
