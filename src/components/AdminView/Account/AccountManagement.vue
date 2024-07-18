@@ -23,27 +23,26 @@
     show-overflow-tooltip
     class="table"
     @selection-change="selectAccountsChange"
-    table-layout="auto"
   >
     <el-table-column type="selection" fixed width="40"></el-table-column>
-    <el-table-column prop="id" label="ID"></el-table-column>
-    <el-table-column prop="baidu_name" label="百度用户名">
+    <el-table-column prop="id" label="ID" fixed=""></el-table-column>
+    <el-table-column prop="baidu_name" label="百度用户名" width="150px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.baidu_name }}</span>
         <el-input v-if="row.edit" v-model="row.baidu_name"></el-input>
       </template>
     </el-table-column>
-    <el-table-column prop="today_size" label="今日解析">
+    <el-table-column prop="today_size" label="今日解析" width="150px">
       <template #default="{ row }">
         <span>{{ row.today_count }} ({{ formatBytes(row.today_size ?? 0) }})</span>
       </template>
     </el-table-column>
-    <el-table-column prop="today_size" label="总共解析">
+    <el-table-column prop="today_size" label="总共解析" width="150px">
       <template #default="{ row }">
         <span>{{ row.total_count }} ({{ formatBytes(row.total_size ?? 0) }})</span>
       </template>
     </el-table-column>
-    <el-table-column prop="account_type" label="账号类型">
+    <el-table-column prop="account_type" label="账号类型" width="120px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.account_type }}</span>
         <el-select v-if="row.edit" v-model="row.account_type">
@@ -53,25 +52,30 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column prop="access_token" label="access_token">
-      <template #default="{ row }">
-        <span v-if="!row.edit">{{ row.access_token }}</span>
-        <el-input v-if="row.edit" v-model="row.access_token"></el-input>
-      </template>
-    </el-table-column>
-    <el-table-column prop="refresh_token" label="refresh_token">
-      <template #default="{ row }">
-        <span v-if="!row.edit">{{ row.refresh_token }}</span>
-        <el-input v-if="row.edit" v-model="row.refresh_token"></el-input>
-      </template>
-    </el-table-column>
-    <el-table-column prop="cookie" label="Cookie">
+    <el-table-column prop="cookie" label="Cookie" width="150px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.cookie }}</span>
         <el-input v-if="row.edit" v-model="row.cookie"></el-input>
       </template>
     </el-table-column>
-    <el-table-column prop="vip_type" label="会员类型">
+    <el-table-column prop="access_token" label="access_token" width="150px">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.access_token }}</span>
+        <el-input v-if="row.edit" v-model="row.access_token"></el-input>
+      </template>
+    </el-table-column>
+    <el-table-column prop="refresh_token" label="refresh_token" width="150px">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.refresh_token }}</span>
+        <el-input v-if="row.edit" v-model="row.refresh_token"></el-input>
+      </template>
+    </el-table-column>
+    <el-table-column prop="expired_at" label="token过期时间" width="160px">
+      <template #default="{ row }">
+        {{ row.expired_at ? new Date(row.expired_at).toLocaleString() : '非token模式' }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="vip_type" label="会员类型" width="90px" align="center">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.vip_type }}</span>
         <el-select v-if="row.edit" v-model="row.vip_type">
@@ -85,13 +89,13 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column prop="switch" label="状态">
+    <el-table-column prop="switch" label="状态" width="60px" align="center">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.switch ? '启用' : '禁用' }}</span>
         <el-switch v-if="row.edit" v-model="row.switch"></el-switch>
       </template>
     </el-table-column>
-    <el-table-column prop="prov" label="省份">
+    <el-table-column prop="prov" label="省份" width="70px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.prov ?? '未使用' }}</span>
         <el-select v-if="row.edit" v-model="row.prov">
@@ -140,28 +144,28 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column prop="reason" label="禁用原因">
+    <el-table-column prop="reason" label="禁用原因" width="150px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.reason ?? '未禁用' }}</span>
         <el-input v-if="row.edit" v-model="row.reason"></el-input>
       </template>
     </el-table-column>
-    <el-table-column prop="svip_end_at" label="超级会员结束时间">
+    <el-table-column prop="svip_end_at" label="超级会员结束时间" width="160px">
       <template #default="{ row }">
         {{ new Date(row.svip_end_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column prop="last_use_at" label="上次使用时间">
+    <el-table-column prop="last_use_at" label="上次使用时间" width="160px">
       <template #default="{ row }">
         {{ new Date(row.last_use_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column prop="created_at" label="创建时间">
+    <el-table-column prop="created_at" label="创建时间" width="160px">
       <template #default="{ row }">
         {{ new Date(row.created_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column prop="updated_at" label="更新时间">
+    <el-table-column prop="updated_at" label="更新时间" width="160px">
       <template #default="{ row }">
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
