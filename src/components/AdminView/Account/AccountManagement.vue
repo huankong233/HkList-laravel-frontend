@@ -42,7 +42,7 @@
         <span>{{ row.total_count }} ({{ formatBytes(row.total_size ?? 0) }})</span>
       </template>
     </el-table-column>
-    <el-table-column prop="account_type" label="账号类型" width="120px">
+    <el-table-column prop="account_type" label="账号类型" width="160px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.account_type }}</span>
         <el-select v-if="row.edit" v-model="row.account_type">
@@ -75,7 +75,7 @@
         {{ row.expired_at ? new Date(row.expired_at).toLocaleString() : '非token模式' }}
       </template>
     </el-table-column>
-    <el-table-column prop="vip_type" label="会员类型" width="90px" align="center">
+    <el-table-column prop="vip_type" label="会员类型" width="130px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.vip_type }}</span>
         <el-select v-if="row.edit" v-model="row.vip_type">
@@ -89,13 +89,13 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column prop="switch" label="状态" width="60px" align="center">
+    <el-table-column prop="switch" label="状态" width="70px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.switch ? '启用' : '禁用' }}</span>
         <el-switch v-if="row.edit" v-model="row.switch"></el-switch>
       </template>
     </el-table-column>
-    <el-table-column prop="prov" label="省份" width="70px">
+    <el-table-column prop="prov" label="省份" width="120px">
       <template #default="{ row }">
         <span v-if="!row.edit">{{ row.prov ?? '未使用' }}</span>
         <el-select v-if="row.edit" v-model="row.prov">
@@ -213,6 +213,10 @@ const getAccounts = async () => {
   try {
     pending.value = true
     const res = await AccountApi.getAccount({ page: currentPage.value, size: pageSize.value })
+    res.data.data = res.data.data.map((v) => {
+      v.switch = v.switch ? true : false
+      return v
+    })
     accountList.value = res.data
   } finally {
     pending.value = false
