@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm remove-css & pnpm type-check & pnpm build-only & pnpm revoer-css",
+    "build": "pnpm type-check & pnpm remove-css & pnpm build-only & pnpm revoer-css",
     "remove-css": "tsx ./scripts/remove-css.js",
     "revoer-css": "tsx ./scripts/recover-css.js",
     "preview": "vite preview",
