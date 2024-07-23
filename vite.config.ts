@@ -4,10 +4,10 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 
 import { visualizer } from 'rollup-plugin-visualizer'
-// import AutoImport from 'unplugin-auto-import/vite'
-// import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-// import Components from 'unplugin-vue-components/vite'
-import importFromCDN from 'vite-plugin-cdn-import'
+import AutoImport from 'unplugin-auto-import/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+// import importFromCDN from 'vite-plugin-cdn-import'
 import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
@@ -33,13 +33,13 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    // AutoImport({
-    //   resolvers: [ElementPlusResolver()]
-    // }),
-    // Components({
-    //   dirs: ['public'],
-    //   resolvers: [ElementPlusResolver()]
-    // }),
+    AutoImport({
+      resolvers: [ElementPlusResolver()]
+    }),
+    Components({
+      dirs: ['public'],
+      resolvers: [ElementPlusResolver()]
+    }),
     viteCompression({
       verbose: true,
       disable: false,
@@ -51,44 +51,44 @@ export default defineConfig({
       filename: 'stats.html',
       gzipSize: true,
       brotliSize: true
-    }),
-    importFromCDN({
-      // prodUrl: 'https://cdnjs.loli.net/ajax/libs/{name}/{version}/{path}',
-      prodUrl: 'https://npm.webcache.cn/{name}@{version}/{path}',
-      modules: [
-        {
-          name: 'vue',
-          var: 'Vue',
-          path: 'dist/vue.global.prod.js'
-        },
-        {
-          name: 'vue-router',
-          var: 'VueRouter',
-          path: 'dist/vue-router.global.prod.js'
-        },
-        {
-          name: 'vue-demi',
-          var: 'VueDemi',
-          path: 'lib/index.iife.js'
-        },
-        {
-          name: 'pinia',
-          var: 'Pinia',
-          path: 'dist/pinia.iife.prod.js'
-        },
-        {
-          name: 'element-plus',
-          var: 'ElementPlus',
-          path: 'dist/index.full.min.js',
-          css: ['dist/index.css', 'theme-chalk/dark/css-vars.css']
-        },
-        {
-          name: 'axios',
-          var: 'axios',
-          path: 'dist/axios.min.js'
-        }
-      ]
     })
+    // importFromCDN({
+    //   // prodUrl: 'https://cdnjs.loli.net/ajax/libs/{name}/{version}/{path}',
+    //   prodUrl: 'https://npm.webcache.cn/{name}@{version}/{path}',
+    //   modules: [
+    //     {
+    //       name: 'vue',
+    //       var: 'Vue',
+    //       path: 'dist/vue.global.prod.js'
+    //     },
+    //     {
+    //       name: 'vue-router',
+    //       var: 'VueRouter',
+    //       path: 'dist/vue-router.global.prod.js'
+    //     },
+    //     {
+    //       name: 'vue-demi',
+    //       var: 'VueDemi',
+    //       path: 'lib/index.iife.js'
+    //     },
+    //     {
+    //       name: 'pinia',
+    //       var: 'Pinia',
+    //       path: 'dist/pinia.iife.prod.js'
+    //     },
+    //     {
+    //       name: 'element-plus',
+    //       var: 'ElementPlus',
+    //       path: 'dist/index.full.min.js',
+    //       css: ['dist/index.css', 'theme-chalk/dark/css-vars.css']
+    //     },
+    //     {
+    //       name: 'axios',
+    //       var: 'axios',
+    //       path: 'dist/axios.min.js'
+    //     }
+    //   ]
+    // })
   ],
   resolve: {
     alias: {
