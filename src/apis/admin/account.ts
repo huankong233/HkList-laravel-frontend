@@ -1,7 +1,8 @@
 import axios from '@/utils/request.js'
 
 export interface addAccount {
-  cookie: string[]
+  type: 1 | 2
+  cookie: string
 }
 
 export const addAccount = (data: addAccount) =>
@@ -12,7 +13,7 @@ export interface Account {
   baidu_name: string
   cookie: string
   vip_type: string
-  switch: 0 | 1
+  switch: 0 | 1 | boolean
   reason: string | null
   prov: string | null
   today_size: null | number
