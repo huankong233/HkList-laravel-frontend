@@ -92,6 +92,8 @@
           <el-option :value="2" label="V2盘外(原版V2,qdall下载可能失败,Android)" />
           <el-option :value="7" label="V7盘外(改版V2,一定程度防风控)" />
           <el-option :value="9" label="V9盘外(改版V2,qdall下载可能失败,Windows)" />
+
+          <el-option :value="10" label="V10盘内(听说不风控的接口)" />
         </el-select>
       </el-form-item>
       <el-form-item label="省份模式开关" prop="limit_prov">
