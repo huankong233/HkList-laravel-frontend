@@ -25,6 +25,8 @@ export interface config {
   name: string
   show_login_button: boolean
   token_bind_ip: boolean
+  proxy_server: string
+  proxy_password: string
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')

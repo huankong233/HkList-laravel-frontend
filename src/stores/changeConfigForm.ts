@@ -27,7 +27,9 @@ export const useChangeConfigForm = defineStore('changeConfigForm', () => {
     debug: false,
     name: '',
     show_login_button: false,
-    token_bind_ip: false
+    token_bind_ip: false,
+    proxy_server: '',
+    proxy_password: ''
   })
 
   return {
