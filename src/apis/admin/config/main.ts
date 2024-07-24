@@ -16,7 +16,8 @@ export interface config {
   code: string
   parse_mode: number
   max_filesize: number
-  min_single_file: number
+  min_single_filesize: number
+  max_single_filesize: number
   token_mode: boolean
   button_link: string
   limit_cn: boolean

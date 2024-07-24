@@ -56,16 +56,13 @@
         <el-input-number v-model="changeConfigForm.max_once"></el-input-number>
       </el-form-item>
       <el-form-item label="单日单个账号最大解析大小（GB）" prop="max_filesize">
-        <el-input-number
-          v-model="changeConfigForm.max_filesize"
-          style="width: 300px"
-        ></el-input-number>
+        <el-input-number v-model="changeConfigForm.max_filesize" style="width: 300px" />
       </el-form-item>
-      <el-form-item label="可解析文件最小需要大小（GB）" prop="max_filesize">
-        <el-input-number
-          v-model="changeConfigForm.min_single_file"
-          style="width: 300px"
-        ></el-input-number>
+      <el-form-item label="可解析文件最小需要大小（GB）" prop="min_single_filesize">
+        <el-input-number v-model="changeConfigForm.min_single_filesize" style="width: 300px" />
+      </el-form-item>
+      <el-form-item label="可解析文件最大可是大小（GB）" prop="max_single_filesize">
+        <el-input-number v-model="changeConfigForm.max_single_filesize" style="width: 300px" />
       </el-form-item>
       <el-form-item label="解析密码" prop="password">
         <el-input v-model.trim="changeConfigForm.password"></el-input>
@@ -145,6 +142,12 @@ const changeConfigFormRule: FormRules = {
   sleep: [{ required: true, message: '请输入批量解析时休眠时间', trigger: 'blur' }],
   max_once: [{ required: true, message: '请输入批量解析时单次最大解析数量', trigger: 'blur' }],
   max_filesize: [{ required: true, message: '请输入单日单个账号最大解析大小', trigger: 'blur' }],
+  min_single_filesize: [
+    { required: true, message: '请输入可解析文件最小需要大小', trigger: 'blur' }
+  ],
+  max_single_filesize: [
+    { required: true, message: '请输入可解析文件最大可是大小', trigger: 'blur' }
+  ],
   user_agent: [{ required: true, message: '请输入User_Agent', trigger: 'blur' }]
 }
 
@@ -156,7 +159,8 @@ const getConfig = async () => {
     changeConfigForm.value = {
       ...data,
       max_filesize: data.max_filesize / 1024 ** 3,
-      min_single_file: data.min_single_file / 1024 ** 3,
+      min_single_filesize: data.min_single_filesize / 1024 ** 3,
+      max_single_filesize: data.max_single_filesize / 1024 ** 3,
       front_end_version: await getFrontEndVersion(),
       announce: data.announce.replaceAll('[NextLine]', '\n')
     }
@@ -173,7 +177,8 @@ const updateConfig = async (formEl: FormInstance | null) => {
     await mainConfigApi.updateConfig({
       ...changeConfigForm.value,
       max_filesize: changeConfigForm.value.max_filesize * 1024 ** 3,
-      min_single_file: changeConfigForm.value.min_single_file * 1024 ** 3
+      min_single_filesize: changeConfigForm.value.min_single_filesize * 1024 ** 3,
+      max_single_filesize: changeConfigForm.value.max_single_filesize * 1024 ** 3
     })
     ElMessage.success('保存成功')
   } finally {
@@ -190,7 +195,8 @@ const testAuth = async (formEl: FormInstance | null) => {
     const res = await mainConfigApi.testAuth({
       ...changeConfigForm.value,
       max_filesize: changeConfigForm.value.max_filesize * 1024 ** 3,
-      min_single_file: changeConfigForm.value.min_single_file * 1024 ** 3
+      min_single_filesize: changeConfigForm.value.min_single_filesize * 1024 ** 3,
+      max_single_filesize: changeConfigForm.value.max_single_filesize * 1024 ** 3
     })
     if ('ip' in res.data) {
       ElMessage.error(`未知授权码,当前ip为: ${res.data.ip}`)

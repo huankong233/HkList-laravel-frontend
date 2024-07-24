@@ -170,9 +170,12 @@
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column width="220" label="操作" fixed="right">
+    <el-table-column width="350" label="操作" fixed="right">
       <template #default="{ row }">
         <el-button size="small" type="primary" @click="updateAccountInfo(row)">更新信息</el-button>
+        <el-button size="small" type="primary" @click="checkAccountBanInfo(row)">
+          检查封禁状态
+        </el-button>
         <el-button size="small" type="primary" v-if="!row.edit" @click="switchAccount(row)">
           編輯
         </el-button>
@@ -317,6 +320,36 @@ const switchAccount = async (row: any) => {
       pending.value = false
       await getAccounts()
     }
+  }
+}
+
+const checkAccountBanInfo = async (account: AccountApi.Account) => {
+  try {
+    pending.value = true
+    const res = await AccountApi.getAccountBanInfo(account)
+    if (res.data.errno === 0) {
+      const anti = res.data.anti
+      ElMessage.success(`获取封禁信息成功`)
+      if (anti.ban_status) {
+        ElMessage.success(`封禁状态：已封禁`)
+        ElMessage.success(
+          `封禁开始时间: ${new Date(parseInt(`${anti.start_time}000`)).toLocaleString()}`
+        )
+        ElMessage.success(
+          `封禁结束时间: ${new Date(parseInt(`${anti.end_time}000`)).toLocaleString()}`
+        )
+        ElMessage.success(`已被封禁${anti.ban_times}次`)
+        ElMessage.success(`封禁原因: ${anti.ban_reason}`)
+      } else {
+        ElMessage.success(`封禁状态：未封禁`)
+      }
+    } else if (res.data.errno === -6) {
+      ElMessage.warning(`获取封禁信息失败,Cookie或AccessToken已过期`)
+    } else {
+      ElMessage.warning(`获取封禁信息失败,code:${res.data.errno},msg:${res.data.errmsg}`)
+    }
+  } finally {
+    pending.value = false
   }
 }
 </script>

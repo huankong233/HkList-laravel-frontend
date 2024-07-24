@@ -12,7 +12,8 @@ export interface config {
   need_password: boolean
   show_copyright: boolean
   custom_copyright: string
-  min_single_file: number
+  min_single_filesize: number
+  max_single_filesize: number
   token_mode: boolean
   button_link: string
   show_login_button: boolean

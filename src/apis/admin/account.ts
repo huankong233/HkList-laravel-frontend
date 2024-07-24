@@ -68,3 +68,20 @@ export const switchAccount = (data: { account: Account; switch: 1 | 0 }) =>
 
 export const switchAccounts = (data: { account_ids: number[]; switch: 1 | 0 }) =>
   axios.patch<null>('/admin/account/switch', data)
+
+export interface BanInfo {
+  errno: number
+  anti: {
+    start_time: number
+    end_time: number
+    ban_status: boolean
+    ban_reason: string
+    ban_times: number
+    ban_msg: string
+    user_operate_type: number
+  }
+  errmsg: string
+}
+
+export const getAccountBanInfo = (account: Account) =>
+  axios.get<BanInfo>(`/admin/account/ban?account_id=${account.id}`)

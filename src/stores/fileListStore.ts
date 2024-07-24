@@ -84,15 +84,19 @@ export const useFileListStore = defineStore('fileListStore', () => {
       return
     }
 
-    const min_single_file = useMainStore().config.min_single_file
+    const min_single_filesize = mainStore.config.min_single_filesize
+    const max_single_filesize = mainStore.config.max_single_filesize
     let fs_ids: number[] = []
 
     if (fs_id) {
       const file = fileList.value.list.find((file) => file.fs_id === fs_id)
       if (!file) {
         ElMessage.error('获取文件信息失败')
-      } else if (file.size < min_single_file) {
+      } else if (file.size < min_single_filesize) {
         ElMessage.error('文件过小不会被解析!')
+        return
+      } else if (file.size > max_single_filesize) {
+        ElMessage.error('文件过大不会被解析!')
         return
       }
 
@@ -104,17 +108,23 @@ export const useFileListStore = defineStore('fileListStore', () => {
         ElMessage.error('文件夹不会被解析!')
       }
 
-      temp = temp.filter((file) => file.size > min_single_file)
+      temp = temp.filter((file) => file.size > min_single_filesize)
 
       if (temp.length !== selectedRows.value.length) {
         ElMessage.error('文件过小不会被解析!')
       }
 
+      temp = temp.filter((file) => file.size < max_single_filesize)
+
+      if (temp.length !== selectedRows.value.length) {
+        ElMessage.error('文件过大不会被解析!')
+      }
+
       fs_ids = temp.map((row) => row.fs_id)
     }
 
-    if (fs_ids.length > (useMainStore()?.config?.max_once ?? 20)) {
-      ElMessage.error(`一次最多解析${useMainStore().config.max_once}个文件`)
+    if (fs_ids.length > mainStore.config.max_once) {
+      ElMessage.error(`一次最多解析${mainStore.config.max_once}个文件`)
       return
     }
 
