@@ -19,7 +19,8 @@ export const useChangeConfigForm = defineStore('changeConfigForm', () => {
     code: '',
     parse_mode: 0,
     max_filesize: 0,
-    min_single_file: 0,
+    min_single_filesize: 0,
+    max_single_filesize: 0,
     token_mode: false,
     button_link: '',
     limit_cn: false,
@@ -27,7 +28,9 @@ export const useChangeConfigForm = defineStore('changeConfigForm', () => {
     debug: false,
     name: '',
     show_login_button: false,
-    token_bind_ip: false
+    token_bind_ip: false,
+    proxy_server: '',
+    proxy_password: ''
   })
 
   return {

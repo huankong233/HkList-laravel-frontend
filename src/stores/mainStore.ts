@@ -18,7 +18,8 @@ export const useMainStore = defineStore('mainStore', () => {
     is_https: false,
     show_copyright: false,
     custom_copyright: '',
-    min_single_file: 0,
+    min_single_filesize: 0,
+    max_single_filesize: 0,
     token_mode: false,
     button_link: '',
     show_login_button: false

@@ -16,7 +16,8 @@ export interface config {
   code: string
   parse_mode: number
   max_filesize: number
-  min_single_file: number
+  min_single_filesize: number
+  max_single_filesize: number
   token_mode: boolean
   button_link: string
   limit_cn: boolean
@@ -25,6 +26,8 @@ export interface config {
   name: string
   show_login_button: boolean
   token_bind_ip: boolean
+  proxy_server: string
+  proxy_password: string
 }
 
 export const getConfig = () => axios.get<config>('/admin/config/main')
