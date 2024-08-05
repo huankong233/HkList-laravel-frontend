@@ -15,6 +15,7 @@
   <el-button type="danger" :disabled="selectAccounts.length <= 0" @click="deleteSelectAccounts()">
     批量删除
   </el-button>
+  <el-button type="primary" @click="switchBanAccounts()"> 启用被限速的账号 </el-button>
 
   <el-table
     v-loading="pending"
@@ -320,6 +321,17 @@ const switchAccount = async (row: any) => {
       pending.value = false
       await getAccounts()
     }
+  }
+}
+
+const switchBanAccounts = async () => {
+  try {
+    pending.value = true
+    await AccountApi.switchBanAccounts()
+    ElMessage.success('启用被限速账号成功')
+  } finally {
+    pending.value = false
+    await getAccounts()
   }
 }
 
