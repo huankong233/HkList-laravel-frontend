@@ -61,8 +61,11 @@
         {{ new Date(row.updated_at).toLocaleString() }}
       </template>
     </el-table-column>
-    <el-table-column width="150" label="操作" fixed="right">
+    <el-table-column width="220" label="操作" fixed="right">
       <template #default="{ row }">
+        <el-button size="small" type="primary" @click="getProxyLink(row)">
+          获取代理服务器链接
+        </el-button>
         <el-button size="small" type="danger" @click="deleteRecord(row)">删除</el-button>
       </template>
     </el-table-column>
@@ -84,6 +87,8 @@ import * as RecordApi from '@/apis/admin/record.js'
 import { formatBytes } from '@/utils/format.js'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
+import { useChangeConfigForm } from '@/stores/changeConfigForm.js'
+import { copy } from '@/utils/copy.js'
 
 const pending = ref(false)
 
@@ -148,6 +153,37 @@ const deleteSelectRecords = async () => {
 const selectRecordChange = (row: RecordApi.Record[]) => (selectRecords.value = row)
 
 onMounted(getRecords)
+
+function bytesToHex(bytes: any[]) {
+  return bytes.map((byte) => byte.toString(16).padStart(2, '0')).join('')
+}
+
+function xorEncrypt(data: string, key: string) {
+  const keyLength = key.length
+  const output = []
+
+  for (let i = 0; i < data.length; i++) {
+    output.push(data.charCodeAt(i) ^ key.charCodeAt(i % keyLength))
+  }
+
+  return bytesToHex(output)
+}
+
+const getProxyLink = (row: RecordApi.Record) => {
+  const changeConfigFormStore = useChangeConfigForm()
+  const proxy_server = changeConfigFormStore.changeConfigForm.proxy_server
+
+  if (!proxy_server) return ElMessage.warning('未配置代理服务器')
+
+  copy(
+    proxy_server +
+      '?data=' +
+      xorEncrypt(
+        JSON.stringify({ url: row.url, ua: row.ua }),
+        changeConfigFormStore.changeConfigForm.proxy_password
+      )
+  )
+}
 </script>
 
 <style lang="scss" scoped>

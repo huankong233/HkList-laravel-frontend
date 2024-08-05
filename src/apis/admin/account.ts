@@ -85,3 +85,5 @@ export interface BanInfo {
 
 export const getAccountBanInfo = (account: Account) =>
   axios.get<BanInfo>(`/admin/account/ban?account_id=${account.id}`)
+
+export const switchBanAccounts = () => axios.patch<null>(`/admin/account/ban`)
