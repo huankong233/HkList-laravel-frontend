@@ -162,7 +162,11 @@ export const useFileListStore = defineStore('fileListStore', () => {
       }
 
       res = await ParseApi.getDownloadLinks(req)
-      ElMessage.success('解析成功,下载链接请下滑')
+      if (res.data) {
+        ElMessage.success('解析成功,下载链接请下滑')
+      } else {
+        ElMessage.success('解析可能失败,请打开控制台查看是否存在报错')
+      }
 
       vcode.value = {
         hit_captcha: false,

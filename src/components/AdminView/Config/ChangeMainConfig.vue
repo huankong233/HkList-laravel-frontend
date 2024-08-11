@@ -100,6 +100,8 @@
           <el-option :value="2" label="V2盘外(原版V2,qdall下载可能失败,Android)" />
           <el-option :value="7" label="V7盘外(改版V2,一定程度防风控)" />
           <el-option :value="9" label="V9盘外(改版V2,qdall下载可能失败,Windows)" />
+
+          <el-option :value="11" label="V11盘内" />
         </el-select>
       </el-form-item>
       <el-form-item label="省份模式开关" prop="limit_prov">
@@ -172,6 +174,14 @@ const getConfig = async () => {
 const updateConfig = async (formEl: FormInstance | null) => {
   if (!formEl || !(await formEl.validate())) return
 
+  if (changeConfigForm.value.parse_mode === 11) {
+    // 检查ua格式,需要为 netdisk;xxx
+    if (!/^netdisk;/.test(changeConfigForm.value.user_agent)) {
+      ElMessage.error('User_Agent格式不正确, 请使用 netdisk;xxx')
+      return
+    }
+  }
+
   try {
     pending.value = true
     await mainConfigApi.updateConfig({
@@ -231,6 +241,9 @@ const matchUserAgent = () => {
       break
     case 10:
       ua = 'Mozilla/5.0 (94list-laravel;netdisk;svip)'
+      break
+    case 11:
+      ua = 'netdisk;hklist'
       break
     default:
       ua = 'netdisk;P2SP;3.0.10.22'
