@@ -1,5 +1,10 @@
 <template>
-  <el-dialog v-model="aria2ConfigDialogVisible" title="Aria2配置" width="90%">
+  <el-dialog
+    v-model="aria2ConfigDialogVisible"
+    title="Aria2配置"
+    width="90%"
+    :close-on-click-modal="false"
+  >
     <el-form
       ref="aria2ConfigFormRef"
       :model="aria2ConfigForm"

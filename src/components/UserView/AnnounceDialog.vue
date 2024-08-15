@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="config.show_announce" title="公告" width="60%" :before-close="beforeClose">
+  <el-dialog v-model="config.show_announce" title="公告" width="60%" :close-on-click-modal="false">
     <span v-html="config.announce"></span>
 
     <template #footer>
@@ -18,8 +18,6 @@ import { storeToRefs } from 'pinia'
 
 const mainStore = useMainStore()
 const { config } = storeToRefs(mainStore)
-
-const beforeClose = () => {}
 
 const closeDialog = () => (config.value.show_announce = false)
 

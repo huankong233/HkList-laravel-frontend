@@ -118,6 +118,9 @@
           批量解析
         </el-button>
         <el-button type="primary" @click="copyLink(getFileListFormRef)">复制当前地址</el-button>
+        <el-button type="primary" v-if="downloadLinks.length !== 0" @click="dialogVisible = true">
+          重新显示下载链接
+        </el-button>
         <el-button type="primary" v-if="config.button_link !== ''" @click="go(config.button_link)">
           前往购买卡密
         </el-button>
@@ -162,7 +165,8 @@ const {
   limitForm,
   limitMessage,
   vcode,
-  downloadLinks
+  downloadLinks,
+  dialogVisible
 } = storeToRefs(fileListStore)
 const mainStore = useMainStore()
 const { config } = storeToRefs(mainStore)

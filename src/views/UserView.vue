@@ -1,10 +1,12 @@
 <template>
-  <AnnounceDialog />
-  <Aria2Dialog />
+  <div class="container">
+    <AnnounceDialog />
+    <Aria2Dialog />
 
-  <GetFileList />
-  <ShowFileList />
-  <DownloadLinks />
+    <GetFileList />
+    <ShowFileList />
+    <DownloadLinks />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -25,5 +27,10 @@ const Aria2Dialog = defineAsyncComponent(() => import('@/components/UserView/Ari
 .form,
 .alert {
   margin-top: 15px !important;
+}
+
+.container {
+  width: 1000px;
+  margin: 0 auto;
 }
 </style>

@@ -1,6 +1,11 @@
 <template>
-  <el-card class="card" v-if="downloadLinks.length !== 0">
-    <h2>链接列表</h2>
+  <el-dialog
+    title="链接列表"
+    v-model="dialogVisible"
+    align-center
+    show-close
+    :close-on-click-modal="false"
+  >
     <h3>下载请推荐使用Aria2下载器,如 <a href="https://motrix.app/" target="_blank">Motrix</a></h3>
     <h3>IDM下载需要手动指定UA,点击即可复制</h3>
     <h3>如果当前链接下载失败,请尝试更换链接,如果全部不可用可以单独重新解析单个文件</h3>
@@ -37,7 +42,7 @@
           {{ row.urls ? row.urls[row.index] : row.url }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="450">
+      <el-table-column label="操作" width="400">
         <template #default="{ row, $index }">
           <el-button
             type="primary"
@@ -75,7 +80,7 @@
         </template>
       </el-table-column>
     </el-table>
-  </el-card>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -91,7 +96,7 @@ import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
 const fileListStore = useFileListStore()
-const { downloadLinks } = storeToRefs(fileListStore)
+const { downloadLinks, dialogVisible } = storeToRefs(fileListStore)
 
 const selectDownloadFiles = ref<ParseApi.downloadLinks>([])
 
