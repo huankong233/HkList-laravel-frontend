@@ -163,9 +163,10 @@ export const useFileListStore = defineStore('fileListStore', () => {
 
       res = await ParseApi.getDownloadLinks(req)
       if (res.data) {
-        ElMessage.success('解析成功,下载链接请下滑')
+        ElMessage.success('解析成功')
       } else {
         ElMessage.success('解析可能失败,请打开控制台查看是否存在报错')
+        console.log(res)
       }
 
       vcode.value = {
@@ -179,17 +180,12 @@ export const useFileListStore = defineStore('fileListStore', () => {
         pending.value = false
         await getLimit()
         return res.data.map((link) => {
-          return {
-            ...link,
-            index: 0
-          }
+          return { ...link, index: 0 }
         })
       } else {
+        dialogVisible.value = true
         downloadLinks.value = res.data.map((link) => {
-          return {
-            ...link,
-            index: 0
-          }
+          return { ...link, index: 0 }
         })
       }
     } catch (error) {
@@ -236,6 +232,8 @@ export const useFileListStore = defineStore('fileListStore', () => {
     }
   }
 
+  const dialogVisible = ref(false)
+
   return {
     pending,
     fileList,
@@ -249,6 +247,7 @@ export const useFileListStore = defineStore('fileListStore', () => {
     getLimit,
     limitMessage,
 
-    vcode
+    vcode,
+    dialogVisible
   }
 })
