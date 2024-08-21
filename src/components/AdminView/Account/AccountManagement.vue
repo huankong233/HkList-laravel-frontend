@@ -71,6 +71,12 @@
         <el-input v-if="row.edit" v-model="row.refresh_token"></el-input>
       </template>
     </el-table-column>
+    <el-table-column prop="cid" label="cid" width="200px">
+      <template #default="{ row }">
+        <span v-if="!row.edit">{{ row.cid }}</span>
+        <el-input-number v-if="row.edit" v-model="row.cid" style="width: 170px"></el-input-number>
+      </template>
+    </el-table-column>
     <el-table-column prop="expired_at" label="token过期时间" width="160px">
       <template #default="{ row }">
         {{ row.expired_at ? new Date(row.expired_at).toLocaleString() : '非token模式' }}

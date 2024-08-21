@@ -1,7 +1,7 @@
 import axios from '@/utils/request.js'
 
 export interface addAccount {
-  type: 1 | 2
+  type: 1 | 2 | 3
   cookie: string
 }
 
@@ -12,6 +12,9 @@ export interface Account {
   id: number
   baidu_name: string
   cookie: string
+  access_token: string
+  refresh_token: string
+  cid: number
   vip_type: string
   switch: 0 | 1 | boolean
   reason: string | null
