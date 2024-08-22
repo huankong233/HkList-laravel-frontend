@@ -233,7 +233,7 @@ const matchUserAgent = () => {
       break
     case 6:
     case 7:
-      ua = 'netdisk;P2SP;3.0.10.22;netdisk;4.32.1;PC;PC-Windows;10.0.19045;UniBaiduYunGuanJia'
+      ua = 'netdisk;P2SP;3.0.20.4;netdisk;4.36.2;PC;PC-Windows;10.0.19045;UniBaiduYunGuanJia'
       break
     case 2:
     case 9:

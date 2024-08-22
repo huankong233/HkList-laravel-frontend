@@ -14,9 +14,10 @@
         <el-select v-model="addAccountForm.type">
           <el-option label="cookie" :value="1"> </el-option>
           <el-option label="token" :value="2"> </el-option>
+          <el-option label="enterprise" :value="3"> </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="Cookie" prop="cookie" v-if="addAccountForm.type === 1">
+      <el-form-item label="Cookie" prop="cookie" v-if="addAccountForm.type === 1 || addAccountForm.type === 3">
         <el-input type="textarea" v-model="addAccountForm.cookie"></el-input>
       </el-form-item>
       <el-form-item label="refresh_token" prop="cookie" v-else>
