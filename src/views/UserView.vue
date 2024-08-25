@@ -28,9 +28,13 @@ const Aria2Dialog = defineAsyncComponent(() => import('@/components/UserView/Ari
 .alert {
   margin-top: 15px !important;
 }
+</style>
 
-.container {
-  width: 1000px;
-  margin: 0 auto;
+<style lang="scss" scoped>
+@media screen and (min-width: 1000px) {
+  .container {
+    width: 60%;
+    margin: 0 auto;
+  }
 }
 </style>
