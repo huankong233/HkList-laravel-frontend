@@ -236,6 +236,12 @@ const copyLink = async (formEl: FormInstance | null) => {
 
 onMounted(() => {
   nextTick(() => {
+    const token = localStorage.getItem('token')
+    if (token && token !== '') {
+      ElMessage.success('已自动填充 token')
+      getFileListForm.value.token = token
+    }
+
     const searchParams = new URLSearchParams(location.search)
     if (searchParams.size < 4) return
 
@@ -271,8 +277,10 @@ const isToken = ref(false)
 const tokenBlur = () => {
   if (getFileListForm.value.token !== '') {
     isToken.value = true
+    localStorage.setItem('token', getFileListForm.value.token ?? '')
   } else {
     isToken.value = false
+    localStorage.removeItem('token')
   }
   fileListStore.getLimit()
 }
