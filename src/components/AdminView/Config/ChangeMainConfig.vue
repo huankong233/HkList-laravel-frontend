@@ -102,6 +102,7 @@
           <el-option :value="9" label="V9盘外(改版V2,qdall下载可能失败,Windows)" />
 
           <el-option :value="11" label="V11盘内" />
+          <el-option :value="12" label="V12盘外" />
         </el-select>
       </el-form-item>
       <el-form-item label="省份模式开关" prop="limit_prov">
@@ -125,11 +126,11 @@
 
 <script lang="ts" setup>
 import * as mainConfigApi from '@/apis/admin/config/main.js'
+import { useChangeConfigForm } from '@/stores/changeConfigForm.js'
 import { getFrontEndVersion } from '@/utils/env.js'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useChangeConfigForm } from '@/stores/changeConfigForm.js'
+import { onMounted, ref } from 'vue'
 
 const { Mode } = defineProps(['Mode'])
 
