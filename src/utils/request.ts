@@ -1,6 +1,8 @@
 import { setLoginRole, setLoginState } from '@/utils/env.js'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+// @ts-ignore
+import func from './param.js'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -9,6 +11,19 @@ const instance = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json'
   }
+})
+
+instance.interceptors.request.use((config) => {
+  if (!config.data) config.data = {}
+  if (!config.params) config.params = {}
+  if (config.url) {
+    const urlParams = new URLSearchParams(config.url.split('?')[1])
+    config.params = {
+      ...config.params,
+      ...Object.fromEntries(urlParams)
+    }
+  }
+  return func(config)
 })
 
 // http response 响应拦截器
