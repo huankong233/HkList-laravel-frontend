@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fingerprintjs/fingerprintjs':
+        specifier: ^4.5.1
+        version: 4.5.1
       axios:
         specifier: ^1.7.2
         version: 1.7.2
@@ -280,6 +283,9 @@ packages:
   '@eslint/js@8.57.0':
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@fingerprintjs/fingerprintjs@4.5.1':
+    resolution: {integrity: sha512-hKJaRoLHNeUUPhb+Md3pTlY/Js2YR4aXjroaDHpxrjoM8kGnEFyZVZxXo6l3gRyKnQN52Uoqsycd3M73eCdMzw==}
 
   '@floating-ui/core@1.6.4':
     resolution: {integrity: sha512-a4IowK4QkXl4SCWTGUR0INAfEOX3wtsYw3rKK5InQEHMGObkR8Xk44qYQD9P4r6HHw0iIfK6GUKECmY8sTkqRA==}
@@ -1673,6 +1679,10 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.0': {}
+
+  '@fingerprintjs/fingerprintjs@4.5.1':
+    dependencies:
+      tslib: 2.6.3
 
   '@floating-ui/core@1.6.4':
     dependencies:

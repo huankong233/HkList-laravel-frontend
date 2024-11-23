@@ -1,6 +1,6 @@
+import * as mainConfigApi from '@/apis/admin/config/main.js'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import * as mainConfigApi from '@/apis/admin/config/main.js'
 
 export const useChangeConfigForm = defineStore('changeConfigForm', () => {
   const changeConfigForm = ref<mainConfigApi.config>({
